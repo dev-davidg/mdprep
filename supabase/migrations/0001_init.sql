@@ -1,0 +1,1 @@
+-- SQL migrations placeholder – use your Supabase schema here
