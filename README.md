@@ -16,3 +16,5 @@ npm run preview
 - Build command: `npm run build`
 - Publish directory: `mdprep/app/dist`
 - Env vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+VITE
