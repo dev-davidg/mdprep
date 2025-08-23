@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { useId } from "react";
 
 export interface Choice { id: string; body: string; }
@@ -23,18 +22,20 @@ export default function QuestionCard(props: QuestionProps) {
         <CardTitle className="text-lg">{props.stem}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <RadioGroup
-          value={props.selectedId ?? ""}
-          onValueChange={(v) => props.onSelect?.(v)}
-          aria-label="Answer options"
-        >
-          {props.choices.map((c, i) => (
-            <div key={c.id} className="flex items-center space-x-2">
-              <RadioGroupItem id={`${baseId}-${i}`} value={c.id} disabled={props.disabled} />
-              <Label htmlFor={`${baseId}-${i}`} className="leading-6">{c.body}</Label>
-            </div>
+        <div className="space-y-2" aria-label="Answer options">
+          {props.choices.map((c) => (
+            <Button
+              key={c.id}
+              variant={props.selectedId === c.id ? "default" : "outline"}
+              size="md"
+              disabled={props.disabled}
+              onClick={() => props.onSelect?.(c.id)}
+              className={props.selectedId === c.id ? "ring-2 ring-offset-2 ring-blue-600" : ""}
+            >
+              {c.body}
+            </Button>
           ))}
-        </RadioGroup>
+        </div>
 
         <div className="flex gap-2 pt-2">
           <Button onClick={props.onSubmit} disabled={!props.selectedId || props.disabled}>
