@@ -17,13 +17,24 @@ export default function Learning() {
   const [showExpl, setShowExpl] = useState(true);
   const [note, setNote] = useState("");
 
+  // Answers table in your DB uses "text" for the option label; fall back to "body" if present.
   async function fetchAnswers(qid: string) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("answers")
-      .select("id, body, is_correct, order_index")
+      .select("id, is_correct, order_index, text, body")
       .eq("question_id", qid)
       .order("order_index", { ascending: true });
-    return (data ?? []) as Answer[];
+
+    if (error) {
+      console.error(error);
+      return [];
+    }
+
+    return (data ?? []).map((r: any) => ({
+      id: r.id as string,
+      body: (r.body ?? r.text ?? "") as string,
+      is_correct: !!r.is_correct,
+    })) as Answer[];
   }
 
   async function loadNext() {
@@ -41,7 +52,7 @@ export default function Learning() {
     if (cand && cand.length > 0) {
       const qid = cand[0].id as string;
 
-      // Fetch the question row; we’ll derive text regardless of column name
+      // Fetch the question row; derive a displayable stem regardless of column name
       const { data: qrow } = await supabase
         .from("questions")
         .select("*")
@@ -60,7 +71,7 @@ export default function Learning() {
       const ans = await fetchAnswers(qid);
       nextQ = { id: qid, stem: stemText, answers: ans };
     } else {
-      // Fallback: simple fetch by category (no is_active filter)
+      // Fallback: simple fetch by category
       const { data: rows } = await supabase
         .from("questions")
         .select("*")
@@ -238,7 +249,7 @@ function PaidComments({ questionId }: { questionId: string }) {
   const [text, setText] = useState("");
   useEffect(() => {
     (async () => {
-      // NOTE: this is a coarse check; can refine to current user if needed
+      // Coarse paid-role check; can be refined to current user if needed
       const { data } = await supabase
         .from("user_roles")
         .select("role_key")
