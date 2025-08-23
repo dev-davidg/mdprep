@@ -31,17 +31,38 @@ export default function TestRun() {
       }
       const { data } = await supabase
         .from("questions")
-        .select("id, stem, answers:answers(id, body, is_correct)")
-        .eq("is_active", true)
+        .select("*, answers:answers(id, body, is_correct)")
         .limit(50);
-      const arr = (data ?? []) as Question[];
+
+      const raw = (data ?? []) as any[];
+      // Derive a portable "stem" regardless of actual column name
+      const arr: Question[] = raw.map((row) => {
+        const stemText =
+          (row.stem ??
+            row.title ??
+            row.question ??
+            row.text ??
+            row.body ??
+            row.content ??
+            "Question") as string;
+        return {
+          id: row.id as string,
+          stem: stemText,
+          answers: (row.answers ?? []) as Answer[],
+        };
+      });
+
+      // Shuffle
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
-      const pick = arr.slice(0, 20); // TODO: use sessions.total_questions
+      const pick = arr.slice(0, 20); // TODO: read sessions.total_questions
       setPool(pick);
-      localStorage.setItem(key, JSON.stringify({ pool: pick, answered: {}, flagged: {} }));
+      localStorage.setItem(
+        key,
+        JSON.stringify({ pool: pick, answered: {}, flagged: {} })
+      );
     })();
   }, [sessionId]);
 
@@ -64,13 +85,13 @@ export default function TestRun() {
     if (!current) return;
     setAnswered((m) => ({ ...m, [current.id]: choiceId }));
     // Record attempt; no reveal
-    const ans = current.answers.find(a => a.id === choiceId);
+    const ans = current.answers.find((a) => a.id === choiceId);
     await supabase.from("attempts").insert({
       session_id: sessionId,
       question_id: current.id,
       selected_answer_id: choiceId,
       is_correct: ans?.is_correct ?? false,
-      elapsed_ms: 0
+      elapsed_ms: 0,
     });
     // Advance to next
     setTimeout(() => setIdx((i) => Math.min(i + 1, pool.length - 1)), 200);
@@ -83,16 +104,22 @@ export default function TestRun() {
   async function toggleFlag() {
     if (!current) return;
     setFlagged((m) => ({ ...m, [current.id]: !m[current.id] }));
-    await supabase.from("user_marks").insert({ question_id: current.id, mark_type: "flag" });
+    await supabase
+      .from("user_marks")
+      .insert({ question_id: current.id, mark_type: "flag" });
     setIdx((i) => Math.min(i + 1, pool.length - 1));
   }
 
-  function goto(i: number) { setIdx(i); }
+  function goto(i: number) {
+    setIdx(i);
+  }
 
   return (
     <section className="mx-auto max-w-4xl space-y-4">
       <div className="flex items-center justify-between gap-3">
-        <div className="text-sm">Question {idx + 1} / {pool.length}</div>
+        <div className="text-sm">
+          Question {idx + 1} / {pool.length}
+        </div>
         <Timer durationMs={90000} onExpire={skip} />
       </div>
 
@@ -100,26 +127,39 @@ export default function TestRun() {
         <>
           <QuestionCard
             stem={current?.stem ?? ""}
-            choices={(current?.answers ?? []).map(a => ({ id: a.id, body: a.body }))}
+            choices={(current?.answers ?? []).map((a) => ({
+              id: a.id,
+              body: a.body,
+            }))}
             selectedId={answered[current?.id ?? ""] ?? null}
             onSelect={onSelect}
             onSubmit={() => {}}
           />
           <div className="flex justify-between">
             <div className="flex gap-2">
-              <Button variant="secondary" onClick={skip}>Skip</Button>
-              <Button variant="secondary" onClick={toggleFlag}>Flag</Button>
+              <Button variant="secondary" onClick={skip}>
+                Skip
+              </Button>
+              <Button variant="secondary" onClick={toggleFlag}>
+                Flag
+              </Button>
             </div>
-            <Button onClick={() => navigate(`/results/${sessionId}`)}>Submit Test</Button>
+            <Button onClick={() => navigate(`/results/${sessionId}`)}>
+              Submit Test
+            </Button>
           </div>
 
           <div className="rounded border p-3">
             <h2 className="mb-2 font-medium">Navigate questions</h2>
             <QuestionPalette items={palette} goto={goto} />
-            <div className="mt-2 text-xs text-muted-foreground">Answered = filled, Flagged = yellow ring, Unanswered = muted</div>
+            <div className="mt-2 text-xs text-muted-foreground">
+              Answered = filled, Flagged = yellow ring, Unanswered = muted
+            </div>
           </div>
         </>
-      ) : <p>Loading questions…</p>}
+      ) : (
+        <p>Loading questions…</p>
+      )}
     </section>
   );
 }
