@@ -1,0 +1,6 @@
+:root {
+  --radius: 1rem;
+  --container-max: 1000px;
+}
+
+.container { max-width: var(--container-max); }
