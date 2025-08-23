@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Auth from "../pages/Auth";
 import CategoryPicker from "../pages/CategoryPicker";
+import ModePicker from "../pages/ModePicker";
 import Learning from "../pages/Learning";
 import TestConfig from "../pages/TestConfig";
 import TestRun from "../pages/TestRun";
@@ -17,6 +18,7 @@ export default function AppRoutes() {
           <Route path="/" element={<Navigate to="/categories" replace />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/categories" element={<CategoryPicker />} />
+          <Route path="/subject/:categoryId" element={<ModePicker />} />
           <Route path="/learn/:categoryId" element={<Learning />} />
           <Route path="/test/:categoryId/config" element={<TestConfig />} />
           <Route path="/test/:sessionId/run" element={<TestRun />} />

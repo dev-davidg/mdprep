@@ -1,79 +1,167 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
-import supabase from '../supabaseClient';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { supabase } from "../lib/supabase";
+import QuestionCard from "../components/QuestionCard";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
-type Answer = { id: string; text: string; is_correct: boolean; order_index: number };
-type Question = { id: string; text: string; answers: Answer[]; explanations?: { content: string }[] };
+interface Answer { id: string; body: string; is_correct: boolean; }
+interface Question { id: string; stem: string; answers: Answer[]; }
 
 export default function Learning() {
-  const [params] = useSearchParams();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string|null>(null);
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [index, setIndex] = useState(0);
-  const categorySlug = params.get('category') ?? 'mathematics';
-  const categoryName = useMemo(()=>categorySlug.charAt(0).toUpperCase()+categorySlug.slice(1),[categorySlug]);
+  const { categoryId } = useParams();
+  const [q, setQ] = useState<Question | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [reveal, setReveal] = useState(false);
+  const [showExpl, setShowExpl] = useState(true);
+  const [note, setNote] = useState("");
+
+  async function fetchAnswers(qid: string) {
+    const { data } = await supabase.from("answers").select("id, body, is_correct, order_index").eq("question_id", qid).order("order_index", { ascending: true });
+    return (data ?? []) as Answer[];
+    }
+
+  async function loadNext() {
+    setSelected(null); setReveal(false);
+    // Prefer unseen questions first via RPC (RLS still applies)
+    const { data: candidates } = await supabase.rpc("get_learning_candidates", { p_category_id: categoryId });
+    let nextQ: Question | null = null;
+    if (candidates && candidates.length > 0) {
+      const ans = await fetchAnswers(candidates[0].id);
+      nextQ = { id: candidates[0].id, stem: candidates[0].stem, answers: ans };
+    } else {
+      // fallback simple fetch
+      const { data } = await supabase
+        .from("questions")
+        .select("id, stem")
+        .eq("is_active", true)
+        .eq("category_id", categoryId)
+        .limit(1);
+      if (data && data[0]) {
+        const ans = await fetchAnswers(data[0].id);
+        nextQ = { id: data[0].id, stem: data[0].stem, answers: ans };
+      }
+    }
+    setQ(nextQ);
+    // Mark as seen
+    if (nextQ?.id) {
+      await supabase.from("user_question_stats").upsert(
+        { question_id: nextQ.id, seen_count: 1 },
+        { onConflict: "user_id,question_id", ignoreDuplicates: false }
+      );
+    }
+  }
+
+  useEffect(() => { loadNext(); }, [categoryId]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const { data: cats, error: catErr } = await supabase
-          .from('categories').select('id,name').eq('name', categoryName).limit(1);
-        if (catErr) throw catErr;
-        const categoryId = cats?.[0]?.id;
-        if (!categoryId) throw new Error('Category not found');
+    if (!selected || !q) return;
+    // Instant reveal, update correct_count
+    setReveal(true);
+    const isCorrect = q.answers.find(a => a.id === selected)?.is_correct ?? false;
+    supabase.from("user_question_stats").upsert(
+      { question_id: q.id, seen_count: 1, correct_count: isCorrect ? 1 : 0 },
+      { onConflict: "user_id,question_id", ignoreDuplicates: false }
+    );
+  }, [selected]);
 
-        const { data, error } = await supabase
-          .from('questions')
-          .select('id,text,answers(id,text,is_correct,order_index),explanations(content)')
-          .eq('category_id', categoryId)
-          .order('created_at', { ascending: true });
-        if (error) throw error;
-        setQuestions(data || []);
-      } catch (e:any) {
-        setError(e.message || 'Failed to load questions.');
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [categoryName]);
+  async function flag(type: "flag" | "hard") {
+    if (!q) return;
+    await supabase.from("user_marks").insert({ question_id: q.id, mark_type: type });
+  }
 
-  const current = questions[index];
+  async function saveNote() {
+    if (!q || !note.trim()) return;
+    await supabase.from("user_notes").insert({ question_id: q.id, body: note.trim(), is_private: true });
+    setNote("");
+  }
 
   return (
-    <main className="p-4 max-w-3xl mx-auto">
-      <div className="flex justify-between items-center mb-2">
-        <Link to="/" className="text-blue-600 underline">← Categories</Link>
-        <div className="text-sm text-gray-600">{categoryName} — Learning mode</div>
+    <section className="max-w-3xl mx-auto space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Learning</h1>
+        <div className="flex gap-2">
+          <Button variant="secondary" onClick={() => flag("flag")}>Flag</Button>
+          <Button variant="secondary" onClick={() => flag("hard")}>Mark hard</Button>
+          <Button variant="ghost" onClick={loadNext} aria-label="Next question">Next</Button>
+        </div>
       </div>
-      {loading && <div>Loading…</div>}
-      {error && <div className="text-red-600">{error}</div>}
-      {!loading && !error && current && (
-        <article className="bg-white rounded-xl shadow p-4">
-          <h1 className="text-lg font-semibold mb-2">{current.text}</h1>
-          <ol className="list-decimal ml-6 space-y-1">
-            {current.answers?.sort((a,b)=>a.order_index-b.order_index).map(a=>(
-              <li key={a.id}>{a.text}</li>
-            ))}
-          </ol>
-          {current.explanations && current.explanations.length > 0 && (
-            <details className="mt-4">
-              <summary className="cursor-pointer text-primary underline">Explanation</summary>
-              <div className="mt-2 text-gray-700 whitespace-pre-line">
-                {current.explanations[0].content}
+
+      {!q ? <p>No questions available.</p> : (
+        <QuestionCard
+          stem={q.stem}
+          choices={q.answers.map(a => ({ id: a.id, body: a.body }))}
+          selectedId={selected}
+          onSelect={setSelected}
+          onSubmit={() => {}}
+        >
+          {reveal && (
+            <div className="space-y-3">
+              <p className="font-medium">Correct answer: <span className="text-green-600">{q.answers.find(a => a.is_correct)?.body}</span></p>
+              <Button variant="outline" size="sm" onClick={() => setShowExpl(v => !v)} aria-expanded={showExpl}>
+                {showExpl ? "Hide" : "Show"} explanation
+              </Button>
+              {showExpl && <Explanation questionId={q.id} />}
+
+              <div className="space-y-2 pt-2">
+                <Label htmlFor="note">Private note</Label>
+                <Textarea id="note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Write a private note (only you can see it)" />
+                <div><Button onClick={saveNote} size="sm">Save note</Button></div>
               </div>
-            </details>
+
+              <PaidComments questionId={q.id} />
+            </div>
           )}
-          <div className="flex gap-2 mt-4">
-            <button disabled={index===0} onClick={()=>setIndex(i=>Math.max(0,i-1))}
-                    className="px-3 py-2 rounded border bg-gray-100 disabled:opacity-50">Previous</button>
-            <button disabled={index===questions.length-1} onClick={()=>setIndex(i=>Math.min(questions.length-1,i+1))}
-                    className="px-3 py-2 rounded border bg-gray-100 disabled:opacity-50">Next</button>
-          </div>
-        </article>
+        </QuestionCard>
       )}
-    </main>
+    </section>
+  );
+}
+
+function Explanation({ questionId }: { questionId: string; }) {
+  const [body, setBody] = useState<string>("");
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from("explanations").select("body").eq("question_id", questionId).maybeSingle();
+      setBody(data?.body ?? "No explanation available.");
+    })();
+  }, [questionId]);
+  return <div className="prose prose-sm dark:prose-invert mt-2" aria-live="polite" dangerouslySetInnerHTML={{ __html: body }} />;
+}
+
+function PaidComments({ questionId }: { questionId: string; }) {
+  const [can, setCan] = useState(false);
+  const [list, setList] = useState<any[]>([]);
+  const [text, setText] = useState("");
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from("user_roles").select("role_key").eq("role_key", "paid").limit(1);
+      setCan((data ?? []).length > 0);
+      if ((data ?? []).length > 0) {
+        const { data: comments } = await supabase.from("comments").select("id, user_id, body, created_at").eq("question_id", questionId).order("created_at", { ascending: true });
+        setList(comments ?? []);
+      }
+    })();
+  }, [questionId]);
+  async function add() {
+    if (!text.trim()) return;
+    await supabase.from("comments").insert({ question_id: questionId, body: text.trim() });
+    setText("");
+    const { data: comments } = await supabase.from("comments").select("id, user_id, body, created_at").eq("question_id", questionId).order("created_at", { ascending: true });
+    setList(comments ?? []);
+  }
+  if (!can) return null;
+  return (
+    <div className="mt-4">
+      <h2 className="font-medium">Public comments</h2>
+      <ul className="mt-2 space-y-2">
+        {list.map((c) => <li key={c.id} className="rounded border p-2 text-sm"><span className="text-muted-foreground">{c.user_id}</span>: {c.body}</li>)}
+      </ul>
+      <div className="mt-2 flex gap-2">
+        <Textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Add a public comment (paid users)" />
+        <Button onClick={add}>Post</Button>
+      </div>
+    </div>
   );
 }

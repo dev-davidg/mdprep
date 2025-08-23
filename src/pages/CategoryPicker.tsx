@@ -1,28 +1,32 @@
-import { Link } from 'react-router-dom';
-const categories = [
-  { id: 'mathematics', name: 'Mathematics' },
-  { id: 'biology', name: 'Biology' },
-  { id: 'physics', name: 'Physics' },
-];
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+
+interface Category { id: string; name: string; is_active: boolean; }
+
 export default function CategoryPicker() {
+  const [cats, setCats] = useState<Category[]>([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.from("categories").select("id,name,is_active").eq("is_active", true).order("sort_index", { ascending: true }).then(({ data }) => setCats(data ?? []));
+  }, []);
   return (
-    <main className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-6">Choose a category</h1>
-      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {categories.map(c => (
-          <Link key={c.id} to={`/learn?category=${c.id}`}
-                className="block rounded-xl border bg-white p-6 shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary">
-            <div className="text-lg font-medium">{c.name}</div>
-            <div className="text-sm text-gray-600 mt-1">Enter learning mode</div>
-          </Link>
-        ))}
-      </div>
-      <div className="mt-8 text-center">
-        <p className="mb-2 text-gray-700">Ready to test your knowledge?</p>
-        <Link to="/test-config" className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-          Take a Practice Test
-        </Link>
-      </div>
-    </main>
+    <section aria-labelledby="pickTitle" className="grid gap-4 md:grid-cols-3">
+      <h1 id="pickTitle" className="sr-only">Pick a subject</h1>
+      {cats.map((c) => (
+        <Card
+          key={c.id}
+          className="relative cursor-pointer focus-visible:outline-2 focus-visible:outline focus-visible:outline-offset-2"
+          onClick={() => navigate(`/subject/${c.id}`)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") navigate(`/subject/${c.id}`); }}
+        >
+          <CardHeader><CardTitle>{c.name}</CardTitle></CardHeader>
+          <CardContent className="text-sm text-muted-foreground">Open to choose Learning or Test</CardContent>
+        </Card>
+      ))}
+    </section>
   );
 }
