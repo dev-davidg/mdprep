@@ -1,24 +1,135 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MDprep – Subjects (Stitch Preview)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/stitch/styles.css" />
-  </head>
-  <body class="min-h-screen bg-gray-50">
-    <main class="mx-auto max-w-2xl p-6">
-      <h1 class="text-2xl font-semibold mb-4">Choose a Subject</h1>
-      <p class="text-sm text-gray-600 mb-4">Show seen / unseen % per subject.</p>
-      <div class="rounded-2xl border bg-white p-4">
-        <!-- Paste your Stitch SUBJECTS HTML below -->
-        <!-- STITCH_INSERT:SUBJECTS -->
+<!DOCTYPE html>
+<html lang="sk"><head>
+<meta charset="utf-8"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Spline+Sans%3Awght%40400%3B500%3B700" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<title>MDprep</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+    :root {
+      --primary-color: #3b82f6;
+      --secondary-color: #f3f4f6;
+      --background-color: #ffffff;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --card-background: #ffffff;
+      --progress-background: #e5e7eb;
+    }
+  </style>
+<style>
+    body { min-height: max(884px, 100dvh); font-family: "Spline Sans", "Noto Sans", sans-serif; }
+</style>
+</head>
+<body class="bg-[var(--background-color)]">
+<div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden">
+  <div class="flex-grow">
+    <header class="sticky top-0 z-10 bg-[var(--background-color)]/80 backdrop-blur-sm">
+      <div class="flex items-center p-4 justify-between">
+        <div class="w-12">
+          <svg class="h-8 w-8 text-[var(--primary-color)]" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"></path>
+            <path d="M15.5 12.5h-2.5v2.5h-2v-2.5H8.5v-2h2.5V8h2v2.5h2.5v2zM15.1 4.5l-1.1 1.1c-.8-1.3-2.1-2.2-3.6-2.4V2h-1v1.2c-1.5.2-2.8 1.1-3.6 2.4l-1.1-1.1-.7.7 1.1 1.1c-.5.8-.8 1.8-.8 2.8H4v1h1.2c.2 1.5 1.1 2.8 2.4 3.6l-1.1 1.1.7.7 1.1-1.1c.8.5 1.8.8 2.8.8v1.2h1V18c1.5-.2 2.8-1.1 3.6-2.4l1.1 1.1.7-.7-1.1-1.1c.5-.8.8-1.8.8-2.8H20v-1h-1.2c-.2-1.5-1.1-2.8-2.4-3.6l1.1-1.1-.7-.7zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z" fill="currentColor" fill-opacity="0.3"></path>
+            <path d="M13.88,14.65c-1.13,1.38-2.94,2.25-4.88,2.25-3.31,0-6-2.69-6-6s2.69-6,6-6c1.94,0,3.75,0.87,4.88,2.25l1.06-1.06c-1.46-1.74-3.61-2.82-6.04-2.82C6.01,4.32,3.1,7.23,3.1,10.9s2.91,6.58,6.8,6.58c2.43,0,4.58-1.07,6.04-2.82L13.88,14.65zM17.43,10.66c-0.29-0.57-0.7-1.08-1.2-1.51l-0.78,0.61c0.41,0.36,0.76,0.78,1.03,1.26l0.95-0.36z M16.73,12.78c-0.36,0.41-0.78,0.76-1.26,1.03l0.36,0.95c0.57-0.29,1.08-0.7,1.51-1.2L16.73,12.78z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h1 class="text-[var(--text-primary)] text-xl font-bold leading-tight tracking-tight flex-1 text-center">Predmety</h1>
+        <div class="flex w-12 items-center justify-end">
+          <a href="/stitch/profile.html" aria-label="Nastavenia" role="button" class="flex h-12 w-12 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent text-[var(--text-primary)] transition-colors hover:bg-gray-100">
+            <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+              <path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"></path>
+            </svg>
+          </a>
+        </div>
       </div>
-      <div class="mt-6 flex justify-between">
-        <a href="/stitch/auth.html" class="inline-flex items-center gap-2 rounded-lg border px-4 py-2">← Back</a>
-        <a href="/stitch/mode.html" class="inline-flex items-center gap-2 rounded-lg border px-4 py-2">Next → Mode</a>
+    </header>
+
+    <main class="p-4">
+      <div class="grid grid-cols-1 @[300px]:grid-cols-2 @[640px]:grid-cols-3 gap-4">
+        <!-- Subject 1 -->
+        <a href="/stitch/mode.html" class="flex flex-col gap-4 rounded-2xl border border-gray-200/80 bg-[var(--card-background)] p-4 shadow-sm transition-shadow hover:shadow-lg cursor-pointer">
+          <div class="flex items-center gap-3">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+              <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-[var(--text-primary)] text-lg font-bold leading-tight">Biológia</h2>
+              <p class="text-[var(--text-secondary)] text-sm font-medium">80% dokončené</p>
+            </div>
+          </div>
+          <div>
+            <div class="w-full bg-[var(--progress-background)] rounded-full h-2">
+              <div class="bg-[var(--primary-color)] h-2 rounded-full" style="width: 80%"></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Subject 2 -->
+        <a href="/stitch/mode.html" class="flex flex-col gap-4 rounded-2xl border border-gray-200/80 bg-[var(--card-background)] p-4 shadow-sm transition-shadow hover:shadow-lg cursor-pointer">
+          <div class="flex items-center gap-3">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+              <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m9.75 3.104 5.25 1.682M9.75 3.104a2.25 2.25 0 0 1 4.5 0m-4.5 0a2.25 2.25 0 0 0-4.5 0M9.75 3.104l-5.25 1.682m10.5 0L15 3.104m0 0a2.25 2.25 0 0 1 4.5 0m-4.5 0a2.25 2.25 0 0 0-4.5 0m-9.75 9.75l5.25-1.682M4.5 12.856a2.25 2.25 0 0 1 4.5 0m-4.5 0a2.25 2.25 0 0 0-4.5 0m4.5 0l5.25 1.682m0 0l-5.25 1.682M9.75 14.538a2.25 2.25 0 0 1 4.5 0m-4.5 0a2.25 2.25 0 0 0-4.5 0m9.75-9.75L15 3.104m-5.25 9.75L4.5 12.856M15 12.856l-5.25 1.682" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-[var(--text-primary)] text-lg font-bold leading-tight">Chémia</h2>
+              <p class="text-[var(--text-secondary)] text-sm font-medium">65% dokončené</p>
+            </div>
+          </div>
+          <div>
+            <div class="w-full bg-[var(--progress-background)] rounded-full h-2">
+              <div class="bg-[var(--primary-color)] h-2 rounded-full" style="width: 65%"></div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Subject 3 -->
+        <a href="/stitch/mode.html" class="flex flex-col gap-4 rounded-2xl border border-gray-200/80 bg-[var(--card-background)] p-4 shadow-sm transition-shadow hover:shadow-lg cursor-pointer">
+          <div class="flex items-center gap-3">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+              <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 3h.008v.008H8.25v-.008Zm0 3h.008v.008H8.25v-.008Zm3-6h.008v.008H11.25v-.008Zm0 3h.008v.008H11.25v-.008Zm0 3h.008v.008H11.25v-.008Zm3-6h.008v.008H14.25v-.008Zm0 3h.008v.008H14.25v-.008Zm0 3h.008v.008H14.25v-.008Z" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M3 3h18M3 6h18m-3 15h3M3 21h3M12 3v18" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-[var(--text-primary)] text-lg font-bold leading-tight">Matematika</h2>
+              <p class="text-[var(--text-secondary)] text-sm font-medium">40% dokončené</p>
+            </div>
+          </div>
+          <div>
+            <div class="w-full bg-[var(--progress-background)] rounded-full h-2">
+              <div class="bg-[var(--primary-color)] h-2 rounded-full" style="width: 40%"></div>
+            </div>
+          </div>
+        </a>
       </div>
     </main>
-  </body>
-</html>
+  </div>
+
+  <footer class="sticky bottom-0 bg-[var(--background-color)] border-t border-gray-200/80">
+    <nav class="flex justify-around py-2">
+      <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--primary-color)]" href="/stitch/subjects.html">
+        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M240,64V192a16,16,0,0,1-16,16H160a24,24,0,0,0-24,24,8,8,0,0,1-16,0,24,24,0,0,0-24-24H32a16,16,0,0,1-16-16V64A16,16,0,0,1,32,48H88a32,32,0,0,1,32,32v88a8,8,0,0,0,16,0V80a32,32,0,0,1,32-32h56A16,16,0,0,1,240,64Z"></path></svg>
+        <span class="text-xs font-semibold">Predmety</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/learning.html">
+        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13-56-29.87a8,8,0,0,0-7.52,14.12L171,128l-43,22.93L25,96,128,41.07,231,96Z"></path></svg>
+        <span class="text-xs font-medium">Učenie</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/test.html">
+        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"></path></svg>
+        <span class="text-xs font-medium">Test</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/profile.html">
+        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path></svg>
+        <span class="text-xs font-medium">Profil</span>
+      </a>
+    </nav>
+    <div class="pb-safe-area-inset-bottom h-5 bg-[var(--background-color)]"></div>
+  </footer>
+</div>
+</body></html>
