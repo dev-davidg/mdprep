@@ -1,26 +1,181 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MDprep – Mode & Count (Stitch Preview)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/stitch/styles.css" />
-  </head>
-  <body class="min-h-screen bg-gray-50">
-    <main class="mx-auto max-w-md p-6">
-      <h1 class="text-2xl font-semibold mb-4">Mode & Number of Questions</h1>
-      <div class="rounded-2xl border bg-white p-4">
-        <!-- Paste your Stitch MODE+COUNT HTML below -->
-        <!-- STITCH_INSERT:MODE -->
+<!DOCTYPE html>
+<html lang="sk"><head>
+<meta charset="utf-8"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Spline+Sans%3Awght%40400%3B500%3B700" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<title>MDprep</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+    :root {
+      --primary-color: #3b82f6;
+      --secondary-color: #f3f4f6;
+      --background-color: #ffffff;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --card-background: #ffffff;
+      --progress-background: #e5e7eb;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+      font-family: "Spline Sans", "Noto Sans", sans-serif;
+    }
+    .scroll-snap-y-mandatory { scroll-snap-type: y mandatory; }
+    .scroll-snap-align-center { scroll-snap-align: center; }
+    .number-picker { height: 15rem; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
+    .number-picker::-webkit-scrollbar { display: none; }
+    .number-picker { -ms-overflow-style: none; scrollbar-width: none; }
+    .number-picker-item {
+      height: 3rem; display: flex; align-items: center; justify-content: center;
+      font-size: 2.25rem; font-weight: 700; color: var(--text-secondary);
+      opacity: 0.5; transition: all 0.3s ease-in-out;
+    }
+    .number-picker-item.active {
+      color: var(--primary-color); opacity: 1; transform: scale(1.2);
+    }
+  </style>
+<style> body { min-height: max(884px, 100dvh); } </style>
+</head>
+<body class="bg-[var(--background-color)]">
+<div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden">
+  <div class="flex-grow">
+    <header class="sticky top-0 z-10 bg-[var(--background-color)]/80 backdrop-blur-sm">
+      <div class="flex items-center p-4 justify-between">
+        <a href="/stitch/subjects.html" class="flex h-10 w-10 items-center justify-center rounded-full bg-transparent text-[var(--text-primary)] transition-colors hover:bg-gray-100" aria-label="Späť na Predmety">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+        <div class="flex items-center gap-3">
+          <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <h1 class="text-[var(--text-primary)] text-xl font-bold leading-tight tracking-tight">Biológia</h1>
+        </div>
+        <div class="w-10"></div>
       </div>
-      <div class="mt-6 flex justify-between">
-        <a href="/stitch/subjects.html" class="inline-flex items-center gap-2 rounded-lg border px-4 py-2">← Back</a>
-        <div class="space-x-2">
-          <a href="/stitch/learning.html" class="inline-flex items-center gap-2 rounded-lg border px-4 py-2">Start Learning →</a>
-          <a href="/stitch/test.html" class="inline-flex items-center gap-2 rounded-lg border px-4 py-2">Start Test →</a>
+    </header>
+
+    <main class="p-4 flex-grow flex flex-col justify-center">
+      <div class="space-y-8">
+        <div>
+          <h2 class="text-lg font-semibold text-[var(--text-primary)] mb-4 text-center">Vyberte si režim</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <a href="/stitch/learning.html" class="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border-2 border-[var(--primary-color)] bg-blue-50 shadow-md">
+              <svg class="w-10 h-10 text-[var(--primary-color)]" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13-56-29.87a8,8,0,0,0-7.52,14.12L171,128l-43,22.93L25,96,128,41.07,231,96Z"></path></svg>
+              <span class="text-[var(--text-primary)] font-bold">Režim učenia</span>
+            </a>
+            <a href="/stitch/test.html" class="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border border-gray-200/80 bg-[var(--card-background)] shadow-sm hover:shadow-lg hover:border-gray-300">
+              <svg class="w-10 h-10 text-[var(--text-secondary)]" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"></path></svg>
+              <span class="text-[var(--text-secondary)] font-semibold">Testový režim</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-lg font-semibold text-[var(--text-primary)] mb-2 text-center">Počet otázok</h2>
+          <div class="relative h-60">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="h-12 w-full bg-blue-50 rounded-lg border-y-2 border-blue-200"></div>
+            </div>
+            <div class="number-picker scroll-snap-y-mandatory" id="number-picker">
+              <div class="number-picker-item scroll-snap-align-center"></div>
+              <div class="number-picker-item scroll-snap-align-center"></div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="1">1</div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="2">2</div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="3">3</div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="4">4</div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="5">5</div>
+              <div class="number-picker-item scroll-snap-align-center active" data-value="6">6</div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="7">7</div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="8">8</div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="9">9</div>
+              <div class="number-picker-item scroll-snap-align-center" data-value="10">10</div>
+              <div class="number-picker-item scroll-snap-align-center"></div>
+              <div class="number-picker-item scroll-snap-align-center"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <a href="/stitch/learning.html" class="block w-full bg-[var(--primary-color)] text-white text-center font-bold py-4 px-4 rounded-xl shadow-lg hover:bg-blue-700 transition-colors duration-300">
+            Začať sa učiť
+          </a>
         </div>
       </div>
     </main>
-  </body>
-</html>
+  </div>
+
+  <footer class="sticky bottom-0 bg-[var(--background-color)] border-t border-gray-200/80">
+    <nav class="flex justify-around py-2">
+      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/subjects.html">
+        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M240,64V192a16,16,0,0,1-16,16H160a24,24,0,0,0-24,24,8,8,0,0,1-16,0,24,24,0,0,0-24-24H32a16,16,0,0,1-16-16V64A16,16,0,0,1,32,48H88a32,32,0,0,1,32,32v88a8,8,0,0,0,16,0V80a32,32,0,0,1,32-32h56A16,16,0,0,1,240,64Z"></path></svg>
+        <span class="text-xs font-medium">Predmety</span>
+      </a>
+      <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--primary-color)]" href="/stitch/mode.html">
+        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13-56-29.87a8,8,0,0,0-7.52,14.12L171,128l-43,22.93L25,96,128,41.07,231,96Z"></path></svg>
+        <span class="text-xs font-semibold">Učenie</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/test.html">
+        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"></path></svg>
+        <span class="text-xs font-medium">Test</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/profile.html">
+        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path></svg>
+        <span class="text-xs font-medium">Profil</span>
+      </a>
+    </nav>
+    <div class="pb-safe-area-inset-bottom h-5 bg-[var(--background-color)]"></div>
+  </footer>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const numberPicker = document.getElementById('number-picker');
+    const items = numberPicker.querySelectorAll('.number-picker-item');
+
+    // Set initial scroll position to center the active item
+    const activeItem = numberPicker.querySelector('.active');
+    if (activeItem) {
+      const pickerHeight = numberPicker.offsetHeight;
+      const itemHeight = activeItem.offsetHeight;
+      numberPicker.scrollTop = activeItem.offsetTop - (pickerHeight / 2) + (itemHeight / 2);
+    }
+
+    let scrollTimeout;
+    numberPicker.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const pickerRect = numberPicker.getBoundingClientRect();
+        const pickerCenterY = pickerRect.top + pickerRect.height / 2;
+        let closestItem = null;
+        let closestDistance = Infinity;
+
+        items.forEach(item => {
+          if (!item.hasAttribute('data-value')) return; // skip padding items
+          const itemRect = item.getBoundingClientRect();
+          const itemCenterY = itemRect.top + itemRect.height / 2;
+          const distance = Math.abs(pickerCenterY - itemCenterY);
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestItem = item;
+          }
+        });
+
+        if (closestItem) {
+          // Center the closest item
+          const itemHeight = closestItem.offsetHeight;
+          const pickerHeight = numberPicker.offsetHeight;
+          numberPicker.scrollTo({
+            top: closestItem.offsetTop - (pickerHeight / 2) + (itemHeight / 2),
+            behavior: 'smooth'
+          });
+          // Update active state
+          items.forEach(item => item.classList.remove('active'));
+          closestItem.classList.add('active');
+        }
+      }, 150);
+    });
+  });
+</script>
+</body></html>
