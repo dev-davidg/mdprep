@@ -1,0 +1,15 @@
+/* Minimal helpers for Stitch preview pages (keeps things neat) */
+:root { color-scheme: light; }
+html,body { height:100%; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.prose p { margin: 0.5rem 0; }
+
+/* === MDprep Stitch: desktop centering & shared tweaks === */
+@media (min-width: 1024px) {
+  /* Center typical page regions */
+  main { max-width: 56rem; margin-left: auto; margin-right: auto; }
+  header > div, header > nav { max-width: 56rem; margin-left: auto; margin-right: auto; }
+  footer > div, footer > nav { max-width: 56rem; margin-left: auto; margin-right: auto; }
+}
+/* Make room for fixed bottom nav when present */
+body { padding-bottom: env(safe-area-inset-bottom, 0); }
