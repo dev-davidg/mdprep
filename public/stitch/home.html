@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="sk"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin/>
+<link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Spline+Sans:wght@400;500;700"/>
+<title>MDprep – Domov</title>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style> body{min-height:max(884px,100dvh); font-family:"Spline Sans","Noto Sans",sans-serif;} </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+<div class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="sticky top-0 z-10 bg-gray-50/80 backdrop-blur-sm border-b border-gray-100">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center">
+          <svg class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1"/></svg>
+        </div>
+        <div>
+          <p class="text-xs text-gray-500 leading-none">Vitaj späť</p>
+          <h1 class="text-lg font-bold leading-tight">MDprep</h1>
+        </div>
+      </div>
+      <a href="/stitch/profile.html" class="h-10 w-10 rounded-full overflow-hidden ring-1 ring-gray-200 hover:ring-blue-400 transition">
+        <img alt="Profil" class="h-10 w-10 object-cover" src="https://i.pravatar.cc/80?img=12"/>
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="flex-1">
+    <div class="max-w-3xl mx-auto p-4 space-y-6">
+      <!-- Overall progress -->
+      <section class="rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-base font-semibold">Celkový progres</h2>
+            <p class="text-sm text-gray-600">Dokončené otázky naprieč predmetmi</p>
+          </div>
+          <div class="text-right">
+            <p class="text-2xl font-extrabold text-blue-600">62%</p>
+            <p class="text-xs text-gray-500">780 / 1250 otázok</p>
+          </div>
+        </div>
+        <div class="mt-4 w-full bg-gray-100 rounded-full h-2">
+          <div class="h-2 rounded-full bg-blue-500" style="width:62%"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+          <div class="rounded-xl border border-gray-200 p-3">
+            <div class="flex items-center justify-between">
+              <p class="font-medium">Biológia</p><p class="text-sm text-gray-600">80%</p>
+            </div>
+            <div class="mt-2 h-1.5 bg-gray-100 rounded-full">
+              <div class="h-1.5 bg-blue-500 rounded-full" style="width:80%"></div>
+            </div>
+          </div>
+          <div class="rounded-xl border border-gray-200 p-3">
+            <div class="flex items-center justify-between">
+              <p class="font-medium">Chémia</p><p class="text-sm text-gray-600">65%</p>
+            </div>
+            <div class="mt-2 h-1.5 bg-gray-100 rounded-full">
+              <div class="h-1.5 bg-blue-500 rounded-full" style="width:65%"></div>
+            </div>
+          </div>
+          <div class="rounded-xl border border-gray-200 p-3">
+            <div class="flex items-center justify-between">
+              <p class="font-medium">Matematika</p><p class="text-sm text-gray-600">40%</p>
+            </div>
+            <div class="mt-2 h-1.5 bg-gray-100 rounded-full">
+              <div class="h-1.5 bg-blue-500 rounded-full" style="width:40%"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Continue / Quick actions -->
+      <section class="grid sm:grid-cols-2 gap-3">
+        <a href="/stitch/learning.html" class="rounded-2xl border border-blue-200 bg-blue-50 p-4 shadow-sm hover:shadow-md transition flex items-center justify-between">
+          <div>
+            <p class="text-xs text-blue-700 font-semibold">Pokračovať tam, kde ste skončili</p>
+            <p class="mt-1 text-sm text-blue-900">Biológia · Otázka 12 z 30</p>
+          </div>
+          <div class="h-10 w-10 rounded-xl bg-white ring-1 ring-blue-200 flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </div>
+        </a>
+        <a href="/stitch/mode.html" class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm hover:shadow-md transition flex items-center justify-between">
+          <div>
+            <p class="text-xs text-gray-600 font-semibold">Rýchly štart</p>
+            <p class="mt-1 text-sm text-gray-900">Vybrať režim & počet otázok</p>
+          </div>
+          <div class="h-10 w-10 rounded-xl bg-gray-50 ring-1 ring-gray-200 flex items-center justify-center">
+            <svg class="w-6 h-6 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7h14"/></svg>
+          </div>
+        </a>
+      </section>
+
+      <!-- History -->
+      <section class="rounded-2xl bg-white border border-gray-100 shadow-sm">
+        <div class="p-4 flex items-center justify-between">
+          <h3 class="text-base font-semibold">Nedávne testy</h3>
+          <a href="/stitch/results.html" class="text-sm text-blue-600 hover:underline">Zobraziť posledné výsledky</a>
+        </div>
+        <ul class="divide-y divide-gray-100">
+          <li class="p-4 flex items-center justify-between">
+            <div>
+              <p class="font-medium">Biológia · 30 otázok</p>
+              <p class="text-xs text-gray-500">31. aug 2025 · 14:40</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">27 / 30</span>
+          </li>
+          <li class="p-4 flex items-center justify-between">
+            <div>
+              <p class="font-medium">Chémia · 20 otázok</p>
+              <p class="text-xs text-gray-500">29. aug 2025 · 18:05</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-700">11 / 20</span>
+          </li>
+          <li class="p-4 flex items-center justify-between">
+            <div>
+              <p class="font-medium">Matematika · 10 otázok</p>
+              <p class="text-xs text-gray-500">27. aug 2025 · 09:12</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-xs font-bold text-yellow-800">6 / 10</span>
+          </li>
+        </ul>
+        <div class="p-4">
+          <a class="block text-center w-full rounded-xl border border-gray-200 bg-gray-50 py-2 text-sm font-semibold hover:bg-gray-100" href="/stitch/subjects.html">Vybrať predmet</a>
+        </div>
+      </section>
+
+      <!-- Placeholder “Insights” (future) -->
+      <section class="rounded-2xl border border-dashed border-gray-300 p-4 text-sm text-gray-500">
+        Budúce metriky: slabé témy, čas strávený učením, séria dní (streak), odporúčané otázky…
+      </section>
+    </div>
+  </main>
+
+  <!-- Bottom nav -->
+  <nav class="sticky bottom-0 w-full border-t border-gray-200 bg-white">
+    <div class="max-w-3xl mx-auto h-16 flex justify-around">
+      <a class="flex flex-col items-center justify-center gap-1 rounded-t-lg bg-blue-500 px-3 text-white" href="/stitch/home.html" aria-current="page">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="m3 12 8-8 8 8v8a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2z"/></svg>
+        <span class="text-xs font-bold">Domov</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 text-gray-600 hover:text-blue-600" href="/stitch/subjects.html">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span class="text-xs font-medium">Predmety</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 text-gray-600 hover:text-blue-600" href="/stitch/learning.html">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+        <span class="text-xs font-medium">Učenie</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 text-gray-600 hover:text-blue-600" href="/stitch/test.html">
+        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2zM12 18H8a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2zm4-4H8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2zM16 10H8a1 1 0 0 1 0-2h8z"/></svg>
+        <span class="text-xs font-medium">Test</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 text-gray-600 hover:text-blue-600" href="/stitch/profile.html">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="text-xs font-medium">Profil</span>
+      </a>
+    </div>
+  </nav>
+</div>
+</body></html>
