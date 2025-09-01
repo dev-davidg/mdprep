@@ -1,36 +1,146 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MDprep – Test (Stitch Preview)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/stitch/styles.css" />
-  </head>
-  <body class="min-h-screen bg-gray-50">
-    <main class="mx-auto max-w-2xl p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h1 class="text-2xl font-semibold">Test Mode</h1>
-        <div class="rounded-lg border px-3 py-1 text-sm">⏱ Timer</div>
+<!DOCTYPE html>
+<html lang="sk"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Spline+Sans%3Awght%40400%3B500%3B700" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<title>MDprep</title>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2L12 22M2 12L22 12M5.6 5.6L18.4 18.4M5.6 18.4L18.4 5.6'/%3E%3C/svg%3E" rel="icon" type="image/svg+xml"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  :root {
+    --foreground: 224 71.4% 4.1%;
+    --primary: 217 91.2% 59.8%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --background: 210 40% 98%;
+  }
+  .h-safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
+</style>
+<style> body { min-height: max(884px, 100dvh); font-family: "Spline Sans","Noto Sans",sans-serif; } </style>
+</head>
+<body class="bg-blue-50 text-gray-900">
+<div class="relative flex size-full min-h-screen flex-col justify-between overflow-x-hidden">
+  <header class="sticky top-0 z-10 w-full bg-blue-50/80 backdrop-blur-sm">
+    <div class="container mx-auto flex items-center p-4">
+      <a href="/stitch/mode.html" class="flex size-10 shrink-0 items-center justify-center rounded-full text-gray-600 hover:bg-blue-200 hover:text-blue-800" aria-label="Späť">
+        <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15 18 9 12l6-6"/></svg>
+      </a>
+      <div class="flex flex-1 items-center justify-center gap-2">
+        <svg class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12.8571H15M12 9.85714V15.8571M12 2C13.5273 2.65171 14.9056 3.59373 16.0398 4.75736C18.334 7.05157 19.3905 10.3261 18.9641 13.5654C18.5376 16.8048 16.6852 19.7126 13.8887 21.4346C11.0921 23.1565 7.74796 23.4735 4.67491 22.3023C1.60186 21.1312 -0.324075 18.5724 0.0463378 15.3431C0.416751 12.1139 2.05929 9.17641 4.54518 7.24264C7.03107 5.30887 10.1557 4.58571 13 5.42857" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        <h1 class="text-xl font-bold text-gray-800">Testovací režim</h1>
       </div>
-      <div class="rounded-2xl border bg-white p-4">
-        <!-- Paste your Stitch TEST HTML below -->
-        <!-- STITCH_INSERT:TEST -->
-      </div>
-      <div class="mt-4 overflow-x-auto whitespace-nowrap rounded-xl border bg-white p-2 text-sm">
-        <!-- Scroll menu for navigating questions (preview only) -->
-        <div class="inline-flex gap-2">
-          <button class="rounded-md border px-3 py-1">1</button>
-          <button class="rounded-md border px-3 py-1">2</button>
-          <button class="rounded-md border px-3 py-1">3</button>
-          <span class="px-2 text-gray-400">…</span>
-          <button class="rounded-md border px-3 py-1">N</button>
+      <button class="flex size-10 shrink-0 items-center justify-center rounded-full text-gray-600 hover:bg-blue-200 hover:text-blue-800" aria-label="Viac možností">
+        <svg class="lucide lucide-ellipsis" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <div class="container mx-auto p-4">
+      <div class="mb-4">
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <p>Otázka 1 z 50</p>
+          <p id="timerText" class="text-lg font-bold text-gray-700">01:30</p>
+        </div>
+        <div class="mt-1 h-2 w-full rounded-full bg-blue-100">
+          <div id="timeBar" class="h-2 rounded-full bg-blue-500" style="width: 0%"></div>
         </div>
       </div>
-      <div class="mt-6 flex justify-between">
-        <a href="/stitch/mode.html" class="inline-flex items-center gap-2 rounded-lg border px-4 py-2">← Back</a>
-        <a href="/stitch/results.html" class="inline-flex items-center gap-2 rounded-lg border px-4 py-2">Finish Test →</a>
+
+      <p class="mb-6 text-base leading-relaxed text-gray-700">
+        Aký proces používajú rastliny na premenu svetelnej energie na chemickú energiu vo forme glukózy?
+      </p>
+
+      <div class="space-y-3">
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="biology_question" type="radio"/>
+          <span class="text-sm font-medium text-gray-800">Dýchanie</span>
+        </label>
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="biology_question" type="radio"/>
+          <span class="text-sm font-medium text-gray-800">Transpirácia</span>
+        </label>
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="biology_question" type="radio"/>
+          <span class="text-sm font-medium text-gray-800">Fotosyntéza</span>
+        </label>
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="biology_question" type="radio"/>
+          <span class="text-sm font-medium text-gray-800">Osmóza</span>
+        </label>
       </div>
-    </main>
-  </body>
-</html>
+    </div>
+  </main>
+
+  <footer class="sticky bottom-0 z-0 w-full border-t border-gray-200 bg-blue-50/80 backdrop-blur-sm">
+    <div class="container mx-auto p-4">
+      <div class="mb-4 flex gap-3">
+        <a id="skipBtn" class="flex-1 rounded-full bg-blue-100 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-200 text-center" href="/stitch/test.html">Preskočiť</a>
+        <button id="flagBtn" class="flex-1 rounded-full bg-blue-100 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-200">Označiť</button>
+      </div>
+      <a id="nextBtn" class="block w-full rounded-full bg-blue-500 py-4 text-base font-bold text-white transition-transform active:scale-95 shadow-lg shadow-blue-500/30 text-center" href="/stitch/results.html">Ďalej</a>
+    </div>
+    <div class="h-safe-area-bottom"></div>
+  </footer>
+
+  <nav class="fixed bottom-0 z-10 w-full border-t border-gray-200 bg-white">
+    <div class="container mx-auto flex h-16 justify-around">
+      <a class="flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-blue-600" href="/stitch/subjects.html">
+        <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span class="text-xs font-medium">Predmety</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-blue-600" href="/stitch/learning.html">
+        <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+        <span class="text-xs font-medium">Učenie</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 rounded-t-lg bg-blue-500 px-3 text-white" href="/stitch/test.html" aria-current="page">
+        <svg class="h-6 w-6" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2zM12 18H8a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2zm4-4H8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2zM16 10H8a1 1 0 0 1 0-2h8z"/></svg>
+        <span class="text-xs font-bold">Test</span>
+      </a>
+      <a class="flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-blue-600" href="/stitch/profile.html">
+        <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="text-xs font-medium">Profil</span>
+      </a>
+    </div>
+  </nav>
+</div>
+
+<script>
+  // 90s timer with progress fill; auto-redirect to results at 0
+  (function(){
+    const total = 90;
+    let remaining = total;
+    const timerEl = document.getElementById('timerText');
+    const barEl = document.getElementById('timeBar');
+    function render(){
+      const m = String(Math.floor(remaining/60)).padStart(2,'0');
+      const s = String(remaining%60).padStart(2,'0');
+      timerEl.textContent = m + ':' + s;
+      const pct = Math.min(100, (1 - remaining/total) * 100);
+      barEl.style.width = pct.toFixed(2) + '%';
+    }
+    render();
+    const id = setInterval(()=>{
+      remaining--;
+      if(remaining <= 0){
+        clearInterval(id);
+        window.location.href = '/stitch/results.html';
+        return;
+      }
+      render();
+    }, 1000);
+
+    // Flag toggle visual
+    const flagBtn = document.getElementById('flagBtn');
+    flagBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      flagBtn.classList.toggle('ring-2');
+      flagBtn.classList.toggle('ring-blue-500');
+      flagBtn.classList.toggle('bg-yellow-100');
+    });
+  })();
+</script>
+</body></html>
