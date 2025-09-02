@@ -20,8 +20,9 @@
   .h-safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
 </style>
 <style> body { min-height: max(884px, 100dvh); font-family: "Spline Sans","Noto Sans",sans-serif; } </style>
+<style>/* mx-page center */  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
 </head>
-<body class="bg-blue-50 text-gray-900">
+<body  class="bg-blue-50 text-gray-900 mx-page">
 <div class="relative flex size-full min-h-screen flex-col justify-between overflow-x-hidden">
   <header class="sticky top-0 z-10 w-full bg-blue-50/80 backdrop-blur-sm">
     <div class="container mx-auto flex items-center p-4">
@@ -143,5 +144,5 @@
     });
   })();
 </script>
-<script src="/stitch/common-nav.js?v=2"></script>
+<script src="/stitch/common-nav.v3.js"></script>
 </body></html>
