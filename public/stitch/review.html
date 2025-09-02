@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="sk"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<title>MDprep – Odpovede (prehľad)</title>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+<link rel="stylesheet" href="/stitch/styles.v2.css"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+  :root{
+    --md-primary-blue:#2A6F97;
+    --md-secondary-blue:#61A5C2;
+    --md-light-blue:#EBF4F8;
+    --md-dark-text:#011627;
+    --md-light-text:#4F6367;
+    --md-success:#16a34a; /* green-600 */
+    --md-error:#dc2626;   /* red-600 */
+  }
+  body{ font-family:'Lexend','Noto Sans',sans-serif; }
+</style>
+<style> body{ min-height:max(884px,100dvh);} </style>
+</head>
+<body class="bg-gray-50 mx-page">
+<div class="relative flex min-h-screen flex-col justify-between overflow-x-hidden">
+  <main class="flex-grow">
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+      <div class="mx-auto max-w-3xl p-4 pb-3 flex items-center justify-center">
+        <h1 class="text-[var(--md-dark-text)] text-xl font-bold leading-tight tracking-tight text-center">Odpovede – prehľad</h1>
+      </div>
+    </header>
+
+    <!-- Legend -->
+    <section class="px-4 pt-4">
+      <div class="flex items-center gap-3 text-sm text-gray-600">
+        <div class="flex items-center gap-1">
+          <span class="inline-block size-3 rounded-full bg-green-500"></span><span>Správne</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <span class="inline-block size-3 rounded-full bg-red-500"></span><span>Nesprávne</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Answers list -->
+    <section class="p-4 space-y-3">
+      <!-- Example: CORRECT -->
+      <article class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <div class="flex">
+          <div class="w-1 bg-green-500" aria-hidden="true"></div>
+          <div class="flex-1 p-4">
+            <header class="flex items-start justify-between gap-3">
+              <h2 class="text-base font-semibold text-gray-900">1. Aký proces používajú rastliny na premenu svetelnej energie na chemickú energiu?</h2>
+              <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-1 text-xs font-bold text-green-700">Správne</span>
+            </header>
+            <div class="mt-3 space-y-1 text-sm">
+              <p><span class="font-semibold text-gray-600">Vaša odpoveď:</span> <span class="font-semibold text-green-600">Fotosyntéza</span></p>
+              <p><span class="font-semibold text-gray-600">Správna odpoveď:</span> <span class="font-semibold text-green-600">Fotosyntéza</span></p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Example: INCORRECT -->
+      <article class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <div class="flex">
+          <div class="w-1 bg-red-500" aria-hidden="true"></div>
+          <div class="flex-1 p-4">
+            <header class="flex items-start justify-between gap-3">
+              <h2 class="text-base font-semibold text-gray-900">2. Ktorá organela je „elektráreň“ bunky a produkuje ATP?</h2>
+              <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-700">Nesprávne</span>
+            </header>
+            <div class="mt-3 space-y-1 text-sm">
+              <p><span class="font-semibold text-gray-600">Vaša odpoveď:</span> <span class="font-semibold text-red-600">Jadro</span></p>
+              <p><span class="font-semibold text-gray-600">Správna odpoveď:</span> <span class="font-semibold text-green-600">Mitochondria</span></p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Example: more items... duplicate and adjust as needed -->
+      <article class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <div class="flex">
+          <div class="w-1 bg-red-500" aria-hidden="true"></div>
+          <div class="flex-1 p-4">
+            <header class="flex items-start justify-between gap-3">
+              <h2 class="text-base font-semibold text-gray-900">3. Ktorý proces prebieha v ribozómoch?</h2>
+              <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-700">Nesprávne</span>
+            </header>
+            <div class="mt-3 space-y-1 text-sm">
+              <p><span class="font-semibold text-gray-600">Vaša odpoveď:</span> <span class="font-semibold text-red-600">Syntéza lipidov</span></p>
+              <p><span class="font-semibold text-gray-600">Správna odpoveď:</span> <span class="font-semibold text-green-600">Syntéza proteínov</span></p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Back to results -->
+      <div class="pt-4">
+        <a href="/stitch/results.html"
+           class="block w-full sm:w-auto text-center rounded-full border border-[var(--md-secondary-blue)] bg-white px-6 py-3 font-bold text-[var(--md-primary-blue)] shadow-sm hover:bg-gray-100">
+          Späť na prehľad
+        </a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Unified 3-tab nav -->
+<script src="/stitch/common-nav.v3.js"></script>
+</body></html>
