@@ -17,8 +17,9 @@
   details > summary::-webkit-details-marker { display:none; }
 </style>
 <style> body{min-height:max(884px,100dvh);} </style>
+<style>/* mx-page center */  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
 </head>
-<body class="bg-gray-50">
+<body  class="bg-gray-50 mx-page">
 <div class="relative flex size-full min-h-screen flex-col bg-[#f7f9fc] justify-between group/design-root overflow-x-hidden" style='font-family:"Spline Sans","Noto Sans",sans-serif;'>
   <div>
     <header class="sticky top-0 z-10 flex items-center justify-between bg-[#f7f9fc]/80 p-4 pb-2 backdrop-blur-sm">
@@ -148,5 +149,5 @@
   // initial state: show selection & reveal correct
   reveal(cards.find(c => c.classList.contains('selected')));
 </script>
-<script src="/stitch/common-nav.js?v=2"></script>
+<script src="/stitch/common-nav.v3.js"></script>
 </body></html>

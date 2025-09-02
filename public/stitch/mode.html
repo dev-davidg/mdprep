@@ -37,8 +37,9 @@
     }
   </style>
 <style> body { min-height: max(884px, 100dvh); } </style>
+<style>/* mx-page center */  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
 </head>
-<body class="bg-[var(--background-color)]">
+<body  class="bg-[var(--background-color)] mx-page">
 <div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden">
   <div class="flex-grow">
     <header class="sticky top-0 z-10 bg-[var(--background-color)]/80 backdrop-blur-sm">
@@ -178,5 +179,5 @@
     });
   });
 </script>
-<script src="/stitch/common-nav.js?v=2"></script>
+<script src="/stitch/common-nav.v3.js"></script>
 </body></html>
