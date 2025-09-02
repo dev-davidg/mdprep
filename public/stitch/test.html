@@ -8,16 +8,6 @@
 <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
 <link rel="stylesheet" href="/stitch/styles.v2.css"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<style type="text/tailwindcss">
-  :root {
-    --primary: #3b82f6;
-  }
-  .pill { @apply inline-flex items-center justify-center rounded-full border px-2.5 py-1.5 text-xs font-bold transition; }
-  .pill-unanswered { @apply border-gray-300 text-gray-600 bg-white; }
-  .pill-answered   { @apply bg-blue-500 text-white border-blue-500; }
-  .pill-current    { @apply ring-2 ring-blue-500; }
-  .pill-flagged    { @apply border-yellow-400; }
-</style>
 <style> body { min-height:max(884px,100dvh); } </style>
 </head>
 <body class="bg-blue-50 text-gray-900 mx-page">
@@ -36,7 +26,9 @@
     </div>
     <!-- Mobile top strip: question navigator -->
     <div class="lg:hidden mx-auto max-w-3xl px-4 pb-2">
-      <div id="strip" class="flex gap-2 overflow-x-auto"></div>
+      <div id="strip" class="flex gap-2 overflow-x-auto py-1 -mx-1 pr-1">
+        <!-- pills injected by JS -->
+      </div>
     </div>
   </header>
 
@@ -122,41 +114,37 @@
   const skipBtn = document.getElementById('skipBtn');
   const answersWrap = document.getElementById('answers');
 
-  // ==== Render helpers
+  // Build pill class using pure utilities (no @apply)
+  const base = 'inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition';
+  function pillClass(q){
+    let cls = base + ' border-gray-300 text-gray-600 bg-white';
+    if (answered.has(q)) cls = base + ' bg-blue-500 text-white border-blue-500';
+    if (q === current)  cls += ' ring-2 ring-blue-500';
+    if (flagged.has(q)) cls += ' border-yellow-400';
+    return cls;
+  }
+
   function renderQuestion(){
     qLabel.textContent = \`Otázka \${current} z \${total}\`;
-    // (Preview-only) keep the same sample text; in real app we’ll swap q/answers by index
+    // (Preview-only) keep the same sample text; in production swap by index
     answersWrap.querySelectorAll('input[name="q"]').forEach(i => { i.checked = false; });
   }
 
-  function pillClass(q){
-    const cls = ['pill', 'pill-unanswered'];
-    if (answered.has(q)) { cls.splice(1,1,'pill-answered'); }
-    if (q === current)  { cls.push('pill-current'); }
-    if (flagged.has(q)) { cls.push('pill-flagged'); }
-    return cls.join(' ');
-  }
-
-  function buildPills(container, vertical){
+  function buildPills(container){
+    if (!container) return;
     container.innerHTML = '';
     for (let q=1; q<=total; q++){
-      const a = document.createElement('button');
-      a.type = 'button';
-      a.dataset.q = String(q);
-      a.className = pillClass(q);
-      a.textContent = q;
-      a.addEventListener('click', ()=>{
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.dataset.q = String(q);
+      btn.className = pillClass(q);
+      btn.textContent = q;
+      btn.addEventListener('click', ()=>{
         current = q;
         renderQuestion();
         updatePills();
       });
-      container.appendChild(a);
-      if (vertical) {
-        const sep = document.createElement('div');
-        sep.style.height = '2px';
-        sep.style.opacity = '0';
-        container.appendChild(sep);
-      }
+      container.appendChild(btn);
     }
   }
 
@@ -167,7 +155,7 @@
     });
   }
 
-  // ==== User interactions
+  // Answers interactions
   answersWrap.querySelectorAll('input[name="q"]').forEach(inp=>{
     inp.addEventListener('change', ()=>{
       answered.add(current);
@@ -189,11 +177,11 @@
   nextBtn.addEventListener('click', ()=> goNext(true));
   skipBtn.addEventListener('click', ()=> goNext(false));
 
-  // ==== Timer (90s) with redirect on 0
+  // Timer (90s) with redirect on 0
   const totalSec = 90; let remain = totalSec;
   function renderTime(){
     const m = String(Math.floor(remain/60)).padStart(2,'0');
-    const s = String(remain%60).padStart(2,'0');
+    const s = String(remain%60)).padStart(2,'0');
     timerEl.textContent = m + ':' + s;
     barEl.style.width = (100*(1 - remain/totalSec)).toFixed(2) + '%';
   }
@@ -204,9 +192,9 @@
     renderTime();
   }, 1000);
 
-  // ==== Init
-  buildPills(strip, false);
-  buildPills(rail, true);
+  // Init
+  buildPills(strip);
+  buildPills(rail);
   renderQuestion();
   updatePills();
 })();
