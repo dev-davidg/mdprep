@@ -181,7 +181,7 @@
   const totalSec = 90; let remain = totalSec;
   function renderTime(){
     const m = String(Math.floor(remain/60)).padStart(2,'0');
-    const s = String(remain%60)).padStart(2,'0');
+    const s = String(remain%60).padStart(2,'0');
     timerEl.textContent = m + ':' + s;
     barEl.style.width = (100*(1 - remain/totalSec)).toFixed(2) + '%';
   }
