@@ -24,17 +24,40 @@
       </div>
       <div class="w-10"></div>
     </div>
-    <!-- Mobile top strip: question navigator -->
-    <div class="lg:hidden mx-auto max-w-3xl px-4 pb-2">
+
+    <!-- Horizontal question navigator (visible on all sizes) -->
+    <div class="mx-auto max-w-3xl px-4 pb-2">
       <div id="strip" class="flex gap-2 overflow-x-auto py-1 -mx-1 pr-1">
-        <!-- pills injected by JS -->
+        <!-- Pre-rendered pills 1..10 -->
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-blue-500 text-white bg-blue-500 ring-2 ring-blue-500" data-q="1">1</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="2">2</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="3">3</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="4">4</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="5">5</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="6">6</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="7">7</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="8">8</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="9">9</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="10">10</button>
       </div>
     </div>
   </header>
 
   <!-- Desktop side rail: question navigator -->
   <aside class="hidden lg:block fixed right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur rounded-2xl border border-gray-200 shadow p-2 max-h-[70vh] overflow-auto">
-    <div id="rail" class="grid grid-cols-1 gap-2"></div>
+    <div id="rail" class="grid grid-cols-1 gap-2">
+      <!-- Same pre-rendered pills 1..10 -->
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-blue-500 text-white bg-blue-500 ring-2 ring-blue-500" data-q="1">1</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="2">2</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="3">3</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="4">4</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="5">5</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="6">6</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="7">7</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="8">8</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="9">9</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="10">10</button>
+    </div>
   </aside>
 
   <!-- Main -->
@@ -96,107 +119,98 @@
 
 <script>
 (function(){
-  // ==== Config / State
-  const total = 10;
-  let current = 1;
-  const answered = new Set();
-  const flagged  = new Set();
+  try {
+    // ==== Config / State
+    const total = 10;
+    let current = 1;
+    const answered = new Set();
+    const flagged  = new Set();
 
-  // ==== Elements
-  const timerEl = document.getElementById('timerText');
-  const barEl   = document.getElementById('timeBar');
-  const qLabel  = document.getElementById('qLabel');
-  const qText   = document.getElementById('questionText');
-  const strip   = document.getElementById('strip');
-  const rail    = document.getElementById('rail');
-  const flagBtn = document.getElementById('flagBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const skipBtn = document.getElementById('skipBtn');
-  const answersWrap = document.getElementById('answers');
+    // ==== Elements
+    const timerEl = document.getElementById('timerText');
+    const barEl   = document.getElementById('timeBar');
+    const qLabel  = document.getElementById('qLabel');
+    const qText   = document.getElementById('questionText');
+    const strip   = document.getElementById('strip');
+    const rail    = document.getElementById('rail');
+    const flagBtn = document.getElementById('flagBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    const answersWrap = document.getElementById('answers');
 
-  // Build pill class using pure utilities (no @apply)
-  const base = 'inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition';
-  function pillClass(q){
-    let cls = base + ' border-gray-300 text-gray-600 bg-white';
-    if (answered.has(q)) cls = base + ' bg-blue-500 text-white border-blue-500';
-    if (q === current)  cls += ' ring-2 ring-blue-500';
-    if (flagged.has(q)) cls += ' border-yellow-400';
-    return cls;
-  }
+    function pillClass(q){
+      let cls = 'inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white';
+      if (answered.has(q)) cls = 'inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition bg-blue-500 text-white border-blue-500';
+      if (q === current)  cls += ' ring-2 ring-blue-500';
+      if (flagged.has(q)) cls += ' border-yellow-400';
+      return cls;
+    }
 
-  function renderQuestion(){
-    qLabel.textContent = \`Otázka \${current} z \${total}\`;
-    // (Preview-only) keep the same sample text; in production swap by index
-    answersWrap.querySelectorAll('input[name="q"]').forEach(i => { i.checked = false; });
-  }
+    function renderQuestion(){
+      qLabel.textContent = \`Otázka \${current} z \${total}\`;
+      // (Preview-only) keep the same sample text; in real app we’ll swap q/answers by index
+      answersWrap.querySelectorAll('input[name="q"]').forEach(i => { i.checked = false; });
+    }
 
-  function buildPills(container){
-    if (!container) return;
-    container.innerHTML = '';
-    for (let q=1; q<=total; q++){
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.dataset.q = String(q);
-      btn.className = pillClass(q);
-      btn.textContent = q;
+    function updatePills(){
+      document.querySelectorAll('[data-q]').forEach(el=>{
+        const q = Number(el.dataset.q);
+        el.className = pillClass(q);
+      });
+    }
+
+    // Wire pill clicks
+    document.querySelectorAll('[data-q]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        current = q;
+        current = Number(btn.dataset.q);
         renderQuestion();
         updatePills();
       });
-      container.appendChild(btn);
-    }
-  }
-
-  function updatePills(){
-    document.querySelectorAll('[data-q]').forEach(el=>{
-      const q = Number(el.dataset.q);
-      el.className = pillClass(q);
     });
-  }
 
-  // Answers interactions
-  answersWrap.querySelectorAll('input[name="q"]').forEach(inp=>{
-    inp.addEventListener('change', ()=>{
-      answered.add(current);
+    // Answers interactions
+    answersWrap.querySelectorAll('input[name="q"]').forEach(inp=>{
+      inp.addEventListener('change', ()=>{
+        answered.add(current);
+        updatePills();
+      });
+    });
+
+    flagBtn.addEventListener('click', ()=>{
+      if (flagged.has(current)) flagged.delete(current); else flagged.add(current);
       updatePills();
     });
-  });
 
-  flagBtn.addEventListener('click', ()=>{
-    if (flagged.has(current)) flagged.delete(current); else flagged.add(current);
-    updatePills();
-  });
+    function goNext(markAnswered){
+      if (markAnswered) answered.add(current);
+      current = current >= total ? 1 : current + 1;
+      renderQuestion(); updatePills();
+    }
 
-  function goNext(markAnswered){
-    if (markAnswered) answered.add(current);
-    current = current >= total ? 1 : current + 1;
-    renderQuestion(); updatePills();
-  }
+    nextBtn.addEventListener('click', ()=> goNext(true));
+    skipBtn.addEventListener('click', ()=> goNext(false));
 
-  nextBtn.addEventListener('click', ()=> goNext(true));
-  skipBtn.addEventListener('click', ()=> goNext(false));
-
-  // Timer (90s) with redirect on 0
-  const totalSec = 90; let remain = totalSec;
-  function renderTime(){
-    const m = String(Math.floor(remain/60)).padStart(2,'0');
-    const s = String(remain%60).padStart(2,'0');
-    timerEl.textContent = m + ':' + s;
-    barEl.style.width = (100*(1 - remain/totalSec)).toFixed(2) + '%';
-  }
-  renderTime();
-  const intId = setInterval(()=>{
-    remain--;
-    if (remain <= 0){ clearInterval(intId); window.location.href='/stitch/results.html'; return; }
+    // Timer (90s) with redirect on 0
+    const totalSec = 90; let remain = totalSec;
+    function renderTime(){
+      const m = String(Math.floor(remain/60)).padStart(2,'0');
+      const s = String(remain%60).padStart(2,'0');
+      timerEl.textContent = m + ':' + s;
+      barEl.style.width = (100*(1 - remain/totalSec)).toFixed(2) + '%';
+    }
     renderTime();
-  }, 1000);
+    const intId = setInterval(()=>{
+      remain--;
+      if (remain <= 0){ clearInterval(intId); window.location.href='/stitch/results.html'; return; }
+      renderTime();
+    }, 1000);
 
-  // Init
-  buildPills(strip);
-  buildPills(rail);
-  renderQuestion();
-  updatePills();
+    // Init
+    renderQuestion();
+    updatePills();
+  } catch(e){
+    console && console.error && console.error('Test page init failed:', e);
+  }
 })();
 </script>
 </body></html>
