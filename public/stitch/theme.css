@@ -1,0 +1,31 @@
+/* MDprep Stitch Theme — consistent look across pages */
+:root{
+  --md-primary-blue:#2A6F97;
+  --md-secondary-blue:#61A5C2;
+  --md-light-blue:#EBF4F8;
+  --md-dark-text:#011627;
+  --md-light-text:#4F6367;
+}
+html,body{height:100%}
+body{
+  font-family:'Lexend','Noto Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:#F8FAFC; /* gray-50 */
+  color:#0f172a;      /* slate-900 */
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+/* Desktop centering (backup; primary rules live in styles.v2.css) */
+@media (min-width:1024px){
+  .mx-page main{max-width:56rem;margin:0 auto}
+  .mx-page header>*,
+  .mx-page footer>*{max-width:56rem;margin:0 auto}
+  /* also center typical nested header wrappers */
+  .mx-page header :is(div,nav){max-width:56rem;margin-left:auto;margin-right:auto}
+}
+
+/* Wide layout for home/dashboard */
+@media (min-width:1024px){
+  .mx-page-wide main{ max-width:64rem; margin-left:auto; margin-right:auto; }   /* ~1024px */
+  .mx-page-wide header :is(div,nav),
+  .mx-page-wide footer :is(div,nav){ max-width:64rem; margin-left:auto; margin-right:auto; }
+}

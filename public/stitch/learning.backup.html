@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="sk"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Spline+Sans%3Awght%40400%3B500%3B700" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<title>MDprep</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+  :root { --primary-color:#3b82f6; }
+  .option-card { @apply bg-white border border-gray-200 rounded-xl shadow-sm p-4 cursor-pointer hover:bg-gray-50 transition-colors duration-200; }
+  .option-card.selected { @apply border-2 border-blue-500 bg-gray-50; }
+  .option-card.correct { @apply border-2 border-green-500 bg-green-50; }
+  .option-card.incorrect { @apply border-2 border-red-500 bg-red-50; }
+  details > summary { list-style:none; }
+  details > summary::-webkit-details-marker { display:none; }
+</style>
+<style> body{min-height:max(884px,100dvh);} </style>
+<style>/* mx-page center */  @media  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
+</head>
+<body   class="bg-gray-50 mx-page mx-page bg-gray-50 text-gray-900">
+<div class="relative flex size-full min-h-screen flex-col bg-[#f7f9fc] justify-between group/design-root overflow-x-hidden" style='font-family:"Spline Sans","Noto Sans",sans-serif;'>
+  <div>
+    <header class="sticky top-0 z-10 flex items-center justify-between bg-[#f7f9fc]/80 p-4 pb-2 backdrop-blur-sm">
+      <a href="/stitch/mode.html" class="flex size-10 items-center justify-center rounded-full hover:bg-gray-200/50" aria-label="Späť na výber režimu">
+        <svg class="text-gray-700" fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path></svg>
+      </a>
+      <div class="flex items-center gap-2">
+        <svg class="h-6 w-6 text-blue-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 3.33C13 2.6 13.6 2 14.33 2H16.67C17.4 2 18 2.6 18 3.33V4H21V6H19V17C19 18.1 18.1 19 17 19H14V22H10V19H7C5.9 19 5 18.1 5 17V6H3V4H6V3.33C6 2.6 6.6 2 7.33 2H9.67C10.4 2 11 2.6 11 3.33V4H13V3.33M11 6H13V15H11V6M7 6H9V15H7V6M15 6H17V15H15V6Z"></path></svg>
+        <h1 class="text-xl font-bold text-gray-800">MDprep</h1>
+      </div>
+      <h2 class="text-lg font-bold leading-tight tracking-tight text-gray-800">Otázka 1 z 10</h2>
+    </header>
+
+    <main class="p-4 space-y-4 flex-grow">
+      <p class="text-base font-normal leading-relaxed text-gray-800">
+        Ktorá z nasledujúcich možností je známa ako "elektráreň" bunky, zodpovedná za generovanie väčšiny bunkovej zásoby adenozíntrifosfátu (ATP)?
+      </p>
+      <div id="options" class="space-y-3">
+        <div class="option-card flex items-center justify-between">
+          <span class="text-base font-medium text-gray-800">Jadro</span>
+          <div class="flex size-6 items-center justify-center rounded-full border border-gray-300"></div>
+        </div>
+        <div class="option-card flex items-center justify-between selected" data-correct="true">
+          <span class="text-base font-medium text-gray-800">Mitochondria</span>
+          <div class="flex size-6 items-center justify-center rounded-full bg-blue-500">
+            <svg class="text-white" fill="currentColor" height="16" viewBox="0 0 256 256" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+          </div>
+        </div>
+        <div class="option-card flex items-center justify-between">
+          <span class="text-base font-medium text-gray-800">Ribozóm</span>
+          <div class="flex size-6 items-center justify-center rounded-full border border-gray-300"></div>
+        </div>
+        <div class="option-card flex items-center justify-between">
+          <span class="text-base font-medium text-gray-800">Endoplazmatické retikulum</span>
+          <div class="flex size-6 items-center justify-center rounded-full border border-gray-300"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="sticky bottom-0 bg-[#f7f9fc]/80 backdrop-blur-sm">
+    <div class="rounded-t-2xl border-t border-gray-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.06)]">
+      <div class="p-4 space-y-4">
+        <details>
+          <summary class="flex w-full cursor-pointer items-center justify-between">
+            <h3 class="font-bold text-gray-800">Vysvetlenie</h3>
+            <svg class="text-gray-500 transition-transform duration-200" fill="currentColor" height="20" viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg>
+          </summary>
+          <div class="pt-2 text-sm text-gray-700">
+            <p>Mitochondria je správna odpoveď. Vykonáva bunkové dýchanie, proces, ktorý premieňa glukózu a kyslík na ATP, hlavnú energetickú menu bunky. Jadro obsahuje genetický materiál bunky, ribozómy sú zodpovedné za syntézu proteínov a endoplazmatické retikulum sa podieľa na syntéze a transporte proteínov a lipidov.</p>
+          </div>
+        </details>
+
+        <details class="group/comments">
+          <summary class="flex cursor-pointer list-none items-center justify-between pt-2">
+            <h3 class="font-semibold text-gray-800">Komentáre (3)</h3>
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-500">Zobraziť</span>
+              <svg class="text-gray-500 transition-transform duration-300 group-open/comments:rotate-180" fill="currentColor" height="20" viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z" transform="rotate(180 128 128)"></path></svg>
+            </div>
+          </summary>
+          <div class="space-y-4 pt-4">
+            <!-- sample comments preserved from your design -->
+            <div class="space-y-3">
+              <div class="flex items-start gap-3">
+                <img alt="Avatar" class="h-8 w-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNbpYXZyYwuSsWXMi514oLRPrSPQtN1l3QmfjLzC9OwsKWSkFnu6TDjSaHMt0MdaMS0fdXuesXVOzTCiF5FStCr2e3Q5kAIPXRUX1RMEar3rbq6KE9o_DhShgFWKsSa1QaYgX2-s2QUzUJE33m4iHUjMcj-Rs7Y3MwxtO2C7HY70RUicoR0Jdz0Df8bO18dv0eNGEuZUUAH7He3YOBDH3C9X0d73iHigTXLdm_enr_13eLkvHNqkJ1_u0rb1TUCh0JuDufycVj9iJU"/>
+                <div><p class="font-semibold text-sm">Alex Johnson</p><p class="text-gray-600 text-sm">Klasická otázka z MCAT! Vždy si pamätajte na mitochondrie.</p></div>
+              </div>
+              <div class="flex items-start gap-3">
+                <img alt="Avatar" class="h-8 w-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0b6YoJd9UGleohLv5F6AW14ZQkPj1TenFrIOENEY4Xn7zY2vSjUzUIWGkxgQhZq7AwEKJrsUTA8RSoq_H59Al4ROmyy3pBG5HWZTqmTaHPljA_vtc9O7V51ztopQJzkI7IF2rAAvjJA74Jd7WDVYuEViZ70rO1JcTshH9Brk4M4IUoX_SdNR8iC2EZW3e0W6PFJ0gJomD65dYY4reP49LTgj94K8VbwGaLxVv66Oo7BP-OOqqNcB_gOakvXMfTthtpMbcI5KLAcjB"/>
+                <div><p class="font-semibold text-sm">Ben Carter</p><p class="text-gray-600 text-sm">Dobré osvieženie. Je ľahké si pomýliť funkcie organel.</p></div>
+              </div>
+              <div class="flex items-start gap-3">
+                <img alt="Avatar" class="h-8 w-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKw4M15MqdDrKbE8svrpsFqxL17QYetWilRlybvAliE-B_1z6ACRkM9EI9-dwIOLWVnRE1fZwSTzUyzU3NGTYN5UctEx8trBNpvUbnNOAolApugxSQC3AaM979z0_5nyk8cuLYOlVQXkhGpuKAN-F-Ck4F5sQQe8vtm0Alnn5J4zKDP9JXHvOGZpicWlymEqLkfbrKQO8cqGGyzWS1C8NO9TvwHSS7FfDof_aAD2W3rDpbJWUKzxtZ3VGDP_0a_xPmc4IGPSUpK8Hi"/>
+                <div><p class="font-semibold text-sm">Chloe Davis</p><p class="text-gray-600 text-sm">Vždy si predstavujem elektráreň vo vnútri bunky pre mitochondrie.</p></div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <input class="w-full rounded-full border-gray-300 bg-gray-100 px-4 py-2 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Pridať komentár..." type="text"/>
+              <button class="flex-shrink-0 rounded-full bg-blue-500 p-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <svg fill="currentColor" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+              </button>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <nav class="flex justify-around px-4 pt-2 pb-3 border-t border-gray-200">
+        <a class="flex flex-1 flex-col items-center justify-end gap-1 text-gray-500" href="/stitch/subjects.html">
+          <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M224,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h64a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z"></path></svg>
+          <p class="text-xs font-medium">Predmety</p>
+        </a>
+        <a class="flex flex-1 flex-col items-center justify-end gap-1 text-blue-500" href="/stitch/learning.html" aria-current="page">
+          <div class="relative">
+            <div class="absolute -top-1.5 -right-1.5 size-3 rounded-full bg-blue-500 border-2 border-[#f7f9fc]"></div>
+            <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13-56-29.87a8,8,0,0,0-7.52,14.12L171,128l-43,22.93L25,96,128,41.07,231,96Z"></path></svg>
+          </div>
+          <p class="text-xs font-bold">Učenie</p>
+        </a>
+        <a class="flex flex-1 flex-col items-center justify-end gap-1 text-gray-500" href="/stitch/test.html">
+          <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,176H96a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Zm0-32H96a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Zm-8-56V44l44,44Z"></path></svg>
+          <p class="text-xs font-medium">Test</p>
+        </a>
+        <a class="flex flex-1 flex-col items-center justify-end gap-1 text-gray-500" href="/stitch/profile.html">
+          <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path></svg>
+          <p class="text-xs font-medium">Profil</p>
+        </a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Learning-mode behavior: click an option → mark selected, reveal correct.
+  const container = document.getElementById('options');
+  const cards = Array.from(container.querySelectorAll('.option-card'));
+  const correct = cards.find(c => c.dataset.correct === 'true');
+
+  function reveal(clicked){
+    cards.forEach(c => { c.classList.remove('selected','correct','incorrect'); });
+    if(clicked){ clicked.classList.add('selected'); }
+    if(correct){ correct.classList.add('correct'); }
+    cards.forEach(c => { if(c !== correct && c !== clicked) c.classList.add('incorrect'); });
+  }
+
+  cards.forEach(card => card.addEventListener('click', () => reveal(card)));
+  // initial state: show selection & reveal correct
+  reveal(cards.find(c => c.classList.contains('selected')));
+</script>
+<script src="/stitch/common-nav.v3.js?v=4"></script>
+</body></html>
