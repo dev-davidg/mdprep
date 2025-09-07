@@ -10,7 +10,7 @@
 <style type="text/tailwindcss">
   :root { --primary-color:#3b82f6; }
   .option-card { @apply bg-white border border-gray-200 rounded-xl shadow-sm p-4 cursor-pointer hover:bg-gray-50 transition-colors duration-200; }
-  .option-card.selected { @apply border-2 border-blue-500 bg-blue-50; }
+  .option-card.selected { @apply border-2 border-blue-500 bg-gray-50; }
   .option-card.correct { @apply border-2 border-green-500 bg-green-50; }
   .option-card.incorrect { @apply border-2 border-red-500 bg-red-50; }
   details > summary { list-style:none; }
@@ -19,7 +19,7 @@
 <style> body{min-height:max(884px,100dvh);} </style>
 <style>/* mx-page center */  @media  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
 </head>
-<body  class="bg-gray-50 mx-page">
+<body   class="bg-gray-50 mx-page mx-page bg-gray-50 text-gray-900">
 <div class="relative flex size-full min-h-screen flex-col bg-[#f7f9fc] justify-between group/design-root overflow-x-hidden" style='font-family:"Spline Sans","Noto Sans",sans-serif;'>
   <div>
     <header class="sticky top-0 z-10 flex items-center justify-between bg-[#f7f9fc]/80 p-4 pb-2 backdrop-blur-sm">
@@ -149,5 +149,5 @@
   // initial state: show selection & reveal correct
   reveal(cards.find(c => c.classList.contains('selected')));
 </script>
-<script src="/stitch/common-nav.v3.js"></script>
+<script src="/stitch/common-nav.v3.js?v=4"></script>
 </body></html>
