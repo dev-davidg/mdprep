@@ -13,3 +13,15 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 }
 /* Make room for fixed bottom nav when present */
 body { padding-bottom: env(safe-area-inset-bottom, 0); }
+/* v7: desktop centering */
+@media (min-width:1024px){
+  .mx-page main{ max-width:56rem; margin-left:auto; margin-right:auto; }
+  .mx-page header > div, .mx-page header > nav,
+  .mx-page footer > div, .mx-page footer > nav{ max-width:56rem; margin-left:auto; margin-right:auto; }
+}
+/* wide home/dashboard */
+@media (min-width:1024px){
+  .mx-page-wide main{ max-width:64rem; margin-left:auto; margin-right:auto; }
+  .mx-page-wide header > div, .mx-page-wide header > nav,
+  .mx-page-wide footer > div, .mx-page-wide footer > nav{ max-width:64rem; margin-left:auto; margin-right:auto; }
+}
