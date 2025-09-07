@@ -10,6 +10,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <style> body{min-height:max(884px,100dvh); font-family:"Spline Sans","Noto Sans",sans-serif;} </style>
 <style>/* mx-page center */  @media  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
+<style>/* v8 failsafe wide */  (min-width:1024px){.mx-page-wide main{max-width:64rem;margin:0 auto}.mx-page-wide header>*,.mx-page-wide header :is(div,nav){max-width:64rem;margin:0 auto}}</style>
 </head>
 <body class="bg-gray-50 text-gray-900 mx-page mx-page-wide">
 <div class="min-h-screen flex flex-col">
@@ -167,5 +168,5 @@
     </div>
   </nav>
 </div>
-<script src="/stitch/common-nav.v3.js?v=7"></script>
+<script src="/stitch/common-nav.v3.js?v=8"></script>
 </body></html>
