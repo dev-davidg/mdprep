@@ -39,7 +39,7 @@
 <style> body { min-height: max(884px, 100dvh); } </style>
 <style>/* mx-page center */  @media  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
 </head>
-<body  class="bg-[var(--background-color)] mx-page">
+<body   class="bg-[var(--background-color)] mx-page mx-page bg-gray-50 text-gray-900">
 <div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden">
   <div class="flex-grow">
     <header class="sticky top-0 z-10 bg-[var(--background-color)]/80 backdrop-blur-sm">
@@ -62,7 +62,7 @@
         <div>
           <h2 class="text-lg font-semibold text-[var(--text-primary)] mb-4 text-center">Vyberte si režim</h2>
           <div class="grid grid-cols-2 gap-4">
-            <a href="/stitch/learning.html" class="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border-2 border-[var(--primary-color)] bg-blue-50 shadow-md">
+            <a href="/stitch/learning.html" class="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border-2 border-[var(--primary-color)] bg-gray-50 shadow-md">
               <svg class="w-10 h-10 text-[var(--primary-color)]" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13-56-29.87a8,8,0,0,0-7.52,14.12L171,128l-43,22.93L25,96,128,41.07,231,96Z"></path></svg>
               <span class="text-[var(--text-primary)] font-bold">Režim učenia</span>
             </a>
@@ -77,7 +77,7 @@
           <h2 class="text-lg font-semibold text-[var(--text-primary)] mb-2 text-center">Počet otázok</h2>
           <div class="relative h-60">
             <div class="absolute inset-0 flex items-center justify-center">
-              <div class="h-12 w-full bg-blue-50 rounded-lg border-y-2 border-blue-200"></div>
+              <div class="h-12 w-full bg-gray-50 rounded-lg border-y-2 border-blue-200"></div>
             </div>
             <div class="number-picker scroll-snap-y-mandatory" id="number-picker">
               <div class="number-picker-item scroll-snap-align-center"></div>
@@ -179,5 +179,5 @@
     });
   });
 </script>
-<script src="/stitch/common-nav.v3.js"></script>
+<script src="/stitch/common-nav.v3.js?v=4"></script>
 </body></html>

@@ -7,13 +7,15 @@
 <title>MDprep – Test</title>
 <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
 <link rel="stylesheet" href="/stitch/styles.v2.css"/>
+
+<link rel="stylesheet" href="/stitch/theme.css"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <style> body { min-height:max(884px,100dvh); } </style>
 </head>
-<body class="bg-blue-50 text-gray-900 mx-page">
+<body  class="bg-gray-50 text-gray-900 mx-page mx-page bg-gray-50 text-gray-900">
 <div class="relative min-h-screen flex flex-col">
   <!-- Header -->
-  <header class="sticky top-0 z-10 w-full bg-blue-50/80 backdrop-blur-sm">
+  <header class="sticky top-0 z-10 w-full bg-white backdrop-blur-sm">
     <div class="p-4 flex items-center justify-between mx-auto max-w-3xl">
       <a href="/stitch/mode.html" class="flex size-10 shrink-0 items-center justify-center rounded-full text-gray-700 hover:bg-blue-200" aria-label="Späť">
         <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15 18 9 12l6-6"/></svg>
@@ -81,33 +83,33 @@
 
       <!-- Answers -->
       <div id="answers" class="space-y-3">
-        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
           <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Dýchanie"/>
           <span class="text-sm font-medium text-gray-900">Dýchanie</span>
         </label>
-        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
           <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Transpirácia"/>
           <span class="text-sm font-medium text-gray-900">Transpirácia</span>
         </label>
-        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
           <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Fotosyntéza"/>
           <span class="text-sm font-medium text-gray-900">Fotosyntéza</span>
         </label>
-        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
           <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Osmóza"/>
           <span class="text-sm font-medium text-gray-900">Osmóza</span>
         </label>
       </div>
 
       <!-- Actions (sticky inside main, not a footer) -->
-      <div class="sticky bottom-20 mt-6 bg-blue-50/80 backdrop-blur pt-3 pb-2">
+      <div class="sticky bottom-20 mt-6 bg-gray-50/80 backdrop-blur pt-3 pb-2">
         <div class="flex gap-3">
           <button id="skipBtn" class="flex-1 rounded-full bg-blue-100 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-200">Preskočiť</button>
           <button id="flagBtn" class="flex-1 rounded-full bg-blue-100 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-200">Označiť</button>
         </div>
         <div class="mt-3 flex gap-3">
           <button id="nextBtn" class="flex-1 rounded-full bg-blue-500 py-3 text-base font-bold text-white transition-transform active:scale-95 shadow-lg shadow-blue-500/30">Ďalej</button>
-          <a id="finishBtn" href="/stitch/results.html" class="flex-1 text-center rounded-full border-2 border-blue-500 py-3 text-base font-bold text-blue-600 hover:bg-blue-50">Dokončiť test</a>
+          <a id="finishBtn" href="/stitch/results.html" class="flex-1 text-center rounded-full border-2 border-blue-500 py-3 text-base font-bold text-blue-600 hover:bg-gray-50">Dokončiť test</a>
         </div>
       </div>
     </div>
@@ -115,7 +117,7 @@
 </div>
 
 <!-- Unified bottom nav -->
-<script src="/stitch/common-nav.v3.js"></script>
+<script src="/stitch/common-nav.v3.js?v=4"></script>
 
 <script>
 (function(){
