@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="sk"><head>
+<html lang="sk">
+<head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
-<link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" onload="this.rel='stylesheet'">
 <title>MDprep - Vyhodnotenie testu</title>
 <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
 <link rel="stylesheet" href="/stitch/styles.v2.css"/>
@@ -34,25 +35,25 @@
     <section class="p-4">
       <div class="grid grid-cols-2 gap-4">
         <div class="flex flex-col gap-2 rounded-xl p-4 bg-white shadow-sm border border-gray-200/80">
-          <p class="text-[var(--md-light-text)] text-sm font-medium">SkÃ³re</p>
+          <p class="text-[var(--md-light-text)] text-sm font-medium">Skóre</p>
           <p class="text-[var(--md-dark-text)] text-3xl font-bold tracking-tight">85%</p>
         </div>
         <div class="flex flex-col gap-2 rounded-xl p-4 bg-white shadow-sm border border-gray-200/80">
-          <p class="text-[var(--md-light-text)] text-sm font-medium">SprÃ¡vne odpovede</p>
+          <p class="text-[var(--md-light-text)] text-sm font-medium">Správne odpovede</p>
           <p class="text-[var(--md-dark-text)] text-3xl font-bold tracking-tight">17/20</p>
         </div>
       </div>
     </section>
 
     <section class="px-4">
-      <h2 class="text-[var(--md-dark-text)] text-lg font-bold leading-tight tracking-tight pt-4 pb-3">PrehÄ¾ad vÃ½sledkov</h2>
+      <h2 class="text-[var(--md-dark-text)] text-lg font-bold leading-tight tracking-tight pt-4 pb-3">Prehľad výsledkov</h2>
       <div class="space-y-3">
         <div class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-200/80">
           <div class="text-[var(--md-primary-blue)] flex items-center justify-center rounded-full bg-[var(--md-light-blue)] shrink-0 size-12">
             <svg fill="currentColor" height="28" width="28" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h64a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z"/></svg>
           </div>
           <div class="flex-grow">
-            <p class="text-[var(--md-dark-text)] text-base font-semibold">AnatÃ³mia</p>
+            <p class="text-[var(--md-dark-text)] text-base font-semibold">Anatómia</p>
             <div class="flex items-center gap-2 mt-1">
               <div class="w-full bg-gray-200 rounded-full h-2">
                 <div class="bg-[var(--md-success)] h-2 rounded-full" style="width:100%"></div>
@@ -67,7 +68,7 @@
             <svg fill="currentColor" height="28" width="28" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h64a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z"/></svg>
           </div>
           <div class="flex-grow">
-            <p class="text-[var(--md-dark-text)] text-base font-semibold">FyziolÃ³gia</p>
+            <p class="text-[var(--md-dark-text)] text-base font-semibold">Fyziológia</p>
             <div class="flex items-center gap-2 mt-1">
               <div class="w-full bg-gray-200 rounded-full h-2">
                 <div class="bg-[var(--md-warning)] h-2 rounded-full" style="width:70%"></div>
@@ -80,14 +81,17 @@
     </section>
 
     <div class="flex flex-col items-center p-6 mt-4 gap-4">
-      <a href="/stitch/review.html" class="block w-full max-w-xs bg-[var(--md-primary-blue)] text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-[var(--md-secondary-blue)] transition-colors duration-300 text-center">Zobraziť odpovede</a>
+      <a href="/stitch/review.html" class="w-full max-w-xs text-center bg-[var(--md-primary-blue)] text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-[var(--md-secondary-blue)] transition-colors duration-300">
+        Zobraziť odpovede
+      </a>
       <a href="/stitch/home.html" class="w-full max-w-xs text-center bg-white text-[var(--md-primary-blue)] font-bold py-3 px-6 rounded-full shadow-lg border border-[var(--md-secondary-blue)] hover:bg-gray-100 transition-colors duration-300">
-        UkonÄiÅ¥
+        Ukončiť
       </a>
     </div>
   </main>
 </div>
 
-<!-- Unified 3-tab nav (Domov Â· UÄenie/Test Â· Nastavenia) -->
+<!-- Unified 3-tab nav (Domov · Učenie/Test · Nastavenia) -->
 <script src="/stitch/common-nav.v3.js"></script>
-</body></html>
+</body>
+</html>
