@@ -102,15 +102,15 @@
       <div class="space-y-3">
         <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-3">
           <span class="text-sm text-gray-900">Prejsť na ďalšiu otázku po výbere odpovede (Test)</span>
-          <input id="autoAdvance" type="checkbox" class="h-5 w-10 rounded-full text-blue-600">
+          <span class="relative inline-flex items-center cursor-pointer touch-manipulation select-none"><input id="autoAdvance" type="checkbox" class="peer sr-only" aria-label="Prejsť na ďalšiu otázku po výbere"><span class="block w-11 h-6 rounded-full bg-gray-300 transition-colors peer-checked:bg-blue-600"></span><span class="absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span></span>
         </label>
         <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-3">
           <span class="text-sm text-gray-900">Zobraziť vysvetlenie automaticky (Učenie)</span>
-          <input id="autoExplain" type="checkbox" class="h-5 w-10 rounded-full text-blue-600">
+          <span class="relative inline-flex items-center cursor-pointer touch-manipulation select-none"><input id="autoExplain" type="checkbox" class="peer sr-only" aria-label="Zobraziť vysvetlenie automaticky"><span class="block w-11 h-6 rounded-full bg-gray-300 transition-colors peer-checked:bg-blue-600"></span><span class="absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span></span>
         </label>
         <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-3">
           <span class="text-sm text-gray-900">Pamätať si “ťažké”/označené otázky</span>
-          <input id="rememberFlags" type="checkbox" class="h-5 w-10 rounded-full text-blue-600">
+          <span class="relative inline-flex items-center cursor-pointer touch-manipulation select-none"><input id="rememberFlags" type="checkbox" class="peer sr-only" aria-label="Pamätať si ťažké/označené otázky"><span class="block w-11 h-6 rounded-full bg-gray-300 transition-colors peer-checked:bg-blue-600"></span><span class="absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span></span>
         </label>
       </div>
       <div class="mt-3">
@@ -124,7 +124,7 @@
       <h2 class="text-base font-bold text-gray-900 mb-4">Režim vzhľadu</h2>
       <div class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-3">
         <span class="text-sm text-gray-900">Tmavý režim</span>
-        <input id="darkToggle" type="checkbox" class="h-5 w-10 rounded-full text-blue-600" aria-label="Prepnúť tmavý režim">
+        <span class="relative inline-flex items-center cursor-pointer touch-manipulation select-none"><input id="darkToggle" type="checkbox" class="peer sr-only" aria-label="Tmavý režim"><span class="block w-11 h-6 rounded-full bg-gray-300 transition-colors peer-checked:bg-blue-600"></span><span class="absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span></span>
       </div>
       <p class="text-xs text-gray-500 mt-2">Nastavenie sa ukladá do prehliadača a prenesie sa do celej ukážky.</p>
     </section>
@@ -132,7 +132,7 @@
 </div>
 
 <!-- Unified bottom nav -->
-<script src="/stitch/common-nav.v3.js?v=10"></script>
+<script src="/stitch/common-nav.v3.js?v=11"></script>
 
 <script>
 (function(){
