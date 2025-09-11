@@ -29,3 +29,17 @@ body{
   .mx-page-wide header :is(div,nav),
   .mx-page-wide footer :is(div,nav){ max-width:64rem; margin-left:auto; margin-right:auto; }
 }
+
+/* v11: font normalization */
+:root{
+  --md-font-sans: 'Lexend','Noto Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+}
+body{
+  font-family: var(--md-font-sans);
+  /* prevent fake bold/italic which causes “weight jumps” */
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+b,strong{ font-weight:600; } /* unify strong weight */
+h1,h2,h3{ letter-spacing:-0.01em; }
