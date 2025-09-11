@@ -1,48 +1,48 @@
-(function () {
-  // no bottom nav on auth
-  if (/\/stitch\/auth\.html?$/.test(location.pathname)) return;
+(function(){
+  try{
+    if (document.getElementById('stitch-global-nav')) return;
 
-  // remove any old sticky/fixed bottom navs or footers
-  try {
-    document.querySelectorAll('nav, footer').forEach(function (el) {
-      var cs = getComputedStyle(el);
-      var isBottom = el.className.includes('bottom-0') ||
-                     cs.position === 'fixed' || cs.position === 'sticky';
-      if (isBottom) el.remove();
-    });
-  } catch (e) {}
+    const p = (location.pathname || '').toLowerCase();
 
-  // active tab detection
-  var p = location.pathname;
-  var active = 'home';
-  if (p.includes('/profile')) active = 'settings';
-  else if (p.includes('/subjects') || p.includes('/mode') || p.includes('/learning') || p.includes('/test') || p.includes('/results')) {
-    active = 'practice';
-  } else if (p.includes('/home')) active = 'home';
+    const isSettings = /\/stitch\/settings(?:\.html)?$/.test(p);
+    const isHome     = /\/stitch\/home(?:\.html)?$/.test(p) || /\/stitch\/$/.test(p);
+    const isLearn    = /(subjects|mode|learning|test|results|review)\.html$/.test(p) || /(subjects|mode|learning|test|results|review)\/?$/.test(p);
 
-  var base = 'flex flex-col items-center justify-center gap-1';
-  var activeWrap = 'rounded-t-lg bg-blue-500 px-3 text-white';
-  function tab(href, on, label, svg) {
-    return '<a href="'+href+'" class="'+base+' '+(on?activeWrap:'text-gray-600 hover:text-blue-600')+'" aria-current="'+(on?'page':'false')+'">'+svg+'<span class="text-xs '+(on?'font-bold':'font-medium')+'">'+label+'</span></a>';
+    let active = '';
+    if (isSettings) active = 'settings';
+    else if (isLearn) active = 'learn';
+    else if (isHome) active = 'home';
+
+    const base   = 'flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl border transition';
+    const activeC   = 'border-blue-600 text-blue-700 bg-blue-50';
+    const inactiveC = 'border-transparent text-gray-600 hover:bg-gray-50';
+
+    const ac = (k) => (active === k ? activeC : inactiveC);
+    const aria = (k) => (active === k ? 'aria-current="page"' : '');
+
+    const nav = document.createElement('nav');
+    nav.id = 'stitch-global-nav';
+    nav.className = 'fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-gray-200';
+    nav.innerHTML = `
+      <div class="mx-auto max-w-4xl px-4">
+        <div class="grid grid-cols-3 gap-2 py-2">
+          <a href="/stitch/home.html" ${aria('home')} class="${base} ${ac('home')}" data-tab="home">
+            <span class="text-sm font-semibold">Domov</span>
+          </a>
+          <a href="/stitch/mode.html" ${aria('learn')} class="${base} ${ac('learn')}" data-tab="learn">
+            <span class="text-sm font-semibold">Učenie/Test</span>
+          </a>
+          <a href="/stitch/settings.html" ${aria('settings')} class="${base} ${ac('settings')}" data-tab="settings">
+            <span class="text-sm font-semibold">Nastavenia</span>
+          </a>
+        </div>
+      </div>
+    `;
+
+    // Avoid overlapping other fixed elements near bottom
+    document.body.style.paddingBottom = '84px';
+    document.body.appendChild(nav);
+  }catch(e){
+    console && console.error && console.error('common-nav init failed:', e);
   }
-
-  var homeSvg = '<svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="m3 12 8-8 8 8v8a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2z"/></svg>';
-  var practiceSvg = '<svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>';
-  var settingsSvg = '<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Z"/></svg>';
-
-  var nav = document.createElement('nav');
-  nav.id = 'stitch-global-nav';
-  nav.className = 'fixed bottom-0 z-50 w-full border-t border-gray-200 bg-white';
-  nav.innerHTML = '<div class="max-w-3xl mx-auto h-16 flex justify-around">' +
-      tab('/stitch/home.html', active === 'home', 'Domov', homeSvg) +
-      tab('/stitch/mode.html', active === 'practice', 'Učenie/Test', practiceSvg) +
-      tab('/stitch/settings.html', active === 'settings', 'Nastavenia', settingsSvg) +
-    '</div>';
-
-  document.body.appendChild(nav);
-
-  // spacer so content isn't covered
-  var spacer = document.createElement('div');
-  spacer.style.height = '4rem';
-  document.body.appendChild(spacer);
 })();
