@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" onload="this.rel='stylesheet'">
+<title>MDprep – Nastavenia</title>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+<link rel="stylesheet" href="/stitch/styles.v2.css?v=10"/>
+<link rel="stylesheet" href="/stitch/theme.css?v=10"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style> body{ min-height:max(884px,100dvh);} </style>
+</head>
+<body class="bg-gray-50 text-gray-900 mx-page">
+<div class="relative min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-center">
+      <h1 class="text-xl font-bold leading-tight tracking-tight text-center">Nastavenia</h1>
+    </div>
+  </header>
+
+  <main  class="mx-auto max-w-4xl w-full p-4 space-y-6 mx-auto max-w-4xl">
+    <!-- Profile -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 class="text-base font-bold text-gray-900 mb-4">Profil</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-[96px,1fr] gap-4 items-start">
+        <div class="flex flex-col items-center gap-2">
+          <img id="avatarPreview" src="https://via.placeholder.com/96x96.png?text=Foto" alt="Profilová fotografia" class="h-24 w-24 rounded-full object-cover border border-gray-200">
+          <label for="avatarInput" class="cursor-pointer inline-flex items-center rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700 hover:bg-blue-100">
+            Nahrať fotku
+          </label>
+          <input id="avatarInput" type="file" accept="image/*" class="hidden" aria-label="Vybrať profilovú fotografiu">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="fullName" class="block text-xs font-medium text-gray-700">Meno a priezvisko</label>
+            <input id="fullName" type="text" class="mt-1 block w-full rounded-lg border-gray-300" placeholder="Ján Novák" autocomplete="name">
+          </div>
+          <div>
+            <label for="email" class="block text-xs font-medium text-gray-700">E-mail</label>
+            <input id="email" type="email" class="mt-1 block w-full rounded-lg border-gray-300" placeholder="jan@example.com" autocomplete="email">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subscription -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 class="text-base font-bold text-gray-900 mb-4">Predplatné</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="rounded-xl border border-gray-200 p-3 bg-gray-50">
+          <p class="text-xs text-gray-600">Stav</p>
+          <p class="text-sm font-bold text-green-700">Aktívne</p>
+        </div>
+        <div class="rounded-xl border border-gray-200 p-3 bg-gray-50">
+          <p class="text-xs text-gray-600">Platné do</p>
+          <p id="subExpires" class="text-sm font-bold text-gray-900">31. 12. 2025</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="#" class="rounded-full bg-blue-500 text-white text-sm font-bold px-4 py-2 hover:bg-blue-600 text-center w-full">Spravovať</a>
+        </div>
+      </div>
+      <details class="mt-3 rounded-xl border border-gray-200 p-3">
+        <summary class="cursor-pointer font-semibold text-gray-900">Platby (prehľad)</summary>
+        <div class="mt-2 text-sm text-gray-700">
+          <ul class="list-disc ml-4 space-y-1">
+            <li>01. 09. 2025 — Ročné članstvo — 29,90 € — <span class="text-green-700 font-medium">zaplatené</span></li>
+            <li>01. 09. 2024 — Ročné članstvo — 29,90 € — <span class="text-green-700 font-medium">zaplatené</span></li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- Change password -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 class="text-base font-bold text-gray-900 mb-4">Zmena hesla</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label for="curPwd" class="block text-xs font-medium text-gray-700">Aktuálne heslo</label>
+          <input id="curPwd" type="password" class="mt-1 block w-full rounded-lg border-gray-300" autocomplete="current-password">
+        </div>
+        <div>
+          <label for="newPwd" class="block text-xs font-medium text-gray-700">Nové heslo</label>
+          <input id="newPwd" type="password" class="mt-1 block w-full rounded-lg border-gray-300" autocomplete="new-password">
+        </div>
+        <div>
+          <label for="newPwd2" class="block text-xs font-medium text-gray-700">Potvrdenie hesla</label>
+          <input id="newPwd2" type="password" class="mt-1 block w-full rounded-lg border-gray-300" autocomplete="new-password">
+        </div>
+      </div>
+      <div class="mt-3">
+        <button class="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600">Uložiť heslo</button>
+      </div>
+      <p class="text-xs text-gray-500 mt-2">V ukážke neukladáme – vo finálnej aplikácii to pôjde cez Supabase Auth.</p>
+    </section>
+
+    <!-- App behavior -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 class="text-base font-bold text-gray-900 mb-4">Nastavenie správania aplikácie</h2>
+      <div class="space-y-3">
+        <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-3">
+          <span class="text-sm text-gray-900">Prejsť na ďalšiu otázku po výbere odpovede (Test)</span>
+          <input id="autoAdvance" type="checkbox" class="h-5 w-10 rounded-full text-blue-600">
+        </label>
+        <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-3">
+          <span class="text-sm text-gray-900">Zobraziť vysvetlenie automaticky (Učenie)</span>
+          <input id="autoExplain" type="checkbox" class="h-5 w-10 rounded-full text-blue-600">
+        </label>
+        <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-3">
+          <span class="text-sm text-gray-900">Pamätať si “ťažké”/označené otázky</span>
+          <input id="rememberFlags" type="checkbox" class="h-5 w-10 rounded-full text-blue-600">
+        </label>
+      </div>
+      <div class="mt-3">
+        <button id="savePrefs" class="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600">Uložiť nastavenia</button>
+        <span id="prefsSaved" class="ml-3 text-xs text-green-700 hidden">Uložené ✓</span>
+      </div>
+    </section>
+
+    <!-- Theme / Dark mode -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 class="text-base font-bold text-gray-900 mb-4">Režim vzhľadu</h2>
+      <div class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-3">
+        <span class="text-sm text-gray-900">Tmavý režim</span>
+        <input id="darkToggle" type="checkbox" class="h-5 w-10 rounded-full text-blue-600" aria-label="Prepnúť tmavý režim">
+      </div>
+      <p class="text-xs text-gray-500 mt-2">Nastavenie sa ukladá do prehliadača a prenesie sa do celej ukážky.</p>
+    </section>
+  </main>
+</div>
+
+<!-- Unified bottom nav -->
+<script src="/stitch/common-nav.v3.js?v=10"></script>
+
+<script>
+(function(){
+  // --- Avatar Preview (local only) ---
+  const avatarInput = document.getElementById('avatarInput');
+  const avatarPreview = document.getElementById('avatarPreview');
+  avatarInput?.addEventListener('change', (e)=> {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    avatarPreview.src = url;
+  });
+
+  // --- Prefs (localStorage) ---
+  const PREF_KEY = 'mdprep_prefs';
+  const els = {
+    autoAdvance: document.getElementById('autoAdvance'),
+    autoExplain: document.getElementById('autoExplain'),
+    rememberFlags: document.getElementById('rememberFlags'),
+    savePrefs: document.getElementById('savePrefs'),
+    prefsSaved: document.getElementById('prefsSaved'),
+    darkToggle: document.getElementById('darkToggle'),
+  };
+
+  function loadPrefs(){
+    try {
+      const stored = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
+      ['autoAdvance','autoExplain','rememberFlags'].forEach(k=>{
+        if (typeof stored[k] === 'boolean' && els[k]) els[k].checked = stored[k];
+      });
+      // dark mode
+      const dark = stored.darkMode === true || (stored.darkMode === undefined && localStorage.getItem('mdprep_dark') === '1');
+      if (els.darkToggle) els.darkToggle.checked = dark;
+      applyDark(dark);
+    } catch {}
+  }
+
+  function savePrefs(){
+    const obj = {
+      autoAdvance: !!els.autoAdvance?.checked,
+      autoExplain: !!els.autoExplain?.checked,
+      rememberFlags: !!els.rememberFlags?.checked,
+      darkMode: !!els.darkToggle?.checked,
+    };
+    localStorage.setItem(PREF_KEY, JSON.stringify(obj));
+    localStorage.setItem('mdprep_dark', obj.darkMode ? '1' : '0');
+    if (els.prefsSaved){ els.prefsSaved.classList.remove('hidden'); setTimeout(()=>els.prefsSaved.classList.add('hidden'), 1500); }
+    applyDark(obj.darkMode);
+  }
+
+  function applyDark(on){
+    const r = document.documentElement;
+    if (on) r.classList.add('dark'); else r.classList.remove('dark');
+    // minimal dark adjustments (Tailwind dark: not fully applied in static HTML)
+    document.body.style.backgroundColor = on ? '#0b1220' : '';
+    document.body.style.color = on ? '#e5e7eb' : '';
+  }
+
+  els.savePrefs?.addEventListener('click', savePrefs);
+  els.darkToggle?.addEventListener('change', savePrefs);
+  loadPrefs();
+})();
+</script>
+</body>
+</html>
