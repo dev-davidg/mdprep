@@ -36,7 +36,7 @@
   nav.innerHTML = '<div class="max-w-3xl mx-auto h-16 flex justify-around">' +
       tab('/stitch/home.html', active === 'home', 'Domov', homeSvg) +
       tab('/stitch/mode.html', active === 'practice', 'Učenie/Test', practiceSvg) +
-      tab('/stitch/profile.html', active === 'settings', 'Nastavenia', settingsSvg) +
+      tab('/stitch/settings.html', active === 'settings', 'Nastavenia', settingsSvg) +
     '</div>';
 
   document.body.appendChild(nav);
