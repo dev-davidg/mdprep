@@ -12,11 +12,11 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <style> body { min-height:max(884px,100dvh); } </style>
 </head>
-<body  class="bg-gray-50 text-gray-900 mx-page mx-page bg-gray-50 text-gray-900">
+<body class="bg-gray-50 text-gray-900 mx-page">
 <div class="relative min-h-screen flex flex-col">
   <!-- Header -->
   <header class="sticky top-0 z-10 w-full bg-white backdrop-blur-sm">
-    <div class="p-4 flex items-center justify-between mx-auto max-w-3xl">
+    <div class="p-4 flex items-center justify-between mx-auto max-w-4xl">
       <a href="/stitch/mode.html" class="flex size-10 shrink-0 items-center justify-center rounded-full text-gray-700 hover:bg-blue-200" aria-label="Späť">
         <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15 18 9 12l6-6"/></svg>
       </a>
@@ -28,7 +28,7 @@
     </div>
 
     <!-- Horizontal question navigator (visible on all sizes) -->
-    <div class="mx-auto max-w-3xl px-4 pb-2">
+    <div class="mx-auto max-w-4xl px-4 pb-2">
       <div id="strip" class="flex gap-2 overflow-x-auto py-1 -mx-1 pr-1">
         <!-- Pre-rendered pills 1..10 -->
         <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-blue-500 text-white bg-blue-500 ring-2 ring-blue-500" data-q="1">1</button>
@@ -63,8 +63,8 @@
   </aside>
 
   <!-- Main -->
-  <main class="flex-1 w-full">
-    <div class="mx-auto max-w-3xl p-4">
+  <main   class="flex-1 w-full mx-auto max-w-4xl mx-auto max-w-4xl">
+    <div class="mx-auto max-w-4xl p-4">
       <!-- Timer -->
       <div class="mb-4">
         <div class="flex items-center justify-between text-sm text-gray-600">
@@ -117,7 +117,7 @@
 </div>
 
 <!-- Unified bottom nav -->
-<script src="/stitch/common-nav.v3.js?v=8"></script>
+<script src="/stitch/common-nav.v3.js?v=10"></script>
 
 <script>
 (function(){
