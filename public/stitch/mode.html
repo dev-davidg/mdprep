@@ -39,7 +39,7 @@
 <style> body { min-height: max(884px, 100dvh); } </style>
 <style>/* mx-page center */  @media  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
 </head>
-<body   class="bg-[var(--background-color)] mx-page mx-page bg-gray-50 text-gray-900">
+<body class="bg-gray-50 text-gray-900 mx-page">
 <div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden">
   <div class="flex-grow">
     <header class="sticky top-0 z-10 bg-[var(--background-color)]/80 backdrop-blur-sm">
@@ -57,7 +57,7 @@
       </div>
     </header>
 
-    <main class="p-4 flex-grow flex flex-col justify-center">
+    <main   class="p-4 flex-grow flex flex-col justify-center mx-auto max-w-4xl mx-auto max-w-4xl">
       <div class="space-y-8">
         <div>
           <h2 class="text-lg font-semibold text-[var(--text-primary)] mb-4 text-center">Vyberte si režim</h2>
@@ -107,27 +107,7 @@
     </main>
   </div>
 
-  <footer class="sticky bottom-0 bg-[var(--background-color)] border-t border-gray-200/80">
-    <nav class="flex justify-around py-2">
-      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/subjects.html">
-        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M240,64V192a16,16,0,0,1-16,16H160a24,24,0,0,0-24,24,8,8,0,0,1-16,0,24,24,0,0,0-24-24H32a16,16,0,0,1-16-16V64A16,16,0,0,1,32,48H88a32,32,0,0,1,32,32v88a8,8,0,0,0,16,0V80a32,32,0,0,1,32-32h56A16,16,0,0,1,240,64Z"></path></svg>
-        <span class="text-xs font-medium">Predmety</span>
-      </a>
-      <a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--primary-color)]" href="/stitch/mode.html">
-        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13-56-29.87a8,8,0,0,0-7.52,14.12L171,128l-43,22.93L25,96,128,41.07,231,96Z"></path></svg>
-        <span class="text-xs font-semibold">Učenie</span>
-      </a>
-      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/test.html">
-        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"></path></svg>
-        <span class="text-xs font-medium">Test</span>
-      </a>
-      <a class="flex flex-col items-center justify-center gap-1 w-1/4 text-[var(--text-secondary)]" href="/stitch/profile.html">
-        <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path></svg>
-        <span class="text-xs font-medium">Profil</span>
-      </a>
-    </nav>
-    <div class="pb-safe-area-inset-bottom h-5 bg-[var(--background-color)]"></div>
-  </footer>
+  
 </div>
 
 <script>
@@ -179,5 +159,5 @@
     });
   });
 </script>
-<script src="/stitch/common-nav.v3.js?v=8"></script>
+<script src="/stitch/common-nav.v3.js?v=10"></script>
 </body></html>

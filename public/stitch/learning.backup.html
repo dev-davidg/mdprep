@@ -19,7 +19,7 @@
 <style> body{min-height:max(884px,100dvh);} </style>
 <style>/* mx-page center */  @media  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
 </head>
-<body   class="bg-gray-50 mx-page mx-page bg-gray-50 text-gray-900">
+<body class="bg-gray-50 text-gray-900 mx-page">
 <div class="relative flex size-full min-h-screen flex-col bg-[#f7f9fc] justify-between group/design-root overflow-x-hidden" style='font-family:"Spline Sans","Noto Sans",sans-serif;'>
   <div>
     <header class="sticky top-0 z-10 flex items-center justify-between bg-[#f7f9fc]/80 p-4 pb-2 backdrop-blur-sm">
@@ -33,7 +33,7 @@
       <h2 class="text-lg font-bold leading-tight tracking-tight text-gray-800">Otázka 1 z 10</h2>
     </header>
 
-    <main class="p-4 space-y-4 flex-grow">
+    <main   class="p-4 space-y-4 flex-grow mx-auto max-w-4xl mx-auto max-w-4xl">
       <p class="text-base font-normal leading-relaxed text-gray-800">
         Ktorá z nasledujúcich možností je známa ako "elektráreň" bunky, zodpovedná za generovanie väčšiny bunkovej zásoby adenozíntrifosfátu (ATP)?
       </p>
@@ -149,5 +149,5 @@
   // initial state: show selection & reveal correct
   reveal(cards.find(c => c.classList.contains('selected')));
 </script>
-<script src="/stitch/common-nav.v3.js?v=8"></script>
+<script src="/stitch/common-nav.v3.js?v=10"></script>
 </body></html>
