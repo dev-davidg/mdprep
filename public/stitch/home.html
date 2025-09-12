@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap">
 <title>MDprep – Domov</title>
-<link rel="stylesheet" href="/stitch/styles.v2.css?v=16"/>
-<link rel="stylesheet" href="/stitch/theme.css?v=16"/>
+<link rel="stylesheet" href="/stitch/styles.v2.css?v=17"/>
+<link rel="stylesheet" href="/stitch/theme.css?v=17"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <style>
-  /* v16 hard width failsafe: force same 56rem width as all pages */
+  /* v17 width failsafe: match 56rem like other pages */
   @media (min-width:1024px){
     body.mx-page main{max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
     body.mx-page header > *,
@@ -24,59 +24,103 @@
   <div class="relative min-h-screen flex flex-col">
     <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-10">
-      <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-center">
-        <h1 class="text-xl font-bold leading-tight tracking-tight text-center">Domov</h1>
+      <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-between">
+        <h1 class="text-xl font-bold leading-tight tracking-tight">Domov</h1>
+        <a href="/stitch/settings.html" class="text-sm font-semibold text-[var(--md-primary-blue)] hover:underline">Nastavenia</a>
       </div>
     </header>
 
-    <!-- Content -->
     <main class="mx-auto max-w-4xl w-full p-4 space-y-6">
+      <!-- Greeting + avatar + subscription -->
+      <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+        <div class="flex items-start gap-4">
+          <img src="https://via.placeholder.com/80x80.png?text=JA" alt="Profilová fotografia" class="h-20 w-20 rounded-full object-cover border border-gray-200">
+          <div class="flex-1">
+            <p class="text-sm text-gray-600">Ahoj,</p>
+            <p class="text-2xl font-bold text-gray-900 leading-tight">Ján Novák</p>
+            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="rounded-xl border border-gray-200 p-3 bg-gray-50">
+                <p class="text-xs text-gray-600">Predplatné</p>
+                <p class="text-sm font-semibold text-green-700">Aktívne</p>
+              </div>
+              <div class="rounded-xl border border-gray-200 p-3 bg-gray-50">
+                <p class="text-xs text-gray-600">Platné do</p>
+                <p class="text-sm font-semibold text-gray-900">31. 12. 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Overall progress -->
       <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
-        <h2 class="text-base font-bold text-gray-900 mb-3">Celkovo</h2>
+        <h2 class="text-base font-bold text-gray-900 mb-2">Postup učenia</h2>
         <div class="flex items-center gap-3">
           <div class="w-full bg-gray-200 rounded-full h-2">
             <div class="bg-[var(--md-primary-blue)] h-2 rounded-full" style="width:42%"></div>
           </div>
-          <span class="text-sm text-gray-700 font-semibold">42%</span>
+          <span class="text-sm font-semibold text-gray-900">42%</span>
         </div>
-        <p class="text-xs text-gray-500 mt-2">Percento otázok, ktoré ste videli/aspoň raz odpovedali.</p>
+        <p class="text-xs text-gray-600 mt-2">
+          Videli ste <span class="font-semibold text-gray-900">420</span> z <span class="font-semibold text-gray-900">1000</span> otázok.
+          Zostáva <span class="font-semibold text-gray-900">580</span> otázok (58%) do prehľadu všetkých tém.
+        </p>
       </section>
 
-      <!-- Recent tests -->
+      <!-- Average score: last 5 tests per subject -->
       <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
-        <h2 class="text-base font-bold text-gray-900 mb-3">Nedávne testy</h2>
-        <ul class="divide-y divide-gray-200">
-          <li class="py-3 flex items-center justify-between">
-            <div>
-              <p class="text-sm font-semibold text-gray-900">Fyziológia – 20 otázok</p>
-              <p class="text-xs text-gray-600">02. 09. 2025 · 17/20 správne</p>
+        <h2 class="text-base font-bold text-gray-900 mb-3">Priemerné skóre (posledných 5 testov podľa predmetu)</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Card -->
+          <div class="rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-gray-900">Anatómia</p>
+              <span class="text-sm font-bold text-gray-900">86%</span>
             </div>
-            <a href="/stitch/results.html" class="text-sm font-bold text-[var(--md-primary-blue)] hover:underline">Detail</a>
-          </li>
-          <li class="py-3 flex items-center justify-between">
-            <div>
-              <p class="text-sm font-semibold text-gray-900">Anatómia – 10 otázok</p>
-              <p class="text-xs text-gray-600">28. 08. 2025 · 9/10 správne</p>
+            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-[var(--md-primary-blue)] h-2 rounded-full" style="width:86%"></div>
             </div>
-            <a href="/stitch/results.html" class="text-sm font-bold text-[var(--md-primary-blue)] hover:underline">Detail</a>
-          </li>
-        </ul>
-      </section>
+            <p class="mt-2 text-xs text-gray-600">Počítané z posledných 5 písomiek.</p>
+          </div>
 
-      <!-- Quick actions -->
-      <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
-        <h2 class="text-base font-bold text-gray-900 mb-3">Rýchle akcie</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <a href="/stitch/subjects.html" class="rounded-xl border border-gray-200 p-4 bg-blue-50 hover:bg-blue-100 text-center font-semibold">Predmety</a>
-          <a href="/stitch/mode.html" class="rounded-xl border border-gray-200 p-4 bg-blue-50 hover:bg-blue-100 text-center font-semibold">Učenie/Test</a>
-          <a href="/stitch/settings.html" class="rounded-xl border border-gray-200 p-4 bg-blue-50 hover:bg-blue-100 text-center font-semibold">Nastavenia</a>
+          <div class="rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-gray-900">Fyziológia</p>
+              <span class="text-sm font-bold text-gray-900">74%</span>
+            </div>
+            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-[var(--md-primary-blue)] h-2 rounded-full" style="width:74%"></div>
+            </div>
+            <p class="mt-2 text-xs text-gray-600">Počítané z posledných 5 písomiek.</p>
+          </div>
+
+          <div class="rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-gray-900">Biochémia</p>
+              <span class="text-sm font-bold text-gray-900">68%</span>
+            </div>
+            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-[var(--md-primary-blue)] h-2 rounded-full" style="width:68%"></div>
+            </div>
+            <p class="mt-2 text-xs text-gray-600">Počítané z posledných 5 písomiek.</p>
+          </div>
+
+          <div class="rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-gray-900">Patológia</p>
+              <span class="text-sm font-bold text-gray-900">92%</span>
+            </div>
+            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-[var(--md-primary-blue)] h-2 rounded-full" style="width:92%"></div>
+            </div>
+            <p class="mt-2 text-xs text-gray-600">Počítané z posledných 5 písomiek.</p>
+          </div>
         </div>
       </section>
     </main>
   </div>
 
   <!-- Unified bottom nav -->
-  <script src="/stitch/common-nav.v3.js?v=16"></script>
+  <script src="/stitch/common-nav.v3.js?v=17"></script>
 </body>
 </html>
