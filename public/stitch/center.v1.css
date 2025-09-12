@@ -1,0 +1,9 @@
+/* Force Stitch pages to standard 56rem width on desktop */
+@media (min-width:1024px){
+  #stitch-center-wrap{
+    max-width:56rem !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    padding-left:1rem; padding-right:1rem;
+  }
+}
