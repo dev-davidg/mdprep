@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap">
+<title>MDprep – Domov</title>
+<link rel="stylesheet" href="/stitch/styles.v2.css?v=17"/>
+<link rel="stylesheet" href="/stitch/theme.css?v=17"/>
+<link rel="stylesheet" href="/stitch/pro.css?v=1"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+  /* v16 hard width failsafe: force same 56rem width as all pages */
+  @media (min-width:1024px){
+    body.mx-page main{max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+    body.mx-page header > *,
+    body.mx-page header :is(div,nav){max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+  }
+  body{ min-height:max(884px,100dvh);}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 mx-page">
+  <div class="relative min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+      <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-center">
+        <h1 class="text-xl font-bold leading-tight tracking-tight text-center">Domov</h1>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="mx-auto max-w-4xl w-full p-4 space-y-6">
+      <!-- Overall progress -->
+      <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+        <h2 class="text-base font-bold text-gray-900 mb-3">Celkovo</h2>
+        <div class="flex items-center gap-3">
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-[var(--md-primary-blue)] h-2 rounded-full" style="width:42%"></div>
+          </div>
+          <span class="text-sm text-gray-700 font-semibold">42%</span>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Percento otázok, ktoré ste videli/aspoň raz odpovedali.</p>
+      </section>
+
+      <!-- Recent tests -->
+      <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+        <h2 class="text-base font-bold text-gray-900 mb-3">Nedávne testy</h2>
+        <ul class="divide-y divide-gray-200">
+          <li class="py-3 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-semibold text-gray-900">Fyziológia – 20 otázok</p>
+              <p class="text-xs text-gray-600">02. 09. 2025 · 17/20 správne</p>
+            </div>
+            <a href="/stitch/results.html" class="text-sm font-bold text-[var(--md-primary-blue)] hover:underline">Detail</a>
+          </li>
+          <li class="py-3 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-semibold text-gray-900">Anatómia – 10 otázok</p>
+              <p class="text-xs text-gray-600">28. 08. 2025 · 9/10 správne</p>
+            </div>
+            <a href="/stitch/results.html" class="text-sm font-bold text-[var(--md-primary-blue)] hover:underline">Detail</a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Quick actions -->
+      <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+        <h2 class="text-base font-bold text-gray-900 mb-3">Rýchle akcie</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <a href="/stitch/subjects.html" class="rounded-xl border border-gray-200 p-4 bg-blue-50 hover:bg-blue-100 text-center font-semibold">Predmety</a>
+          <a href="/stitch/mode.html" class="rounded-xl border border-gray-200 p-4 bg-blue-50 hover:bg-blue-100 text-center font-semibold">Učenie/Test</a>
+          <a href="/stitch/settings.html" class="rounded-xl border border-gray-200 p-4 bg-blue-50 hover:bg-blue-100 text-center font-semibold">Nastavenia</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Unified bottom nav -->
+  <script src="/stitch/common-nav.v3.js?v=17"></script>
+</body>
+</html>
