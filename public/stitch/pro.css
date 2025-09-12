@@ -1,0 +1,114 @@
+/* === MDprep Pro polish v1 === */
+:root{
+  --md-primary-blue: var(--md-primary-blue, #2563eb);
+  --md-secondary-blue: var(--md-secondary-blue, #1e40af);
+  --md-bg: #f8fafc; --md-fg: #0f172a;
+  --md-card: #ffffff; --md-card-border:#e5e7eb;
+  --md-radius-xl: 1rem;
+  --md-shadow-sm: 0 1px 2px rgba(2,6,23,.06), 0 1px 1px rgba(2,6,23,.04);
+  --md-shadow-lg: 0 10px 15px rgba(2,6,23,.08), 0 4px 6px rgba(2,6,23,.05);
+}
+
+.dark:root{
+  --md-bg: #0b1220; --md-fg: #e5e7eb;
+  --md-card: #0f172a; --md-card-border:#1f2937;
+  --md-shadow-sm: 0 1px 2px rgba(0,0,0,.35);
+  --md-shadow-lg: 0 10px 15px rgba(0,0,0,.45), 0 4px 6px rgba(0,0,0,.35);
+}
+
+/* Cards (any rounded, white, shadow section) */
+[class*="rounded-2xl"][class*="bg-white"][class*="shadow"]{
+  border-radius: calc(var(--md-radius-xl) + 4px);
+  box-shadow: var(--md-shadow-sm);
+  transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
+  will-change: transform;
+}
+[class*="rounded-2xl"][class*="bg-white"][class*="shadow"]:hover{
+  box-shadow: var(--md-shadow-lg);
+  transform: translateY(-1px);
+}
+.dark [class*="rounded-2xl"][class*="bg-white"][class*="shadow"]{
+  background: var(--md-card) !important;
+  border-color: var(--md-card-border) !important;
+}
+
+/* Primary round buttons (our common pattern) */
+button.rounded-full, a.rounded-full{
+  box-shadow: var(--md-shadow-sm);
+  transition: transform .12s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+}
+button.rounded-full:hover, a.rounded-full:hover{ transform: translateY(-1px); box-shadow: var(--md-shadow-lg); }
+button.rounded-full:active, a.rounded-full:active{ transform: translateY(0); }
+
+/* Ghost/secondary round buttons */
+button.bg-blue-100, a.bg-blue-100,
+button.bg-blue-50,  a.bg-blue-50{
+  box-shadow: none;
+  border: 1px solid rgba(37,99,235,.25);
+}
+
+/* Chips (question count) */
+.count-chip{
+  box-shadow: 0 1px 2px rgba(2,6,23,.05);
+  transition: transform .1s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease;
+}
+.count-chip:hover{ transform: translateY(-1px); box-shadow: var(--md-shadow-lg); }
+.count-chip.bg-blue-50{ border-color: var(--md-primary-blue) !important; }
+
+/* Mode cards */
+.mode-card{
+  transition: transform .16s ease, box-shadow .2s ease, border-color .18s ease, background-color .18s ease;
+}
+.mode-card:hover{ transform: translateY(-1px); box-shadow: var(--md-shadow-lg); }
+.mode-card[aria-checked="true"]{ border-color: var(--md-primary-blue) !important; background: #eff6ff !important; }
+
+/* iOS switches (we made sr-only inputs with peer) */
+.relative.inline-flex .block.w-11.h-6{
+  height: 28px; width: 48px; border-radius: 9999px;
+}
+.relative.inline-flex .absolute.left-0\.5.top-0\.5.w-5.h-5{
+  height: 24px; width: 24px; border-radius: 9999px;
+  box-shadow: 0 1px 2px rgba(2,6,23,.12);
+}
+
+/* Typography niceties */
+h1,h2{ letter-spacing:-0.01em; }
+.prose p{ margin: .5rem 0; }
+
+/* Bottom nav refine */
+#stitch-global-nav .grid > a{
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, transform .12s ease;
+}
+#stitch-global-nav .grid > a:hover{ transform: translateY(-1px); }
+
+/* === MDprep Pro polish v2 === */
+@keyframes pageFade{ from{opacity:.0; transform:translateY(4px)} to{opacity:1; transform:none} }
+.page-fade{ animation: pageFade .24s ease both; }
+
+/* Badges */
+.badge{ display:inline-flex; align-items:center; gap:.375rem; padding:.25rem .5rem; border-radius:9999px; font-size:.75rem; font-weight:700; line-height:1; }
+.badge-gray{ background:#eef2ff; color:#3730a3; }
+.badge-green{ background:#e8faf0; color:#166534; }
+.badge-red{ background:#fee2e2; color:#991b1b; }
+.badge-blue{ background:#e0ecff; color:#1e40af; }
+
+/* Progress bar enhancement (opt-in) */
+.md-progress{ background: linear-gradient(90deg, var(--md-primary-blue), #60a5fa); }
+
+/* Lists in review/results look tidier by default */
+ul,ol{ list-style-position:outside; }
+ul li{ margin:.25rem 0; }
+
+/* Table-like rows (if used) */
+.md-row{ display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:.5rem .75rem; border-radius:.75rem; }
+.md-row:hover{ background: rgba(2,6,23,.03); }
+
+/* Headline refinement */
+header h1{ letter-spacing:-0.01em; }
+
+/* Links (soft hover) */
+a{ transition: color .15s ease, background-color .15s ease, border-color .15s ease, transform .1s ease; }
+a:hover{ transform: translateY(-1px); }
+
+/* Nicer tiny separators */
+hr{ border-color: rgba(2,6,23,.08); opacity:.6 }
