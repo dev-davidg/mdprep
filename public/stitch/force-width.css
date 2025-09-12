@@ -1,0 +1,14 @@
+/* Force Home width to match others (56rem) on desktop */
+@media (min-width:1024px){
+  body.mx-page main{
+    max-width:56rem !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+  body.mx-page header > *,
+  body.mx-page header :is(div,nav){
+    max-width:56rem !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+}
