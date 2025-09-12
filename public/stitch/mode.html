@@ -1,160 +1,158 @@
 <!DOCTYPE html>
-<html lang="sk"><head>
-<meta charset="utf-8"/><title>MDprep</title>
-<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap">
+<title>MDprep – Výber režimu</title>
+<link rel="stylesheet" href="/stitch/styles.v2.css?v=18"/>
+<link rel="stylesheet" href="/stitch/theme.css?v=18"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<style type="text/tailwindcss">
-    :root {
-      --primary-color: #3b82f6;
-      --secondary-color: #f3f4f6;
-      --background-color: #ffffff;
-      --text-primary: #1f2937;
-      --text-secondary: #6b7280;
-      --card-background: #ffffff;
-      --progress-background: #e5e7eb;
-    }
-  </style>
 <style>
-    body {
-      min-height: max(884px, 100dvh);
-      font-family: "Spline Sans", "Noto Sans", sans-serif;
-    }
-    .scroll-snap-y-mandatory { scroll-snap-type: y mandatory; }
-    .scroll-snap-align-center { scroll-snap-align: center; }
-    .number-picker { height: 15rem; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
-    .number-picker::-webkit-scrollbar { display: none; }
-    .number-picker { -ms-overflow-style: none; scrollbar-width: none; }
-    .number-picker-item {
-      height: 3rem; display: flex; align-items: center; justify-content: center;
-      font-size: 2.25rem; font-weight: 700; color: var(--text-secondary);
-      opacity: 0.5; transition: all 0.3s ease-in-out;
-    }
-    .number-picker-item.active {
-      color: var(--primary-color); opacity: 1; transform: scale(1.2);
-    }
-  </style>
-<style> body { min-height: max(884px, 100dvh); } </style>
-<style>/* mx-page center */  @media  (min-width:1024px){ .mx-page main{max-width:56rem;margin:0 auto} .mx-page header>* , .mx-page footer>* {max-width:56rem;margin:0 auto}} </style>
+  /* v18: width failsafe to match 56rem like other pages */
+  @media (min-width:1024px){
+    body.mx-page main{max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+    body.mx-page header > *,
+    body.mx-page header :is(div,nav){max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+  }
+  body{ min-height:max(884px,100dvh);}
+</style>
 </head>
 <body class="bg-gray-50 text-gray-900 mx-page">
-<div class="relative flex size-full min-h-screen flex-col justify-between group/design-root overflow-x-hidden">
-  <div class="flex-grow">
-    <header class="sticky top-0 z-10 bg-[var(--background-color)]/80 backdrop-blur-sm">
-      <div class="flex items-center p-4 justify-between">
-        <a href="/stitch/subjects.html" class="flex h-10 w-10 items-center justify-center rounded-full bg-transparent text-[var(--text-primary)] transition-colors hover:bg-gray-100" aria-label="Späť na Predmety">
-          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-        </a>
-        <div class="flex items-center gap-3">
-          <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          </div>
-          <h1 class="text-[var(--text-primary)] text-xl font-bold leading-tight tracking-tight">Biológia</h1>
-        </div>
-        <div class="w-10"></div>
+<div class="relative min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-center">
+      <h1 class="text-xl font-bold leading-tight tracking-tight">Výber režimu</h1>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-4xl w-full p-4 space-y-6">
+    <!-- Step 1: Mode -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 class="text-base font-bold text-gray-900 mb-3">1. Vyberte režim</h2>
+      <div id="modeGroup" role="radiogroup" aria-label="Režim" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <button type="button" data-mode="learn" role="radio" aria-checked="false"
+          class="mode-card rounded-2xl border border-gray-200 bg-white p-4 text-left hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
+          <p class="text-sm font-semibold text-gray-900">Učiaci režim</p>
+          <p class="text-xs text-gray-600 mt-1">Okamžite vidíte správnu odpoveď a vysvetlenie.</p>
+        </button>
+
+        <button type="button" data-mode="test" role="radio" aria-checked="false"
+          class="mode-card rounded-2xl border border-gray-200 bg-white p-4 text-left hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
+          <p class="text-sm font-semibold text-gray-900">Testovací režim</p>
+          <p class="text-xs text-gray-600 mt-1">Bez odhalenia správnych odpovedí, s časovačom.</p>
+        </button>
       </div>
-    </header>
+    </section>
 
-    <main     class="p-4 flex-grow flex flex-col justify-center mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl">
-      <div class="space-y-8">
-        <div>
-          <h2 class="text-lg font-semibold text-[var(--text-primary)] mb-4 text-center">Vyberte si režim</h2>
-          <div class="grid grid-cols-2 gap-4">
-            <a href="/stitch/learning.html" class="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border-2 border-[var(--primary-color)] bg-gray-50 shadow-md">
-              <svg class="w-10 h-10 text-[var(--primary-color)]" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13-56-29.87a8,8,0,0,0-7.52,14.12L171,128l-43,22.93L25,96,128,41.07,231,96Z"></path></svg>
-              <span class="text-[var(--text-primary)] font-bold">Režim učenia</span>
-            </a>
-            <a href="/stitch/test.html" class="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border border-gray-200/80 bg-[var(--card-background)] shadow-sm hover:shadow-lg hover:border-gray-300">
-              <svg class="w-10 h-10 text-[var(--text-secondary)]" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"></path></svg>
-              <span class="text-[var(--text-secondary)] font-semibold">Testový režim</span>
-            </a>
-          </div>
-        </div>
-
-        <div>
-          <h2 class="text-lg font-semibold text-[var(--text-primary)] mb-2 text-center">Počet otázok</h2>
-          <div class="relative h-60">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="h-12 w-full bg-gray-50 rounded-lg border-y-2 border-blue-200"></div>
-            </div>
-            <div class="number-picker scroll-snap-y-mandatory" id="number-picker">
-              <div class="number-picker-item scroll-snap-align-center"></div>
-              <div class="number-picker-item scroll-snap-align-center"></div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="1">1</div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="2">2</div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="3">3</div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="4">4</div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="5">5</div>
-              <div class="number-picker-item scroll-snap-align-center active" data-value="6">6</div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="7">7</div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="8">8</div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="9">9</div>
-              <div class="number-picker-item scroll-snap-align-center" data-value="10">10</div>
-              <div class="number-picker-item scroll-snap-align-center"></div>
-              <div class="number-picker-item scroll-snap-align-center"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-2">
-          <a href="/stitch/learning.html" class="block w-full bg-[var(--primary-color)] text-white text-center font-bold py-4 px-4 rounded-xl shadow-lg hover:bg-blue-700 transition-colors duration-300">
-            Začať sa učiť
-          </a>
+    <!-- Step 2: Question count -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 class="text-base font-bold text-gray-900 mb-3">2. Počet otázok</h2>
+      <div id="countGroup" class="flex flex-wrap gap-2" aria-label="Počet otázok">
+        <!-- selectable chips -->
+        <button type="button" data-count="5"  class="count-chip px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-semibold hover:border-blue-300">5</button>
+        <button type="button" data-count="10" class="count-chip px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-semibold hover:border-blue-300">10</button>
+        <button type="button" data-count="20" class="count-chip px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-semibold hover:border-blue-300">20</button>
+        <button type="button" data-count="30" class="count-chip px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-semibold hover:border-blue-300">30</button>
+        <button type="button" data-count="50" class="count-chip px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-semibold hover:border-blue-300">50</button>
+        <!-- custom -->
+        <div class="flex items-center gap-2 ml-2">
+          <input id="countInput" type="number" inputmode="numeric" min="1" max="200" placeholder="Vlastné"
+            class="w-28 rounded-full border-gray-300 text-sm px-3 py-2" aria-label="Vlastný počet otázok">
+          <button id="countApply" type="button"
+            class="rounded-full bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1.5 hover:bg-blue-100">Použiť</button>
         </div>
       </div>
-    </main>
-  </div>
+      <p class="text-xs text-gray-600 mt-2">Zvoľte niektorý z rýchlych počtov alebo zadajte vlastné číslo (max. 200).</p>
+    </section>
 
-  
+    <!-- Continue -->
+    <div class="flex items-center justify-end">
+      <button id="continueBtn" disabled
+        class="rounded-full bg-blue-500/50 text-white text-sm font-bold px-6 py-3 cursor-not-allowed">
+        Pokračovať
+      </button>
+    </div>
+  </main>
 </div>
 
+<!-- Unified bottom nav -->
+<script src="/stitch/common-nav.v3.js?v=18"></script>
+
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const numberPicker = document.getElementById('number-picker');
-    const items = numberPicker.querySelectorAll('.number-picker-item');
+(function(){
+  const modeCards = Array.from(document.querySelectorAll('.mode-card'));
+  const countChips = Array.from(document.querySelectorAll('.count-chip'));
+  const countInput = document.getElementById('countInput');
+  const countApply = document.getElementById('countApply');
+  const btn = document.getElementById('continueBtn');
 
-    // Set initial scroll position to center the active item
-    const activeItem = numberPicker.querySelector('.active');
-    if (activeItem) {
-      const pickerHeight = numberPicker.offsetHeight;
-      const itemHeight = activeItem.offsetHeight;
-      numberPicker.scrollTop = activeItem.offsetTop - (pickerHeight / 2) + (itemHeight / 2);
-    }
+  let selectedMode = null;   // 'learn' | 'test'
+  let selectedCount = null;  // number
 
-    let scrollTimeout;
-    numberPicker.addEventListener('scroll', () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        const pickerRect = numberPicker.getBoundingClientRect();
-        const pickerCenterY = pickerRect.top + pickerRect.height / 2;
-        let closestItem = null;
-        let closestDistance = Infinity;
+  function updateContinue(){
+    const ok = !!selectedMode && !!selectedCount && selectedCount > 0;
+    btn.disabled = !ok;
+    btn.className = ok
+      ? 'rounded-full bg-blue-500 text-white text-sm font-bold px-6 py-3 hover:bg-blue-600'
+      : 'rounded-full bg-blue-500/50 text-white text-sm font-bold px-6 py-3 cursor-not-allowed';
+  }
 
-        items.forEach(item => {
-          if (!item.hasAttribute('data-value')) return; // skip padding items
-          const itemRect = item.getBoundingClientRect();
-          const itemCenterY = itemRect.top + itemRect.height / 2;
-          const distance = Math.abs(pickerCenterY - itemCenterY);
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closestItem = item;
-          }
-        });
-
-        if (closestItem) {
-          // Center the closest item
-          const itemHeight = closestItem.offsetHeight;
-          const pickerHeight = numberPicker.offsetHeight;
-          numberPicker.scrollTo({
-            top: closestItem.offsetTop - (pickerHeight / 2) + (itemHeight / 2),
-            behavior: 'smooth'
-          });
-          // Update active state
-          items.forEach(item => item.classList.remove('active'));
-          closestItem.classList.add('active');
-        }
-      }, 150);
+  // Mode selection
+  function setMode(val){
+    selectedMode = val;
+    modeCards.forEach(el=>{
+      const active = el.dataset.mode === val;
+      el.setAttribute('aria-checked', active ? 'true' : 'false');
+      el.classList.toggle('ring-2', active);
+      el.classList.toggle('ring-blue-500/40', active);
+      el.classList.toggle('border-blue-600', active);
+      if(active){ el.classList.add('bg-blue-50'); } else { el.classList.remove('bg-blue-50'); }
+    });
+    updateContinue();
+  }
+  modeCards.forEach(el=>{
+    el.addEventListener('click', ()=> setMode(el.dataset.mode));
+    el.addEventListener('keydown', (e)=> {
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); setMode(el.dataset.mode); }
     });
   });
+
+  // Count selection via chips
+  function setCount(n){
+    selectedCount = n;
+    countChips.forEach(c=>{
+      const on = Number(c.dataset.count) === n;
+      c.classList.toggle('border-blue-600', on);
+      c.classList.toggle('bg-blue-50', on);
+    });
+    updateContinue();
+  }
+  countChips.forEach(c=> c.addEventListener('click', ()=> setCount(Number(c.dataset.count))));
+
+  // Count via custom input
+  countApply.addEventListener('click', ()=>{
+    const n = Number(countInput.value);
+    if(!Number.isFinite(n) || n < 1 || n > 200) return;
+    setCount(n);
+  });
+
+  // Continue → route based on selectedMode + selectedCount
+  btn.addEventListener('click', ()=>{
+    const q = `?count=${encodeURIComponent(selectedCount)}`;
+    if (selectedMode === 'test') {
+      location.href = '/stitch/test.html' + q;
+    } else {
+      location.href = '/stitch/learning.html' + q;
+    }
+  });
+
+  // Optional: preselect defaults (comment out if not desired)
+  // setMode('learn'); setCount(10);
+})();
 </script>
-<script src="/stitch/common-nav.v3.js?v=11"></script>
-</body></html>
+</body>
+</html>
