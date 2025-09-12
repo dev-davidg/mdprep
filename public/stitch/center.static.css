@@ -1,0 +1,14 @@
+/* Force standard 56rem width on desktop for Results/Review */
+@media (min-width:1024px){
+  #stitch-static-wrap{
+    max-width:56rem !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    padding-left:1rem; padding-right:1rem;
+  }
+  header > div, header > nav{
+    max-width:56rem !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+}
