@@ -2,119 +2,198 @@
 <html lang="sk">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght;500;600;700&family=Noto+Sans:wght;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap">
 <title>MDprep – Učenie</title>
-<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
-<link rel="stylesheet" href="/stitch/styles.v2.css?v=42"/>
-<link rel="stylesheet" href="/stitch/theme.css?v=42"/>
+
+<!-- Shared styles -->
+<link rel="stylesheet" href="/stitch/styles.v2.css?v=50"/>
+<link rel="stylesheet" href="/stitch/theme.css?v=50"/>
 <link rel="stylesheet" href="/stitch/pro.css?v=2"/>
+
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<style> body{ min-height:max(884px,100dvh);} </style>
-<style> (min-width:1024px){body.mx-page main,body.mx-page header>*,body.mx-page header :is(div,nav){max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}}html{scrollbar-gutter:stable both-edges}details .prose,details .content,details>div,details>section{overflow-wrap:anywhere;word-break:break-word}details img{max-width:100%;height:auto}</style>
+
+<style>
+  /* v50: lock width to 56rem on desktop and stabilize scrollbar to prevent layout shift */
+  @media (min-width:1024px){
+    body.mx-page main{max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+    body.mx-page header > *, body.mx-page header :is(div,nav){max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+  }
+  html{ scrollbar-gutter: stable both-edges; }
+  body{ min-height:max(884px,100dvh); }
+
+  /* Answer states */
+  .answer-btn{ transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease, transform .08s ease; }
+  .answer-btn:hover{ transform: translateY(-1px); }
+  .answer-correct{ border-color:#16a34a !important; background:#ecfdf5 !important; } /* green-600 border, green-50 bg */
+  .answer-disabled{ opacity:.8; pointer-events:none; }
+</style>
 </head>
 <body class="bg-gray-50 text-gray-900 mx-page">
-<div class="relative flex min-h-screen flex-col">
-  <main       class="flex-1 mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl page-fade mx-auto max-w-4xl">
-    <!-- Clean, consistent header -->
-    <header class="bg-white shadow-sm sticky top-0 z-10">
-      <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-center">
-        <h1 class="text-xl font-bold leading-tight tracking-tight text-center text-gray-900">Učenie</h1>
+<div class="relative min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-between">
+      <h1 class="text-xl font-bold leading-tight tracking-tight">Učenie</h1>
+      <a href="/stitch/mode.html" class="text-sm font-semibold text-[var(--md-primary-blue)] hover:underline">Späť</a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="mx-auto max-w-4xl w-full p-4 space-y-6 page-fade">
+    <!-- Progress / meta -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <div class="flex items-center justify-between gap-4">
+        <div class="text-sm text-gray-700">
+          <span class="font-semibold">Otázka</span> <span id="qIndex">1</span>/<span id="qTotal">10</span>
+        </div>
+        <button id="flagBtn" class="rounded-full border border-gray-200 bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1.5 hover:bg-blue-100">
+          Označiť
+        </button>
       </div>
-    </header>
+    </section>
 
-    <!-- Question -->
-    <section class="mx-auto max-w-4xl p-4">
-      <p id="qText" class="mb-5 text-base leading-relaxed">Aký proces používajú rastliny na premenu svetelnej energie na chemickú energiu?</p>
+    <!-- Question card -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 id="qText" class="text-base font-bold text-gray-900">Ktorá štruktúra je zodpovedná za produkciu inzulínu?</h2>
 
-      <!-- Answers: no correct/wrong highlight until user selects -->
-      <div id="answers" class="space-y-3">
-        <label class="ans flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Dýchanie"/>
-          <span class="text-sm font-medium text-gray-900">Dýchanie</span>
-        </label>
-        <label class="ans flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Transpirácia"/>
-          <span class="text-sm font-medium text-gray-900">Transpirácia</span>
-        </label>
-        <label class="ans flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm" data-correct="true">
-          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Fotosyntéza"/>
-          <span class="text-sm font-medium text-gray-900">Fotosyntéza</span>
-        </label>
-        <label class="ans flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Osmóza"/>
-          <span class="text-sm font-medium text-gray-900">Osmóza</span>
-        </label>
+      <div class="mt-4 grid grid-cols-1 gap-2">
+        <!-- Answers: only highlight correct AFTER a selection -->
+        <button class="answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3"
+                data-answer="A" data-correct="false">A) Hypofýza</button>
+        <button class="answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3"
+                data-answer="B" data-correct="true">B) Pankreas (Langerhansove ostrovčeky)</button>
+        <button class="answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3"
+                data-answer="C" data-correct="false">C) Pečeň</button>
+        <button class="answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3"
+                data-answer="D" data-correct="false">D) Štítna žľaza</button>
       </div>
 
-      <!-- Controls -->
-      <div class="mt-6 flex items-center gap-3">
-        <button id="flagBtn" class="rounded-full bg-blue-100 px-4 py-2 text-sm font-bold text-blue-800 hover:bg-blue-200">Označiť otázku</button>
-        <button id="nextBtn" class="ml-auto rounded-full bg-blue-500 px-6 py-3 text-sm font-bold text-white hover:bg-blue-600">Ďalšia otázka</button>
-      </div>
+      <!-- Explanation -->
+      <details id="expBox" class="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-3">
+        <summary class="cursor-pointer text-sm font-semibold text-gray-900">Vysvetlenie</summary>
+        <div class="mt-2 prose text-sm text-gray-700">
+          Inzulín sa vytvára v β-bunkách Langerhansových ostrovčekov pankreasu. Hypofýza ani štítna žľaza ho neprodukujú.
+        </div>
+      </details>
 
-      <!-- Collapsibles -->
-      <div class="mt-6 space-y-3">
-        <details id="expDetails" class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <summary class="cursor-pointer font-semibold text-gray-900">Vysvetlenie</summary>
-          <div class="prose mt-2 text-sm text-gray-700">
-            <p>Fotosyntéza premieňa svetelnú energiu na energiu chemických väzieb vo forme glukózy. Prebieha v chloroplastoch.</p>
-          </div>
-        </details>
+      <!-- Comments -->
+      <details class="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
+        <summary class="cursor-pointer text-sm font-semibold text-gray-900">Komentáre</summary>
+        <div class="mt-2 space-y-2 text-sm text-gray-700">
+          <p><span class="badge badge-blue">Top</span> Tip: zapamätajte si „β = blood sugar ↓“.</p>
+          <p>Zdieľané poznámky budú v platenej verzii.</p>
+        </div>
+      </details>
 
-        <details class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <summary class="cursor-pointer font-semibold text-gray-900">Komentáre</summary>
-          <div class="prose mt-2 text-sm text-gray-700">
-            <p>(Komunitné komentáre – platený obsah)</p>
-          </div>
-        </details>
+      <!-- Actions -->
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <button id="prevBtn" class="rounded-full bg-blue-50 text-blue-700 text-sm font-bold px-5 py-2 hover:bg-blue-100">Predošlá</button>
+        <div class="flex items-center gap-3">
+          <span id="feedback" class="text-sm font-semibold text-gray-900 hidden"></span>
+          <button id="nextBtn" disabled class="rounded-full bg-blue-500/60 text-white text-sm font-bold px-5 py-2 cursor-not-allowed">Ďalšia otázka</button>
+        </div>
       </div>
     </section>
   </main>
 </div>
 
-<!-- Only the unified 3-tab nav (no extra page menu) -->
-<script src="/stitch/common-nav.v3.js?v=42"></script>
+<!-- Unified bottom nav -->
+<script src="/stitch/common-nav.v3.js?v=50"></script>
 
 <script>
 (function(){
-  // Highlight only the correct answer AFTER a selection; never mark wrong ones
-  const labels = Array.from(document.querySelectorAll('.ans'));
-  const radios = Array.from(document.querySelectorAll('input[name="q"]'));
-  const correct = document.querySelector('.ans[data-correct="true"]');
+  const PREF_KEY = 'mdprep_prefs';
+  const prefs = (()=>{ try { return JSON.parse(localStorage.getItem(PREF_KEY)||'{}'); } catch { return {}; } })();
+  const autoExplain = !!prefs.autoExplain;
+  const autoAdvance = !!prefs.autoAdvance;
 
-  function clearReveal(){
-    labels.forEach(l=>{
-      l.classList.remove('ring-2','ring-green-500/40','border-green-600','bg-green-50');
-      // reset to neutral border if it was turned green
-      if(!l.classList.contains('border-gray-200')) {
-        l.classList.remove('border-green-600');
-        l.classList.add('border-gray-200');
-      }
-    });
+  const qIndexEl = document.getElementById('qIndex');
+  const qTotalEl = document.getElementById('qTotal');
+  const flagBtn  = document.getElementById('flagBtn');
+  const expBox   = document.getElementById('expBox');
+  const feedback = document.getElementById('feedback');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+
+  const answers  = Array.from(document.querySelectorAll('.answer-btn'));
+  const correct  = answers.find(b => b.dataset.correct === 'true');
+
+  let answered = false;
+  let flagged  = false;
+
+  function revealAfterSelection(chosen){
+    if (answered) return;
+    answered = true;
+
+    // Highlight only the correct answer
+    correct && correct.classList.add('answer-correct');
+    // Disable all answer buttons to prevent reselection
+    answers.forEach(b => b.classList.add('answer-disabled'));
+
+    // Feedback (optional)
+    if (chosen.dataset.correct === 'true'){
+      feedback.textContent = 'Správne ✓';
+      feedback.className = 'text-sm font-semibold text-green-700';
+    } else {
+      feedback.textContent = 'Nesprávne — správna odpoveď je zvýraznená.';
+      feedback.className = 'text-sm font-semibold text-gray-900';
+    }
+    feedback.classList.remove('hidden');
+
+    // Enable next
+    nextBtn.disabled = false;
+    nextBtn.className = 'rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600';
+
+    // Auto expand explanation if pref on
+    if (autoExplain && expBox && !expBox.open) expBox.open = true;
+
+    // Optional auto-advance for learning (often off)
+    if (autoAdvance){
+      setTimeout(()=>{ goNext(); }, 600);
+    }
   }
 
-  radios.forEach(r=>{
-    r.addEventListener('change', ()=>{
-      // reveal correct only
-      clearReveal();
-      if (correct){
-        correct.classList.remove('border-gray-200');
-        correct.classList.add('border-green-600','bg-green-50','ring-2','ring-green-500/40');
-      }
-      // (optional) auto-open explanation when user answers:
-      // document.getElementById('expDetails')?.setAttribute('open','');
-    });
+  answers.forEach(btn=>{
+    btn.addEventListener('click', ()=> revealAfterSelection(btn));
   });
 
-  // Remove any stray page-specific menus if present (defensive)
-  Array.from(document.querySelectorAll('footer, nav')).forEach(function(el){
-    const cs = getComputedStyle(el);
-    const isInjected = el.id === 'stitch-global-nav';
-    const looksSticky = cs.position === 'fixed' || cs.position === 'sticky' || /bottom-0/.test(el.className);
-    if (!isInjected && looksSticky) el.remove();
+  function goPrev(){
+    // Stitch preview: navigate to previous sample (use query param ?q=)
+    const url = new URL(location.href);
+    const q = Math.max(1, Number(url.searchParams.get('q')||'1') - 1);
+    url.searchParams.set('q', String(q));
+    location.href = url.toString();
+  }
+  function goNext(){
+    const url = new URL(location.href);
+    const q = Number(url.searchParams.get('q')||'1') + 1;
+    url.searchParams.set('q', String(q));
+    location.href = url.toString();
+  }
+
+  prevBtn.addEventListener('click', goPrev);
+  nextBtn.addEventListener('click', goNext);
+
+  // Flag toggle (visual only in Stitch)
+  flagBtn.addEventListener('click', ()=>{
+    flagged = !flagged;
+    flagBtn.classList.toggle('bg-amber-50', flagged);
+    flagBtn.classList.toggle('text-amber-700', flagged);
+    flagBtn.classList.toggle('border-amber-300', flagged);
+    flagBtn.textContent = flagged ? 'Označené' : 'Označiť';
+    try { localStorage.setItem('md_flag_demo', flagged ? '1':'0'); } catch {}
   });
+
+  // Prefill total from ?count= if present
+  const params = new URLSearchParams(location.search);
+  const total = Number(params.get('count') || '10');
+  if (Number.isFinite(total) && total > 0) qTotalEl.textContent = String(total);
+  const idx = Number(params.get('q') || '1');
+  qIndexEl.textContent = String(Math.max(1, Math.min(total, idx)));
+
 })();
 </script>
 </body>
