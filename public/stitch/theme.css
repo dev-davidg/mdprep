@@ -43,3 +43,5 @@ body{
 }
 b,strong{ font-weight:600; } /* unify strong weight */
 h1,h2,h3{ letter-spacing:-0.01em; }
+
+html{scrollbar-gutter:stable both-edges}
