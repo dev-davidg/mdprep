@@ -1,121 +1,183 @@
 <!DOCTYPE html>
-<html lang="sk"><head>
+<html lang="sk">
+<head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght;500;600;700&family=Noto+Sans:wght;500;600;700&display=swap">
-<title>MDprep – Odpovede (prehľad)</title>
-<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
-<link rel="stylesheet" href="/stitch/styles.v2.css?v=30"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap">
+<title>MDprep – Zobrazenie odpovedí</title>
 
-<link rel="stylesheet" href="/stitch/theme.css?v=30"/>
-<link rel="stylesheet" href="/stitch/center.v1.css?v=1"/>
-<link rel="stylesheet" href="/stitch/pro.css?v=5"/>
+<!-- Shared styles -->
+<link rel="stylesheet" href="/stitch/styles.v2.css?v=70"/>
+<link rel="stylesheet" href="/stitch/theme.css?v=70"/>
+<link rel="stylesheet" href="/stitch/pro.css?v=2"/>
+
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<style type="text/tailwindcss">
-  :root{
-    --md-primary-blue:#2A6F97;
-    --md-secondary-blue:#61A5C2;
-    --md-light-blue:#EBF4F8;
-    --md-dark-text:#011627;
-    --md-light-text:#4F6367;
-    --md-success:#16a34a; /* green-600 */
-    --md-error:#dc2626;   /* red-600 */
+
+<style>
+  /* v70: lock width to 56rem on desktop and stabilize layout */
+  @media (min-width:1024px){
+    body.mx-page main{max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+    body.mx-page header > *, body.mx-page header :is(div,nav){max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
   }
-  body{ font-family:'Lexend','Noto Sans',sans-serif; }
+  html{ scrollbar-gutter: stable both-edges; }
+  body{ min-height:max(884px,100dvh); }
+
+  /* Card states for correct/wrong */
+  .card-correct{ border-color:#16a34a !important; background:#ecfdf5 !important; }  /* green-600, green-50 */
+  .card-wrong{   border-color:#dc2626 !important; background:#fef2f2 !important; }  /* red-600,   red-50   */
+
+  .chip{ transition: transform .1s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease; }
+  .chip:hover{ transform: translateY(-1px); }
+  .chip-on{ background:#eff6ff !important; border-color:#2563eb !important; color:#1e40af !important; }
 </style>
-<style> body{ min-height:max(884px,100dvh);} </style>
-<style>/* v8 failsafe width */  (min-width:1024px){.mx-page main{max-width:56rem;margin-left:auto;margin-right:auto}.mx-page header>*,.mx-page header :is(div,nav){max-width:56rem;margin-left:auto;margin-right:auto}}</style>
-<link rel="stylesheet" href="/stitch/center.static.css?v=1">
 </head>
 <body class="bg-gray-50 text-gray-900 mx-page">
-<div id="stitch-static-wrap">
-<div class="relative flex min-h-screen flex-col justify-between overflow-x-hidden">
-  <main      class="flex-grow mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl page-fade">
+  <div class="relative min-h-screen flex flex-col">
+    <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-10">
-      <div class="mx-auto p-4 pb-3 flex items-center justify-center">
-        <h1 class="text-[var(--md-dark-text)] text-xl font-bold leading-tight tracking-tight text-center">Odpovede – prehľad</h1>
+      <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-between">
+        <h1 class="text-xl font-bold leading-tight tracking-tight">Zobrazenie odpovedí</h1>
+        <a href="/stitch/results.html" class="text-sm font-semibold text-[var(--md-primary-blue)] hover:underline">Späť na prehľad</a>
       </div>
     </header>
 
-    <!-- Legend -->
-    <section class="px-4 pt-4">
-      <div class="flex items-center gap-3 text-sm text-gray-600">
-        <div class="flex items-center gap-1">
-          <span class="inline-block size-3 rounded-full bg-green-500"></span><span>Správne</span>
+    <!-- Content -->
+    <main class="mx-auto max-w-4xl w-full p-4 space-y-6 page-fade">
+      <!-- Summary -->
+      <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <p class="text-sm text-gray-600">Výsledok</p>
+            <p class="text-2xl font-extrabold text-gray-900">
+              <span id="correctCount">0</span> / <span id="totalCount">0</span>
+              <span class="text-base font-semibold text-gray-700">(<span id="percent">0</span>%)</span>
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="filterAll"  class="chip rounded-full border border-gray-200 bg-white text-sm font-bold px-3 py-1.5 chip-on">Všetko</button>
+            <button id="filterWrong" class="chip rounded-full border border-gray-200 bg-white text-sm font-bold px-3 py-1.5">Nesprávne</button>
+          </div>
         </div>
-        <div class="flex items-center gap-1">
-          <span class="inline-block size-3 rounded-full bg-red-500"></span><span>Nesprávne</span>
+
+        <div class="mt-4">
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div id="progressBar" class="bg-[var(--md-primary-blue)] h-2 rounded-full md-progress" style="width:0%"></div>
+          </div>
+          <p class="text-xs text-gray-600 mt-2">
+            Pozrite si nesprávne odpovede a ich vysvetlenia. Správne odpovede sú označené zelenou farbou.
+          </p>
         </div>
+      </section>
+
+      <!-- Review list -->
+      <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+        <h2 class="text-base font-bold text-gray-900 mb-3">Otázky a odpovede</h2>
+        <div id="reviewList" class="space-y-3"></div>
+      </section>
+
+      <!-- Back -->
+      <div class="flex items-center justify-end">
+        <a href="/stitch/results.html" class="rounded-full bg-blue-50 text-blue-700 text-sm font-bold px-5 py-2 hover:bg-blue-100">Späť na prehľad</a>
       </div>
-    </section>
+    </main>
+  </div>
 
-    <!-- Answers list -->
-    <section class="p-4 space-y-3">
-      <!-- Example: CORRECT -->
-      <article class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-        <div class="flex">
-          <div class="w-1 bg-green-500" aria-hidden="true"></div>
-          <div class="flex-1 p-4">
-            <header class="flex items-start justify-between gap-3">
-              <h2 class="text-base font-semibold text-gray-900">1. Aký proces používajú rastliny na premenu svetelnej energie na chemickú energiu?</h2>
-              <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-1 text-xs font-bold text-green-700">Správne</span>
-            </header>
-            <div class="mt-3 space-y-1 text-sm">
-              <p><span class="font-semibold text-gray-600">Vaša odpoveď:</span> <span class="font-semibold text-green-600">Fotosyntéza</span></p>
-              <p><span class="font-semibold text-gray-600">Správna odpoveď:</span> <span class="font-semibold text-green-600">Fotosyntéza</span></p>
-            </div>
-          </div>
-        </div>
-      </article>
+  <!-- Unified bottom nav -->
+  <script src="/stitch/common-nav.v3.js?v=70"></script>
 
-      <!-- Example: INCORRECT -->
-      <article class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-        <div class="flex">
-          <div class="w-1 bg-red-500" aria-hidden="true"></div>
-          <div class="flex-1 p-4">
-            <header class="flex items-start justify-between gap-3">
-              <h2 class="text-base font-semibold text-gray-900">2. Ktorá organela je „elektráreň“ bunky a produkuje ATP?</h2>
-              <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-700">Nesprávne</span>
-            </header>
-            <div class="mt-3 space-y-1 text-sm">
-              <p><span class="font-semibold text-gray-600">Vaša odpoveď:</span> <span class="font-semibold text-red-600">Jadro</span></p>
-              <p><span class="font-semibold text-gray-600">Správna odpoveď:</span> <span class="font-semibold text-green-600">Mitochondria</span></p>
-            </div>
-          </div>
-        </div>
-      </article>
+  <script>
+  (function(){
+    // --- Read test state from localStorage (as set by /stitch/test.html) ---
+    const params = new URLSearchParams(location.search);
+    const TOTAL = Math.max(1, Number(params.get('count')||'10'));
+    const answersMap = (function(){
+      try { return JSON.parse(localStorage.getItem('md_test_answers')||'{}'); }
+      catch { return {}; }
+    })();
 
-      <!-- Example: more items... duplicate and adjust as needed -->
-      <article class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-        <div class="flex">
-          <div class="w-1 bg-red-500" aria-hidden="true"></div>
-          <div class="flex-1 p-4">
-            <header class="flex items-start justify-between gap-3">
-              <h2 class="text-base font-semibold text-gray-900">3. Ktorý proces prebieha v ribozómoch?</h2>
-              <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-700">Nesprávne</span>
-            </header>
-            <div class="mt-3 space-y-1 text-sm">
-              <p><span class="font-semibold text-gray-600">Vaša odpoveď:</span> <span class="font-semibold text-red-600">Syntéza lipidov</span></p>
-              <p><span class="font-semibold text-gray-600">Správna odpoveď:</span> <span class="font-semibold text-green-600">Syntéza proteínov</span></p>
-            </div>
-          </div>
-        </div>
-      </article>
+    // In this Stitch preview, we need a "correct answer" map.
+    // For demo purposes, rotate correct answers A,B,C,D,... by index.
+    function letter(i){ return ['A','B','C','D'][(i-1)%4]; }
+    function buildQuestion(i){
+      return {
+        id: i,
+        text: 'Otázka #' + i + ' – Ukážkový text otázky',
+        correct: letter(i),
+        yours: answersMap[i] || null
+      };
+    }
+    const data = Array.from({length: TOTAL}, (_,k)=> buildQuestion(k+1));
 
-      <!-- Back to results -->
-      <div class="pt-4">
-        <a href="/stitch/results.html"
-           class="block w-full sm:w-auto text-center rounded-full border border-[var(--md-secondary-blue)] bg-white px-6 py-3 font-bold text-[var(--md-primary-blue)] shadow-sm hover:bg-gray-100">
-          Späť na prehľad
-        </a>
-      </div>
-    </section>
-  </main>
-</div>
+    // --- Elements ---
+    const listEl = document.getElementById('reviewList');
+    const correctCountEl = document.getElementById('correctCount');
+    const totalCountEl = document.getElementById('totalCount');
+    const percentEl = document.getElementById('percent');
+    const progressBar = document.getElementById('progressBar');
+    const filterAllBtn = document.getElementById('filterAll');
+    const filterWrongBtn = document.getElementById('filterWrong');
 
-<!-- Unified 3-tab nav -->
-<script src="/stitch/common-nav.v3.js?v=30"></script>
-<script src="/stitch/center-wrap.v1.js?v=1"></script>
-</div>
-</body></html>
+    // --- Stats ---
+    function computeStats(items){
+      const total = items.length;
+      const correct = items.reduce((n,q)=> n + (q.yours && q.yours === q.correct ? 1 : 0), 0);
+      return { total, correct, pct: total ? Math.round(correct*100/total) : 0 };
+    }
+
+    // --- Render one review card ---
+    function card(q){
+      const ok = q.yours && q.yours === q.correct;
+      const cls = 'rounded-xl border p-4 ' + (ok ? 'card-correct' : 'card-wrong');
+      const el = document.createElement('article');
+      el.className = cls;
+
+      el.innerHTML = [
+        '<div class="flex items-center justify-between gap-2">',
+          '<p class="text-sm font-semibold text-gray-900">'+escapeHtml(q.text)+'</p>',
+          ok ? '<span class="badge badge-green">Správne</span>' : '<span class="badge badge-red">Nesprávne</span>',
+        '</div>',
+        '<div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">',
+          '<div class="rounded-lg border border-gray-200 bg-white p-3">',
+            '<p class="text-xs text-gray-600">Vaša odpoveď</p>',
+            '<p class="text-sm font-bold text-gray-900">'+(q.yours ? q.yours : '<span class="text-gray-500">—</span>')+'</p>',
+          '</div>',
+          '<div class="rounded-lg border border-gray-200 bg-white p-3">',
+            '<p class="text-xs text-gray-600">Správna odpoveď</p>',
+            '<p class="text-sm font-bold text-gray-900">'+q.correct+'</p>',
+          '</div>',
+        '</div>'
+      ].join('');
+      return el;
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    }
+
+    // --- Render full list with optional filter ---
+    let showWrongOnly = false;
+    function render(){
+      const items = showWrongOnly ? data.filter(q => !(q.yours && q.yours === q.correct)) : data.slice();
+      listEl.innerHTML = '';
+      items.forEach(q => listEl.appendChild(card(q)));
+
+      const {total, correct, pct} = computeStats(data);
+      correctCountEl.textContent = String(correct);
+      totalCountEl.textContent = String(total);
+      percentEl.textContent = String(pct);
+      progressBar.style.width = pct + '%';
+
+      filterAllBtn.classList.toggle('chip-on', !showWrongOnly);
+      filterWrongBtn.classList.toggle('chip-on', showWrongOnly);
+    }
+
+    filterAllBtn.addEventListener('click', ()=>{ showWrongOnly = false; render(); });
+    filterWrongBtn.addEventListener('click', ()=>{ showWrongOnly = true;  render(); });
+
+    render();
+  })();
+  </script>
+</body>
+</html>
