@@ -1,219 +1,267 @@
 <!DOCTYPE html>
-<html lang="sk"><head>
+<html lang="sk">
+<head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght;500;600;700&family=Noto+Sans:wght;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap">
 <title>MDprep – Test</title>
-<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
-<link rel="stylesheet" href="/stitch/styles.v2.css?v=17"/>
 
-<link rel="stylesheet" href="/stitch/theme.css?v=17"/>
+<!-- Shared styles -->
+<link rel="stylesheet" href="/stitch/styles.v2.css?v=60"/>
+<link rel="stylesheet" href="/stitch/theme.css?v=60"/>
 <link rel="stylesheet" href="/stitch/pro.css?v=2"/>
+
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<style> body { min-height:max(884px,100dvh); } </style>
+
+<style>
+  /* v60: lock width to 56rem on desktop and stabilize layout */
+  @media (min-width:1024px){
+    body.mx-page main{max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+    body.mx-page header > *, body.mx-page header :is(div,nav){max-width:56rem!important;margin-left:auto!important;margin-right:auto!important}
+  }
+  html{ scrollbar-gutter: stable both-edges; }
+  body{ min-height:max(884px,100dvh); }
+
+  /* Answer button states (do NOT reveal correctness) */
+  .answer-btn{ transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease, transform .08s ease; }
+  .answer-btn:hover{ transform: translateY(-1px); }
+  .answer-selected{ border-color:#2563eb !important; background:#eff6ff !important; } /* blue-600 border, blue-50 bg */
+  .answer-disabled{ opacity:.8; pointer-events:none; }
+
+  /* Navigator chips */
+  .qchip{ transition: transform .1s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease; }
+  .qchip:hover{ transform: translateY(-1px); }
+  .qchip-current{ border-color:#2563eb !important; }
+  .qchip-answered{ background:#eff6ff !important; border-color:#2563eb !important; color:#1e40af !important; }
+
+  /* Hide scrollbar track in the horizontal chip scroller (keeps scroll) */
+  .no-scrollbar::-webkit-scrollbar{ display:none; }
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
+</style>
 </head>
 <body class="bg-gray-50 text-gray-900 mx-page">
 <div class="relative min-h-screen flex flex-col">
   <!-- Header -->
-  <header class="sticky top-0 z-10 w-full bg-white backdrop-blur-sm">
-    <div class="p-4 flex items-center justify-between mx-auto max-w-4xl">
-      <a href="/stitch/mode.html" class="flex size-10 shrink-0 items-center justify-center rounded-full text-gray-700 hover:bg-blue-200" aria-label="Späť">
-        <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15 18 9 12l6-6"/></svg>
-      </a>
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="mx-auto max-w-4xl p-4 pb-3 flex items-center justify-between">
+      <h1 class="text-xl font-bold leading-tight tracking-tight">Test</h1>
       <div class="flex items-center gap-2">
-        <svg class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24"><path d="M9 12.8571H15M12 9.85714V15.8571M12 2C13.5273 2.65171 14.9056 3.59373 16.0398 4.75736C18.334 7.05157 19.3905 10.3261 18.9641 13.5654C18.5376 16.8048 16.6852 19.7126 13.8887 21.4346C11.0921 23.1565 7.74796 23.4735 4.67491 22.3023C1.60186 21.1312 -0.324075 18.5724 0.0463378 15.3431C0.416751 12.1139 2.05929 9.17641 4.54518 7.24264C7.03107 5.30887 10.1557 4.58571 13 5.42857" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-        <h1 class="text-lg font-bold text-gray-800">Testovací režim</h1>
-      </div>
-      <div class="w-10"></div>
-    </div>
-
-    <!-- Horizontal question navigator (visible on all sizes) -->
-    <div class="mx-auto max-w-4xl px-4 pb-2">
-      <div id="strip" class="flex gap-2 overflow-x-auto py-1 -mx-1 pr-1">
-        <!-- Pre-rendered pills 1..10 -->
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-blue-500 text-white bg-blue-500 ring-2 ring-blue-500" data-q="1">1</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="2">2</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="3">3</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="4">4</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="5">5</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="6">6</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="7">7</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="8">8</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="9">9</button>
-        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="10">10</button>
+        <span class="text-xs text-gray-600 hidden sm:inline">Čas na otázku</span>
+        <span id="timer" class="badge badge-blue">01:30</span>
       </div>
     </div>
   </header>
 
-  <!-- Desktop side rail: question navigator -->
-  <aside class="hidden lg:block fixed right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur rounded-2xl border border-gray-200 shadow p-2 max-h-[70vh] overflow-auto">
-    <div id="rail" class="grid grid-cols-1 gap-2">
-      <!-- Same pre-rendered pills 1..10 -->
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-blue-500 text-white bg-blue-500 ring-2 ring-blue-500" data-q="1">1</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="2">2</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="3">3</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="4">4</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="5">5</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="6">6</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="7">7</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="8">8</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="9">9</button>
-      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="10">10</button>
-    </div>
-  </aside>
-
-  <!-- Main -->
-  <main      class="flex-1 w-full mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl page-fade">
-    <div class="mx-auto max-w-4xl p-4">
-      <!-- Timer -->
-      <div class="mb-4">
-        <div class="flex items-center justify-between text-sm text-gray-600">
-          <p id="qLabel">Otázka 1 z 10</p>
-          <p id="timerText" class="text-lg font-bold text-gray-800">01:30</p>
+  <main class="mx-auto max-w-4xl w-full p-4 space-y-6 page-fade">
+    <!-- Top meta + question navigator -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <div class="flex items-center justify-between gap-4">
+        <div class="text-sm text-gray-700">
+          <span class="font-semibold">Otázka</span> <span id="qIndex">1</span>/<span id="qTotal">10</span>
         </div>
-        <div class="mt-1 h-2 w-full rounded-full bg-blue-100">
-          <div id="timeBar" class="h-2 rounded-full bg-blue-500" style="width: 0%"></div>
-        </div>
+        <button id="flagBtn" class="rounded-full border border-gray-200 bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1.5 hover:bg-blue-100">
+          Označiť
+        </button>
       </div>
 
-      <!-- Question text -->
-      <p id="questionText" class="mb-6 text-base leading-relaxed text-gray-800">
-        Aký proces používajú rastliny na premenu svetelnej energie na chemickú energiu vo forme glukózy?
-      </p>
+      <!-- Horizontal scroll question navigator -->
+      <div id="qNav" class="mt-3 overflow-x-auto no-scrollbar">
+        <div id="qNavInner" class="flex items-center gap-2 min-w-max"></div>
+      </div>
+    </section>
 
-      <!-- Answers -->
-      <div id="answers" class="space-y-3">
-        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
-          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Dýchanie"/>
-          <span class="text-sm font-medium text-gray-900">Dýchanie</span>
-        </label>
-        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
-          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Transpirácia"/>
-          <span class="text-sm font-medium text-gray-900">Transpirácia</span>
-        </label>
-        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
-          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Fotosyntéza"/>
-          <span class="text-sm font-medium text-gray-900">Fotosyntéza</span>
-        </label>
-        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
-          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Osmóza"/>
-          <span class="text-sm font-medium text-gray-900">Osmóza</span>
-        </label>
+    <!-- Question card -->
+    <section class="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <h2 id="qText" class="text-base font-bold text-gray-900">Ktorá štruktúra je zodpovedná za produkciu inzulínu?</h2>
+
+      <div class="mt-4 grid grid-cols-1 gap-2">
+        <!-- NO correctness reveal in Test; selection only marks chosen -->
+        <button class="answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3" data-answer="A">A) Hypofýza</button>
+        <button class="answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3" data-answer="B">B) Pankreas (Langerhansove ostrovčeky)</button>
+        <button class="answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3" data-answer="C">C) Pečeň</button>
+        <button class="answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3" data-answer="D">D) Štítna žľaza</button>
       </div>
 
-      <!-- Actions (sticky inside main, not a footer) -->
-      <div class="sticky bottom-20 mt-6 bg-gray-50/80 backdrop-blur pt-3 pb-2">
-        <div class="flex gap-3">
-          <button id="skipBtn" class="flex-1 rounded-full bg-blue-100 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-200">Preskočiť</button>
-          <button id="flagBtn" class="flex-1 rounded-full bg-blue-100 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-200">Označiť</button>
-        </div>
-        <div class="mt-3 flex gap-3">
-          <button id="nextBtn" class="flex-1 rounded-full bg-blue-500 py-3 text-base font-bold text-white transition-transform active:scale-95 shadow-lg shadow-blue-500/30">Ďalej</button>
-          <a id="finishBtn" href="/stitch/results.html" class="flex-1 text-center rounded-full border-2 border-blue-500 py-3 text-base font-bold text-blue-600 hover:bg-gray-50">Dokončiť test</a>
+      <!-- Actions -->
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <button id="prevBtn" class="rounded-full bg-blue-50 text-blue-700 text-sm font-bold px-5 py-2 hover:bg-blue-100">Predošlá</button>
+        <div class="flex items-center gap-3">
+          <button id="skipBtn" class="rounded-full bg-blue-50 text-blue-700 text-sm font-bold px-5 py-2 hover:bg-blue-100">Preskočiť</button>
+          <button id="nextBtn" class="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600">Ďalej</button>
+          <button id="finishBtn" disabled class="rounded-full bg-blue-500/60 text-white text-sm font-bold px-5 py-2 cursor-not-allowed">Ukončiť test</button>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 </div>
 
 <!-- Unified bottom nav -->
-<script src="/stitch/common-nav.v3.js?v=17"></script>
+<script src="/stitch/common-nav.v3.js?v=60"></script>
 
 <script>
 (function(){
-  try {
-    // ==== Config / State
-    const total = 10;
-    let current = 1;
-    const answered = new Set();
-    const flagged  = new Set();
+  // --- Preferences ---
+  const PREF_KEY = 'mdprep_prefs';
+  const prefs = (()=>{ try { return JSON.parse(localStorage.getItem(PREF_KEY)||'{}'); } catch { return {}; } })();
+  const autoAdvance = !!prefs.autoAdvance; // user may enable "go next after selection" in settings
 
-    // ==== Elements
-    const timerEl = document.getElementById('timerText');
-    const barEl   = document.getElementById('timeBar');
-    const qLabel  = document.getElementById('qLabel');
-    const qText   = document.getElementById('questionText');
-    const strip   = document.getElementById('strip');
-    const rail    = document.getElementById('rail');
-    const flagBtn = document.getElementById('flagBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const skipBtn = document.getElementById('skipBtn');
-    const answersWrap = document.getElementById('answers');
+  // --- Elements ---
+  const qIndexEl = document.getElementById('qIndex');
+  const qTotalEl = document.getElementById('qTotal');
+  const qNavInner = document.getElementById('qNavInner');
+  const qText = document.getElementById('qText');
+  const answers = Array.from(document.querySelectorAll('.answer-btn'));
+  const flagBtn = document.getElementById('flagBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const skipBtn = document.getElementById('skipBtn');
+  const finishBtn = document.getElementById('finishBtn');
+  const timerEl = document.getElementById('timer');
 
-    function pillClass(q){
-      let cls = 'inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white';
-      if (answered.has(q)) cls = 'inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition bg-blue-500 text-white border-blue-500';
-      if (q === current)  cls += ' ring-2 ring-blue-500';
-      if (flagged.has(q)) cls += ' border-yellow-400';
-      return cls;
+  // --- State (Stitch mock) ---
+  const params = new URLSearchParams(location.search);
+  const TOTAL = Math.max(1, Number(params.get('count')||'10'));
+  let idx = Math.max(1, Math.min(TOTAL, Number(params.get('q')||'1')));
+  let flags = new Set(JSON.parse(localStorage.getItem('md_test_flags')||'[]'));
+  let answersMap = JSON.parse(localStorage.getItem('md_test_answers')||'{}'); // { "1":"B", "2":"C", ... }
+  let perQuestionTime = 90; // seconds
+  let remaining = perQuestionTime;
+  let tHandle = null;
+
+  qTotalEl.textContent = String(TOTAL);
+
+  // --- Build navigator chips ---
+  function buildNav(){
+    qNavInner.innerHTML = '';
+    for (let i=1;i<=TOTAL;i++){
+      const a = !!answersMap[i];
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'qchip rounded-full border border-gray-200 bg-white text-sm font-bold px-3 py-1.5';
+      if (i === idx) chip.classList.add('qchip-current');
+      if (a) chip.classList.add('qchip-answered');
+      chip.textContent = i;
+      chip.setAttribute('aria-label', 'Otázka ' + i + (a ? ' — zodpovedané' : ' — nezodpovedané'));
+      chip.addEventListener('click', ()=> goto(i));
+      qNavInner.appendChild(chip);
     }
-
-    function renderQuestion(){
-      qLabel.textContent = \`Otázka \${current} z \${total}\`;
-      // (Preview-only) keep the same sample text; in real app we’ll swap q/answers by index
-      answersWrap.querySelectorAll('input[name="q"]').forEach(i => { i.checked = false; });
-    }
-
-    function updatePills(){
-      document.querySelectorAll('[data-q]').forEach(el=>{
-        const q = Number(el.dataset.q);
-        el.className = pillClass(q);
-      });
-    }
-
-    // Wire pill clicks
-    document.querySelectorAll('[data-q]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        current = Number(btn.dataset.q);
-        renderQuestion();
-        updatePills();
-      });
-    });
-
-    // Answers interactions
-    answersWrap.querySelectorAll('input[name="q"]').forEach(inp=>{
-      inp.addEventListener('change', ()=>{
-        answered.add(current);
-        updatePills();
-      });
-    });
-
-    flagBtn.addEventListener('click', ()=>{
-      if (flagged.has(current)) flagged.delete(current); else flagged.add(current);
-      updatePills();
-    });
-
-    function goNext(markAnswered){
-      if (markAnswered) answered.add(current);
-      current = current >= total ? 1 : current + 1;
-      renderQuestion(); updatePills();
-    }
-
-    nextBtn.addEventListener('click', ()=> goNext(true));
-    skipBtn.addEventListener('click', ()=> goNext(false));
-
-    // Timer (90s) with redirect on 0
-    const totalSec = 90; let remain = totalSec;
-    function renderTime(){
-      const m = String(Math.floor(remain/60)).padStart(2,'0');
-      const s = String(remain%60).padStart(2,'0');
-      timerEl.textContent = m + ':' + s;
-      barEl.style.width = (100*(1 - remain/totalSec)).toFixed(2) + '%';
-    }
-    renderTime();
-    const intId = setInterval(()=>{
-      remain--;
-      if (remain <= 0){ clearInterval(intId); window.location.href='/stitch/results.html'; return; }
-      renderTime();
-    }, 1000);
-
-    // Init
-    renderQuestion();
-    updatePills();
-  } catch(e){
-    console && console.error && console.error('Test page init failed:', e);
   }
+
+  // --- Render current index + selection state ---
+  function render(){
+    qIndexEl.textContent = String(idx);
+
+    // Reset answer visuals
+    answers.forEach(b => b.classList.remove('answer-selected','answer-disabled'));
+    const chosen = answersMap[idx];
+    if (chosen){
+      const btn = answers.find(b => b.dataset.answer === chosen);
+      if (btn) btn.classList.add('answer-selected');
+    }
+
+    // Buttons state
+    prevBtn.disabled = (idx === 1);
+    prevBtn.className = prevBtn.disabled
+      ? 'rounded-full bg-blue-50 text-blue-700/60 text-sm font-bold px-5 py-2 cursor-not-allowed'
+      : 'rounded-full bg-blue-50 text-blue-700 text-sm font-bold px-5 py-2 hover:bg-blue-100';
+
+    // Finish enabled only when all answered
+    const answeredCount = Object.keys(answersMap).length;
+    const allAnswered = answeredCount >= TOTAL;
+    finishBtn.disabled = !allAnswered;
+    finishBtn.className = allAnswered
+      ? 'rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600'
+      : 'rounded-full bg-blue-500/60 text-white text-sm font-bold px-5 py-2 cursor-not-allowed';
+
+    // Flag visual
+    const flagged = flags.has(idx);
+    flagBtn.classList.toggle('bg-amber-50', flagged);
+    flagBtn.classList.toggle('text-amber-700', flagged);
+    flagBtn.classList.toggle('border-amber-300', flagged);
+    flagBtn.textContent = flagged ? 'Označené' : 'Označiť';
+
+    // Navigator chips
+    buildNav();
+
+    // Restart timer for this question
+    startTimer();
+  }
+
+  // --- Timer (90s per question) ---
+  function startTimer(){
+    stopTimer();
+    remaining = perQuestionTime;
+    updateTimer();
+    tHandle = setInterval(()=>{
+      remaining--;
+      if (remaining <= 0){
+        stopTimer();
+        // Time up: if no answer yet, mark skipped and go next
+        if (!answersMap[idx]) {
+          // store explicit skip marker (optional); leaving empty keeps it "unanswered"
+          // answersMap[idx] = null;
+        }
+        saveState();
+        goNext();
+      }else{
+        updateTimer();
+      }
+    }, 1000);
+  }
+  function stopTimer(){ if (tHandle) clearInterval(tHandle); tHandle = null; }
+  function updateTimer(){
+    const m = Math.floor(remaining/60).toString().padStart(2,'0');
+    const s = (remaining%60).toString().padStart(2,'0');
+    timerEl.textContent = m + ':' + s;
+  }
+
+  // --- Navigation helpers ---
+  function saveState(){
+    try{
+      localStorage.setItem('md_test_answers', JSON.stringify(answersMap));
+      localStorage.setItem('md_test_flags', JSON.stringify(Array.from(flags)));
+    }catch{}
+  }
+  function goto(n){
+    if (n === idx) return;
+    idx = Math.max(1, Math.min(TOTAL, n));
+    const url = new URL(location.href);
+    url.searchParams.set('q', String(idx));
+    history.replaceState(null, '', url.toString());
+    render();
+  }
+  function goPrev(){ goto(idx-1); }
+  function goNext(){ goto(idx+1 <= TOTAL ? idx+1 : idx); }
+
+  // --- Wire controls ---
+  prevBtn.addEventListener('click', goPrev);
+  nextBtn.addEventListener('click', goNext);
+  skipBtn.addEventListener('click', goNext);
+  finishBtn.addEventListener('click', ()=>{
+    // Only navigate if all answered (button stays disabled otherwise)
+    location.href = '/stitch/results.html';
+  });
+  flagBtn.addEventListener('click', ()=>{
+    if (flags.has(idx)) flags.delete(idx); else flags.add(idx);
+    saveState(); render();
+  });
+
+  // --- Answer selection (no correctness reveal) ---
+  answers.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const val = btn.dataset.answer;
+      answersMap[idx] = val;
+      saveState();
+      render();
+      if (autoAdvance) setTimeout(()=> goNext(), 250);
+    });
+  });
+
+  // Init
+  render();
 })();
 </script>
-</body></html>
+</body>
+</html>
