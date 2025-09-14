@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="sk"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght;500;600;700&family=Noto+Sans:wght;500;600;700&display=swap">
+<title>MDprep – Test</title>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+<link rel="stylesheet" href="/stitch/styles.v2.css?v=17"/>
+
+<link rel="stylesheet" href="/stitch/theme.css?v=17"/>
+<link rel="stylesheet" href="/stitch/pro.css?v=2"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style> body { min-height:max(884px,100dvh); } </style>
+</head>
+<body class="bg-gray-50 text-gray-900 mx-page">
+<div class="relative min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="sticky top-0 z-10 w-full bg-white backdrop-blur-sm">
+    <div class="p-4 flex items-center justify-between mx-auto max-w-4xl">
+      <a href="/stitch/mode.html" class="flex size-10 shrink-0 items-center justify-center rounded-full text-gray-700 hover:bg-blue-200" aria-label="Späť">
+        <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15 18 9 12l6-6"/></svg>
+      </a>
+      <div class="flex items-center gap-2">
+        <svg class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24"><path d="M9 12.8571H15M12 9.85714V15.8571M12 2C13.5273 2.65171 14.9056 3.59373 16.0398 4.75736C18.334 7.05157 19.3905 10.3261 18.9641 13.5654C18.5376 16.8048 16.6852 19.7126 13.8887 21.4346C11.0921 23.1565 7.74796 23.4735 4.67491 22.3023C1.60186 21.1312 -0.324075 18.5724 0.0463378 15.3431C0.416751 12.1139 2.05929 9.17641 4.54518 7.24264C7.03107 5.30887 10.1557 4.58571 13 5.42857" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        <h1 class="text-lg font-bold text-gray-800">Testovací režim</h1>
+      </div>
+      <div class="w-10"></div>
+    </div>
+
+    <!-- Horizontal question navigator (visible on all sizes) -->
+    <div class="mx-auto max-w-4xl px-4 pb-2">
+      <div id="strip" class="flex gap-2 overflow-x-auto py-1 -mx-1 pr-1">
+        <!-- Pre-rendered pills 1..10 -->
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-blue-500 text-white bg-blue-500 ring-2 ring-blue-500" data-q="1">1</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="2">2</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="3">3</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="4">4</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="5">5</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="6">6</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="7">7</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="8">8</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="9">9</button>
+        <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="10">10</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Desktop side rail: question navigator -->
+  <aside class="hidden lg:block fixed right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur rounded-2xl border border-gray-200 shadow p-2 max-h-[70vh] overflow-auto">
+    <div id="rail" class="grid grid-cols-1 gap-2">
+      <!-- Same pre-rendered pills 1..10 -->
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-blue-500 text-white bg-blue-500 ring-2 ring-blue-500" data-q="1">1</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="2">2</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="3">3</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="4">4</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="5">5</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="6">6</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="7">7</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="8">8</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="9">9</button>
+      <button type="button" class="inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white" data-q="10">10</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main      class="flex-1 w-full mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl mx-auto max-w-4xl page-fade">
+    <div class="mx-auto max-w-4xl p-4">
+      <!-- Timer -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between text-sm text-gray-600">
+          <p id="qLabel">Otázka 1 z 10</p>
+          <p id="timerText" class="text-lg font-bold text-gray-800">01:30</p>
+        </div>
+        <div class="mt-1 h-2 w-full rounded-full bg-blue-100">
+          <div id="timeBar" class="h-2 rounded-full bg-blue-500" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Question text -->
+      <p id="questionText" class="mb-6 text-base leading-relaxed text-gray-800">
+        Aký proces používajú rastliny na premenu svetelnej energie na chemickú energiu vo forme glukózy?
+      </p>
+
+      <!-- Answers -->
+      <div id="answers" class="space-y-3">
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Dýchanie"/>
+          <span class="text-sm font-medium text-gray-900">Dýchanie</span>
+        </label>
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Transpirácia"/>
+          <span class="text-sm font-medium text-gray-900">Transpirácia</span>
+        </label>
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Fotosyntéza"/>
+          <span class="text-sm font-medium text-gray-900">Fotosyntéza</span>
+        </label>
+        <label class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm has-[:checked]:border-blue-500 has-[:checked]:bg-gray-50 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/50">
+          <input class="h-5 w-5 flex-shrink-0 appearance-none rounded-full border-2 border-gray-300 bg-white checked:border-blue-600 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50" name="q" type="radio" value="Osmóza"/>
+          <span class="text-sm font-medium text-gray-900">Osmóza</span>
+        </label>
+      </div>
+
+      <!-- Actions (sticky inside main, not a footer) -->
+      <div class="sticky bottom-20 mt-6 bg-gray-50/80 backdrop-blur pt-3 pb-2">
+        <div class="flex gap-3">
+          <button id="skipBtn" class="flex-1 rounded-full bg-blue-100 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-200">Preskočiť</button>
+          <button id="flagBtn" class="flex-1 rounded-full bg-blue-100 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-200">Označiť</button>
+        </div>
+        <div class="mt-3 flex gap-3">
+          <button id="nextBtn" class="flex-1 rounded-full bg-blue-500 py-3 text-base font-bold text-white transition-transform active:scale-95 shadow-lg shadow-blue-500/30">Ďalej</button>
+          <a id="finishBtn" href="/stitch/results.html" class="flex-1 text-center rounded-full border-2 border-blue-500 py-3 text-base font-bold text-blue-600 hover:bg-gray-50">Dokončiť test</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Unified bottom nav -->
+<script src="/stitch/common-nav.v3.js?v=17"></script>
+
+<script>
+(function(){
+  try {
+    // ==== Config / State
+    const total = 10;
+    let current = 1;
+    const answered = new Set();
+    const flagged  = new Set();
+
+    // ==== Elements
+    const timerEl = document.getElementById('timerText');
+    const barEl   = document.getElementById('timeBar');
+    const qLabel  = document.getElementById('qLabel');
+    const qText   = document.getElementById('questionText');
+    const strip   = document.getElementById('strip');
+    const rail    = document.getElementById('rail');
+    const flagBtn = document.getElementById('flagBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    const answersWrap = document.getElementById('answers');
+
+    function pillClass(q){
+      let cls = 'inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition border-gray-300 text-gray-600 bg-white';
+      if (answered.has(q)) cls = 'inline-flex items-center justify-center rounded-full px-3 h-9 min-w-9 text-xs font-bold border transition bg-blue-500 text-white border-blue-500';
+      if (q === current)  cls += ' ring-2 ring-blue-500';
+      if (flagged.has(q)) cls += ' border-yellow-400';
+      return cls;
+    }
+
+    function renderQuestion(){
+      qLabel.textContent = \`Otázka \${current} z \${total}\`;
+      // (Preview-only) keep the same sample text; in real app we’ll swap q/answers by index
+      answersWrap.querySelectorAll('input[name="q"]').forEach(i => { i.checked = false; });
+    }
+
+    function updatePills(){
+      document.querySelectorAll('[data-q]').forEach(el=>{
+        const q = Number(el.dataset.q);
+        el.className = pillClass(q);
+      });
+    }
+
+    // Wire pill clicks
+    document.querySelectorAll('[data-q]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        current = Number(btn.dataset.q);
+        renderQuestion();
+        updatePills();
+      });
+    });
+
+    // Answers interactions
+    answersWrap.querySelectorAll('input[name="q"]').forEach(inp=>{
+      inp.addEventListener('change', ()=>{
+        answered.add(current);
+        updatePills();
+      });
+    });
+
+    flagBtn.addEventListener('click', ()=>{
+      if (flagged.has(current)) flagged.delete(current); else flagged.add(current);
+      updatePills();
+    });
+
+    function goNext(markAnswered){
+      if (markAnswered) answered.add(current);
+      current = current >= total ? 1 : current + 1;
+      renderQuestion(); updatePills();
+    }
+
+    nextBtn.addEventListener('click', ()=> goNext(true));
+    skipBtn.addEventListener('click', ()=> goNext(false));
+
+    // Timer (90s) with redirect on 0
+    const totalSec = 90; let remain = totalSec;
+    function renderTime(){
+      const m = String(Math.floor(remain/60)).padStart(2,'0');
+      const s = String(remain%60).padStart(2,'0');
+      timerEl.textContent = m + ':' + s;
+      barEl.style.width = (100*(1 - remain/totalSec)).toFixed(2) + '%';
+    }
+    renderTime();
+    const intId = setInterval(()=>{
+      remain--;
+      if (remain <= 0){ clearInterval(intId); window.location.href='/stitch/results.html'; return; }
+      renderTime();
+    }, 1000);
+
+    // Init
+    renderQuestion();
+    updatePills();
+  } catch(e){
+    console && console.error && console.error('Test page init failed:', e);
+  }
+})();
+</script>
+</body></html>
