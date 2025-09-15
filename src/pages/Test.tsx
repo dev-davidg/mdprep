@@ -1,20 +1,24 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Shell from "@/layouts/Shell";
+import { getQuestions, type Question, letterFromIndex } from "@/lib/data";
 
 function useQS(){
   const q = new URLSearchParams(useLocation().search);
   const count = Math.max(1, Number(q.get("count")||"10"));
   const idx = Math.max(1, Number(q.get("q")||"1"));
-  return { count, idx };
+  const category = q.get("category") || "";
+  return { count, idx, category };
 }
+
 const AKEY = "md_test_answers";
 const FKEY = "md_test_flags";
 
 export default function Test(){
-  const { count, idx: initialIdx } = useQS();
+  const { count, idx: initialIdx, category } = useQS();
   const nav = useNavigate();
   const [idx,setIdx] = useState(initialIdx);
+  const [items,setItems] = useState<Question[]>([]);
   const [answers,setAnswers] = useState<Record<number,string>>(()=> {
     try{ return JSON.parse(localStorage.getItem(AKEY)||"{}"); }catch{return{}}
   });
@@ -22,18 +26,11 @@ export default function Test(){
     try{ return new Set(JSON.parse(localStorage.getItem(FKEY)||"[]")); }catch{return new Set()}
   });
 
+  useEffect(()=>{ if (!category) return; getQuestions(category, count).then(setItems).catch(console.error); },[category, count]);
   useEffect(()=>{ localStorage.setItem(AKEY, JSON.stringify(answers)); },[answers]);
   useEffect(()=>{ localStorage.setItem(FKEY, JSON.stringify(Array.from(flags))); },[flags]);
 
-  const qText = useMemo(()=> "Ktorá štruktúra je zodpovedná za produkciu inzulínu?", []);
-  const opts = [
-    {k:"A", t:"Hypofýza"},
-    {k:"B", t:"Pankreas (Langerhansove ostrovčeky)"},
-    {k:"C", t:"Pečeň"},
-    {k:"D", t:"Štítna žľaza"},
-  ];
-
-  // timer
+  // per-question 90s timer
   const [remaining,setRemaining] = useState(90);
   const timerRef = useRef<number|undefined>();
   useEffect(()=>{
@@ -46,7 +43,7 @@ export default function Test(){
     return ()=> window.clearInterval(timerRef.current);
   },[idx]);
 
-  const pick = (k:string) => setAnswers(a=> ({...a, [idx]:k}));
+  const pick = (label:string) => setAnswers(a=> ({...a, [idx]:label}));
   const goto = (n:number) => {
     const clamped = Math.max(1, Math.min(count, n));
     setIdx(clamped);
@@ -58,6 +55,8 @@ export default function Test(){
 
   const mm = (n:number)=> String(Math.floor(n/60)).padStart(2,"0");
   const ss = (n:number)=> String(n%60).padStart(2,"0");
+
+  const current = items[idx-1];
 
   return (
     <Shell title="Test">
@@ -92,14 +91,17 @@ export default function Test(){
       </section>
 
       <section className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
-        <h2 className="text-base font-bold text-gray-900">{qText}</h2>
+        <h2 className="text-base font-bold text-gray-900">{current ? current.text : "Načítavam..."}</h2>
         <div className="mt-4 grid grid-cols-1 gap-2">
-          {opts.map(o=>(
-            <button key={o.k} onClick={()=>pick(o.k)}
-              className={`answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3 ${answers[idx]===o.k?'answer-selected':''}`}>
-              {o.k}) {o.t}
-            </button>
-          ))}
+          {current?.answers.map(o=>{
+            const label = letterFromIndex(o.order_index);
+            return (
+              <button key={o.id} onClick={()=>pick(label)}
+                className={`answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3 ${answers[idx]===label?'answer-selected':''}`}>
+                {label}) {o.text}
+              </button>
+            );
+          })}
         </div>
 
         <div className="mt-4 flex items-center justify-between gap-3">
@@ -110,7 +112,7 @@ export default function Test(){
           <div className="flex items-center gap-3">
             <button onClick={next} className="rounded-full bg-blue-50 text-blue-700 text-sm font-bold px-5 py-2 hover:bg-blue-100">Preskočiť</button>
             <button onClick={next} className="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600">Ďalej</button>
-            <button onClick={()=> location.assign("/results")} disabled={!finishEnabled}
+            <button onClick={()=> location.assign(`/results?category=${category}&count=${count}`)} disabled={!finishEnabled}
               className={`rounded-full text-white text-sm font-bold px-5 py-2 ${finishEnabled?'bg-blue-500 hover:bg-blue-600':'bg-blue-500/60 cursor-not-allowed'}`}>
               Ukončiť test
             </button>

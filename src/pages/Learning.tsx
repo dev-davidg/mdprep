@@ -1,39 +1,50 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Shell from "@/layouts/Shell";
+import { getQuestions, upsertSeen, type Question, letterFromIndex } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
 
 function useQS(){
   const q = new URLSearchParams(useLocation().search);
   const count = Math.max(1, Number(q.get("count")||"10"));
   const idx = Math.max(1, Number(q.get("q")||"1"));
-  return { count, idx };
+  const category = q.get("category") || "";
+  return { count, idx, category };
 }
 
 export default function Learning(){
   const nav = useNavigate();
-  const { count, idx } = useQS();
+  const { count, idx, category } = useQS();
+  const [items,setItems] = useState<Question[]>([]);
   const [answered,setAnswered] = useState(false);
   const [selected,setSelected] = useState<string|null>(null);
 
-  const qText = useMemo(()=> "Ktorá štruktúra je zodpovedná za produkciu inzulínu?", []);
-  const answers = [
-    {k:"A", t:"Hypofýza", ok:false},
-    {k:"B", t:"Pankreas (Langerhansove ostrovčeky)", ok:true},
-    {k:"C", t:"Pečeň", ok:false},
-    {k:"D", t:"Štítna žľaza", ok:false},
-  ];
-  const correctKey = "B";
+  useEffect(()=>{
+    if (!category) return;
+    getQuestions(category, count).then(setItems).catch(console.error);
+  },[category, count]);
+
+  const current = items[idx-1];
 
   const go = (to:number) => {
     const n = Math.max(1, Math.min(count, to));
-    nav(`/learning?count=${count}&q=${n}`);
+    nav(`/learning?category=${category}&count=${count}&q=${n}`);
   };
 
-  const pick = (k:string) => {
+  const pick = async (label: string) => {
     if(answered) return;
-    setSelected(k);
+    setSelected(label);
     setAnswered(true);
+    try {
+      const { data: u } = await supabase!.auth.getUser();
+      if (u?.user && current){
+        await upsertSeen(current.id, u.user.id);
+      }
+    } catch(err){ console.error(err); }
   };
+
+  const correct = current?.answers.find(a=>a.is_correct);
+  const correctLabel = correct ? letterFromIndex(correct.order_index) : null;
 
   return (
     <Shell title="Učenie" rightLink={{to:"/mode", label:"Späť"}}>
@@ -45,15 +56,17 @@ export default function Learning(){
       </section>
 
       <section className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
-        <h2 className="text-base font-bold text-gray-900">{qText}</h2>
+        <h2 className="text-base font-bold text-gray-900">{current ? current.text : "Načítavam..."}</h2>
+
         <div className="mt-4 grid grid-cols-1 gap-2">
-          {answers.map(a=>{
-            const correct = answered && a.k===correctKey;
+          {current?.answers.map(a=>{
+            const label = letterFromIndex(a.order_index);
+            const showCorrect = answered && correctLabel === label;
             return (
-              <button key={a.k}
-                onClick={()=> pick(a.k)}
-                className={`answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3 ${correct?'answer-correct':''} ${answered?'answer-disabled':''}`}>
-                {a.k}) {a.t}
+              <button key={a.id}
+                onClick={()=> pick(label)}
+                className={`answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3 ${showCorrect?'answer-correct':''} ${answered?'answer-disabled':''}`}>
+                {label}) {a.text}
               </button>
             );
           })}
@@ -61,9 +74,7 @@ export default function Learning(){
 
         <details className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-3" open={answered}>
           <summary className="cursor-pointer text-sm font-semibold text-gray-900">Vysvetlenie</summary>
-          <div className="mt-2 prose text-sm text-gray-700">
-            Inzulín sa produkuje v β-bunkách Langerhansových ostrovčekov pankreasu. Hypofýza ani štítna žľaza ho neprodukujú.
-          </div>
+          <div className="mt-2 prose text-sm text-gray-700">{current?.explanation ?? "—"}</div>
         </details>
 
         <div className="mt-4 flex items-center justify-between gap-3">
