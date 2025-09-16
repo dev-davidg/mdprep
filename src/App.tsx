@@ -7,6 +7,7 @@ import Test from "@/pages/Test";
 import Results from "@/pages/Results";
 import Review from "@/pages/Review";
 import Settings from "@/pages/Settings";
+import Diag from "@/pages/Diag";
 
 export default function App(){
   return (

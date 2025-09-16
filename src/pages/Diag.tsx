@@ -7,7 +7,7 @@ type Row = { id:string; name:string; description?:string|null };
 export default function Diag(){
   const [envOk, setEnvOk] = useState<{hasUrl:boolean; hasKey:boolean; urlHost:string|null}>({hasUrl:false, hasKey:false, urlHost:null});
   const [authState, setAuthState] = useState<{userId:string|null; error:string|null}>({userId:null, error:null});
-  const [cats, setCats] = useState<{rows:Row[]; error:string|null; status:string}>({rows:[], error:null, status:"pending"});
+  const [cats, setCats] = useState<{rows:Row[]; error:string|null; status:string}>({rows:[], error:null, status:"not-run"});
 
   useEffect(()=>{
     const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
@@ -17,18 +17,29 @@ export default function Diag(){
     setEnvOk({ hasUrl: !!url, hasKey: !!key, urlHost: host });
 
     (async ()=>{
-      try {
-        const { data, error } = await supabase!.auth.getUser();
-        setAuthState({ userId: data.user?.id ?? null, error: error?.message ?? null });
-      } catch (e:any) {
-        setAuthState({ userId: null, error: e?.message ?? String(e) });
+      // Auth block
+      if (!supabase) {
+        setAuthState({ userId: null, error: "supabase client is NULL (missing VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY?)" });
+      } else {
+        try {
+          const { data, error } = await supabase.auth.getUser();
+          setAuthState({ userId: data.user?.id ?? null, error: error?.message ?? null });
+        } catch (e:any) {
+          setAuthState({ userId: null, error: e?.message ?? String(e) });
+        }
       }
-      try {
-        const { data, error, status } = await supabase!.from("categories").select("id,name,description").order("name");
-        if (error) setCats({ rows:[], error: error.message, status: String(status) });
-        else setCats({ rows:(data as Row[]) ?? [], error:null, status: String(status) });
-      } catch (e:any) {
-        setCats({ rows:[], error: e?.message ?? String(e), status: "thrown" });
+
+      // Categories block
+      if (!supabase) {
+        setCats({ rows:[], error: "supabase client is NULL", status:"skipped" });
+      } else {
+        try {
+          const { data, error, status } = await supabase.from("categories").select("id,name,description").order("name");
+          if (error) setCats({ rows:[], error: error.message, status: String(status) });
+          else setCats({ rows:(data as Row[]) ?? [], error:null, status: String(status) });
+        } catch (e:any) {
+          setCats({ rows:[], error: e?.message ?? String(e), status: "thrown" });
+        }
       }
     })();
   },[]);
