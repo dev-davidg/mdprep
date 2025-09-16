@@ -19,7 +19,7 @@ export default function App(){
       <Route path="/test" element={<Test/>} />
       <Route path="/results" element={<Results/>} />
       <Route path="/review" element={<Review/>} />
-      <Route path="/settings" element={<Settings/>} />
+      <Route path="/settings" element={<Settings/>} />\n      <Route path="/diag" element={<Diag/>} />
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   );
