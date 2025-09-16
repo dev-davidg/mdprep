@@ -35,19 +35,15 @@ export async function getQuestions(categoryId: string, limit: number): Promise<Q
     .from("questions")
     .select("id, category_id, text, explanation, answers(id,text,is_correct,order_index)")
     .eq("category_id", categoryId)
-    .limit(limit);
+  .limit(limit);
   if (error) throw error;
-  // Ensure answers sorted A..D
   return (data ?? []).map(q => ({
     ...q,
     answers: (q.answers ?? []).slice().sort((a,b)=> a.order_index - b.order_index)
   })) as Question[];
 }
 
-/**
- * Record "seen" for (user, question). This creates the row if missing,
- * and leaves it as-is if it already exists (MVP: we only need presence).
- */
+/** Record one seen row per (user, question). */
 export async function upsertSeen(questionId: string, userId: string){
   const payload = {
     user_id: userId,
@@ -64,7 +60,6 @@ export async function upsertSeen(questionId: string, userId: string){
 }
 
 export async function countSeenByCategory(categoryId: string, userId: string): Promise<number>{
-  // Join stats -> questions to count rows for this category
   const { data, error } = await supabase!
     .from("user_question_stats")
     .select("question_id, questions!inner(id,category_id)")
@@ -72,4 +67,32 @@ export async function countSeenByCategory(categoryId: string, userId: string): P
     .eq("user_id", userId);
   if (error) throw error;
   return data?.length ?? 0;
+}
+
+/** Fetch minimal question info by IDs (order is preserved as in ids[]). */
+export async function getQuestionsByIds(ids: string[]): Promise<{id:string; text:string}[]>{
+  if (!ids.length) return [];
+  const { data, error } = await supabase!
+    .from("questions")
+    .select("id,text")
+    .in("id", ids);
+  if (error) throw error;
+  const map = new Map((data ?? []).map(q => [q.id, q]));
+  return ids.map(id => map.get(id)).filter(Boolean) as {id:string; text:string}[];
+}
+
+/** Build map question_id -> correct letter (A..D). */
+export async function getCorrectMap(ids: string[]): Promise<Record<string,string>>{
+  if (!ids.length) return {};
+  const { data, error } = await supabase!
+    .from("answers")
+    .select("question_id, order_index")
+    .in("question_id", ids)
+    .eq("is_correct", true);
+  if (error) throw error;
+  const out: Record<string,string> = {};
+  for (const row of (data ?? [])) {
+    out[row.question_id] = letterFromIndex(row.order_index);
+  }
+  return out;
 }

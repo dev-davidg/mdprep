@@ -13,6 +13,7 @@ function useQS(){
 
 const AKEY = "md_test_answers";
 const FKEY = "md_test_flags";
+const QKEY = "md_test_qids";
 
 export default function Test(){
   const { count, idx: initialIdx, category } = useQS();
@@ -26,7 +27,14 @@ export default function Test(){
     try{ return new Set(JSON.parse(localStorage.getItem(FKEY)||"[]")); }catch{return new Set()}
   });
 
-  useEffect(()=>{ if (!category) return; getQuestions(category, count).then(setItems).catch(console.error); },[category, count]);
+  useEffect(()=>{
+    if (!category) return;
+    getQuestions(category, count).then(qs=>{
+      setItems(qs);
+      try { localStorage.setItem(QKEY, JSON.stringify(qs.map(q=>q.id))); } catch {}
+    }).catch(console.error);
+  },[category, count]);
+
   useEffect(()=>{ localStorage.setItem(AKEY, JSON.stringify(answers)); },[answers]);
   useEffect(()=>{ localStorage.setItem(FKEY, JSON.stringify(Array.from(flags))); },[flags]);
 
