@@ -7,6 +7,7 @@ export type Question = {
   category_id: string;
   text: string;
   explanation: string | null;
+  explanation_long: string | null;
   answers: Answer[];
 };
 
@@ -33,7 +34,7 @@ export async function countQuestionsByCategory(categoryId: string): Promise<numb
 export async function getQuestions(categoryId: string, limit: number): Promise<Question[]>{
   const { data, error } = await supabase!
     .from("questions")
-    .select("id, category_id, text, explanation, answers(id,text,is_correct,order_index)")
+    .select("id, category_id, text, explanation, explanation_long, answers(id,text,is_correct,order_index)")
     .eq("category_id", categoryId)
   .limit(limit);
   if (error) throw error;

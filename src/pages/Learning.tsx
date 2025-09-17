@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Shell from "@/layouts/Shell";
 import { getQuestions, type Question, letterFromIndex } from "@/lib/data";
@@ -28,7 +28,6 @@ export default function Learning(){
     }).catch(console.error);
   },[category, count]);
 
-  // Keep q=? in URL in sync
   const goto = (n:number) => {
     const clamped = Math.max(1, Math.min(count, n));
     setIdx(clamped);
@@ -44,12 +43,10 @@ export default function Learning(){
     ? letterFromIndex(current!.answers.find(a=>a.is_correct)!.order_index)
     : undefined;
   const picked = selected[idx];
-  const showReveal = !!picked; // reveal ONLY after user has picked
+  const showReveal = !!picked;
 
   const pick = (label:string) => {
-    // store selection; do NOT reveal before pick — handled by showReveal
     setSelected(s=> ({...s, [idx]:label}));
-    // auto-open explanation on first reveal
     setExpanded(e=> ({...e, [idx]: true}));
   };
 
@@ -81,8 +78,6 @@ export default function Learning(){
           {current?.answers.map(o=>{
             const label = letterFromIndex(o.order_index);
             const isCorrect = o.is_correct === true;
-            // Only after a pick: highlight the correct option.
-            // If user picked a wrong answer, we do NOT highlight it red (requirement).
             const revealCorrect = showReveal && isCorrect;
             const pickedWrongButThis = showReveal && picked === label && !isCorrect;
 
@@ -93,9 +88,7 @@ export default function Learning(){
                 className={[
                   "rounded-xl border text-left px-4 py-3 transition",
                   "bg-white border-gray-200 hover:bg-gray-50",
-                  // show green only for correct after pick
                   revealCorrect ? "bg-green-50 border-green-400 ring-2 ring-green-300" : "",
-                  // indicate wrong pick just with a subtle ring (no red highlight)
                   pickedWrongButThis ? "ring-2 ring-blue-300" : "",
                 ].join(" ").trim()}
               >
@@ -114,10 +107,20 @@ export default function Learning(){
               Vysvetlenie
             </summary>
             <div className="mt-2 text-sm text-gray-700">
-              {showReveal ? (current?.explanation || "Bez vysvetlenia.") : "Zobrazí sa po zodpovedaní otázky."}
+              {showReveal ? (
+                <>
+                  <p>{current?.explanation || "Bez vysvetlenia."}</p>
+                  {current?.explanation_long && (
+                    <div className="mt-3 border-t border-gray-200 pt-3">
+                      <p className="text-sm font-semibold text-gray-900 mb-1">Podrobnejšie vysvetlenie</p>
+                      <p className="text-sm text-gray-700 whitespace-pre-line">{current.explanation_long}</p>
+                    </div>
+                  )}
+                </>
+              ) : "Zobrazí sa po zodpovedaní otázky."}
             </div>
           </details>
-          {/* Komentáre – miesto pre budúce použitie */}
+
           <details className="rounded-xl border border-gray-200 bg-white p-3">
             <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
               Komentáre (čoskoro)
