@@ -96,7 +96,7 @@ export default function Learning(){
                   // show green only for correct after pick
                   revealCorrect ? "bg-green-50 border-green-400" : "",
                   // indicate wrong pick just with a subtle ring (no red highlight)
-                  pickedWrongButThis ? "ring-2 ring-blue-300" : "",
+                  pickedWrongButThis ? "ring-4 ring-blue-600 ring-offset-2" : "",
                 ].join(" ").trim()}
               >
                 <span className="font-bold mr-2">{label})</span>{o.text}
