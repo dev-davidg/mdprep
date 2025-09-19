@@ -161,15 +161,15 @@ export default function Learning() {
                       {long.images.map((img, i) => (
                         <figure
                           key={img.url + i}
-                          className="rounded-lg border border-gray-200 bg-white overflow-hidden"
+                          className="rounded-lg border border-gray-200 bg-white overflow-hidden p-3 flex flex-col items-center justify-center min-h-[220px]"
                         >
                           <img
                             src={resolvePublicUrl(img.url)}
                             alt={img.alt ?? ""}
-                            className="w-full h-auto object-contain"
+                            className="max-h-48 w-auto h-auto object-contain mx-auto block"
                           />
                           {img.alt && (
-                            <figcaption className="px-3 py-2 text-xs text-gray-600">{img.alt}</figcaption>
+                            <figcaption className="px-3 py-2 text-xs text-gray-600 text-center">{img.alt}</figcaption>
                           )}
                         </figure>
                       ))}
