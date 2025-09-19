@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Shell from "@/layouts/Shell";
 import { getQuestions, type Question, letterFromIndex } from "@/lib/data";
 
@@ -11,9 +11,33 @@ function useQS(){
   return { count, idx, category };
 }
 
+function splitLongExplanation(src?: string): { text: string; images: { url: string; alt?: string }[] } {
+  if (!src) return { text: "", images: [] };
+  const lines = src.split(/\r?\n/);
+  const images: { url: string; alt?: string }[] = [];
+  const kept: string[] = [];
+  for (const raw of lines) {
+    const line = raw.trim();
+    const m = /^IMG:\s*(\S+)(?:\s*\|\s*(.+))?$/i.exec(line);
+    if (m) {
+      images.push({ url: m[1], alt: m[2] });
+    } else {
+      kept.push(raw);
+    }
+  }
+  return { text: kept.join("\n").trim(), images };
+}
+
+function resolvePublicUrl(path: string) {
+  if (/^https?:\/\//i.test(path)) return path; // direct URL
+  // Storage path fallback (if you later store in Supabase Storage)
+  const { supabase } = require("@/lib/supabase");
+  const { data } = supabase.storage.from("mdprep-public").getPublicUrl(path);
+  return data.publicUrl;
+}
+
 export default function Learning(){
   const { count, idx: initialIdx, category } = useQS();
-  const nav = useNavigate();
 
   const [idx,setIdx] = useState(initialIdx);
   const [items,setItems] = useState<Question[]>([]);
@@ -39,9 +63,6 @@ export default function Learning(){
   const next = () => goto(idx+1);
 
   const current = items[idx-1];
-  const correctLabel = current?.answers.find(a=>a.is_correct)
-    ? letterFromIndex(current!.answers.find(a=>a.is_correct)!.order_index)
-    : undefined;
   const picked = selected[idx];
   const showReveal = !!picked;
 
@@ -49,10 +70,11 @@ export default function Learning(){
     setSelected(s=> ({...s, [idx]:label}));
     setExpanded(e=> ({...e, [idx]: true}));
   };
-
   const toggleFlag = () => {
     setFlags(f=>{ const nf=new Set(f); nf.has(idx)?nf.delete(idx):nf.add(idx); return nf; });
   };
+
+  const long = splitLongExplanation(current?.explanation_long || "");
 
   return (
     <Shell title="Učiaci režim" rightLink={{to:"/mode", label:"Späť na výber"}}>
@@ -110,10 +132,20 @@ export default function Learning(){
               {showReveal ? (
                 <>
                   <p>{current?.explanation || "Bez vysvetlenia."}</p>
-                  {current?.explanation_long && (
+                  {long.text && (
                     <div className="mt-3 border-t border-gray-200 pt-3">
                       <p className="text-sm font-semibold text-gray-900 mb-1">Podrobnejšie vysvetlenie</p>
-                      <p className="text-sm text-gray-700 whitespace-pre-line">{current.explanation_long}</p>
+                      <p className="text-sm text-gray-700 whitespace-pre-line">{long.text}</p>
+                    </div>
+                  )}
+                  {long.images.length > 0 && (
+                    <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {long.images.map((img, i) => (
+                        <figure key={img.url + i} className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+                          <img src={resolvePublicUrl(img.url)} alt={img.alt ?? ""} className="w-full h-auto object-contain"/>
+                          {img.alt && <figcaption className="px-3 py-2 text-xs text-gray-600">{img.alt}</figcaption>}
+                        </figure>
+                      ))}
                     </div>
                   )}
                 </>
