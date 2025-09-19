@@ -29,9 +29,13 @@ function splitLongExplanation(src?: string): { text: string; images: { url: stri
 }
 
 function resolvePublicUrl(path: string) {
-  if (/^https?:\/\//i.test(path)) return path; // direct URL
-  // Storage path fallback (if you later store in Supabase Storage)
+  // Accept absolute http(s) and absolute site paths (/media/…)
+  if (/^https?:\/\//i.test(path) || path.startsWith('/')) return path;
+  // Fallback: treat as Supabase Storage object key (mdprep-public)
   const { supabase } = require("@/lib/supabase");
+  const { data } = supabase.storage.from("mdprep-public").getPublicUrl(path);
+  return data.publicUrl;
+} = require("@/lib/supabase");
   const { data } = supabase.storage.from("mdprep-public").getPublicUrl(path);
   return data.publicUrl;
 }
