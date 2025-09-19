@@ -23,19 +23,14 @@ function splitLongExplanation(src?: string): LongExploded {
   for (const raw of lines) {
     const line = raw.trim();
     const m = /^IMG:\s*(\S+)(?:\s*\|\s*(.+))?$/i.exec(line);
-    if (m) {
-      images.push({ url: m[1], alt: m[2] });
-    } else {
-      kept.push(raw);
-    }
+    if (m) images.push({ url: m[1], alt: m[2] });
+    else kept.push(raw);
   }
   return { text: kept.join("\n").trim(), images };
 }
 
 function resolvePublicUrl(path: string): string {
-  // Allow absolute http(s) and local site paths (/media/…)
-  if (/^https?:\/\//i.test(path) || path.startsWith("/")) return path;
-  // Fallback for Supabase Storage object keys in mdprep-public bucket
+  if (/^https?:\/\//i.test(path) || path.startsWith("/")) return path; // local /media or absolute URL
   const { data } = supabase.storage.from("mdprep-public").getPublicUrl(path);
   return data.publicUrl;
 }
@@ -161,15 +156,20 @@ export default function Learning() {
                       {long.images.map((img, i) => (
                         <figure
                           key={img.url + i}
-                          className="rounded-lg border border-gray-200 bg-white overflow-hidden p-3 flex flex-col items-center justify-center min-h-[220px]"
+                          className="rounded-lg border border-gray-200 bg-white overflow-hidden"
                         >
-                          <img
-                            src={resolvePublicUrl(img.url)}
-                            alt={img.alt ?? ""}
-                            className="max-h-48 w-auto h-auto object-contain mx-auto block"
-                          />
+                          {/* Fixed-height flex box centers image perfectly */}
+                          <div className="h-60 w-full flex items-center justify-center p-3">
+                            <img
+                              src={resolvePublicUrl(img.url)}
+                              alt={img.alt ?? ""}
+                              className="max-h-full max-w-full object-contain"
+                            />
+                          </div>
                           {img.alt && (
-                            <figcaption className="px-3 py-2 text-xs text-gray-600 text-center">{img.alt}</figcaption>
+                            <figcaption className="px-3 py-2 text-xs text-gray-600 text-center">
+                              {img.alt}
+                            </figcaption>
                           )}
                         </figure>
                       ))}
@@ -202,7 +202,10 @@ export default function Learning() {
           >
             Predošlá
           </button>
-          <button className="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600" onClick={next}>
+          <button
+            className="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600"
+            onClick={next}
+          >
             Ďalej
           </button>
         </div>
