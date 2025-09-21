@@ -18,6 +18,7 @@ const QKEY = "md_test_qids";
 export default function Test(){
   const { count, idx: initialIdx, category } = useQS();
   const nav = useNavigate();
+
   const [idx,setIdx] = useState(initialIdx);
   const [items,setItems] = useState<Question[]>([]);
   const [answers,setAnswers] = useState<Record<number,string>>(()=> {
@@ -35,8 +36,8 @@ export default function Test(){
     }).catch(console.error);
   },[category, count]);
 
-  useEffect(()=>{ localStorage.setItem(AKEY, JSON.stringify(answers)); },[answers]);
-  useEffect(()=>{ localStorage.setItem(FKEY, JSON.stringify(Array.from(flags))); },[flags]);
+  useEffect(()=>{ try { localStorage.setItem(AKEY, JSON.stringify(answers)); } catch {} },[answers]);
+  useEffect(()=>{ try { localStorage.setItem(FKEY, JSON.stringify(Array.from(flags))); } catch {} },[flags]);
 
   // per-question 90s timer
   const [remaining,setRemaining] = useState(90);
@@ -52,44 +53,55 @@ export default function Test(){
   },[idx]);
 
   const pick = (label:string) => setAnswers(a=> ({...a, [idx]:label}));
+
   const goto = (n:number) => {
     const clamped = Math.max(1, Math.min(count, n));
     setIdx(clamped);
-    const u = new URL(location.href); u.searchParams.set("q", String(clamped)); history.replaceState(null,"",u.toString());
+    const u = new URL(location.href);
+    u.searchParams.set("q", String(clamped));
+    history.replaceState(null,"",u.toString());
   };
   const prev = () => goto(idx-1);
   const next = () => goto(idx+1);
-  const finishEnabled = Object.keys(answers).length >= count;
+
+  const finishEnabled = Object.keys(answers).length >= count; // must answer all
 
   const mm = (n:number)=> String(Math.floor(n/60)).padStart(2,"0");
   const ss = (n:number)=> String(n%60).padStart(2,"0");
 
   const current = items[idx-1];
+  const selectedLabel = answers[idx];
 
   return (
     <Shell title="Test">
       <section className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
         <div className="flex items-center justify-between gap-4">
-          <div className="text-sm text-gray-700"><span className="font-semibold">Otázka</span> {idx}/{count}</div>
+          <div className="text-sm text-gray-700">
+            <span className="font-semibold">Otázka</span> {idx}/{count}
+          </div>
           <div className="flex items-center gap-2">
             <span className="text-xs text-gray-600 hidden sm:inline">Čas na otázku</span>
-            <span className="badge badge-blue">{mm(remaining)}:{ss(remaining)}</span>
-            <button onClick={()=> setFlags(f=>{ const nf=new Set(f); nf.has(idx)?nf.delete(idx):nf.add(idx); return nf; })}
+            <span className="badge badge-blue" aria-live="polite">{mm(remaining)}:{ss(remaining)}</span>
+            <button
+              type="button"
+              onClick={()=> setFlags(f=>{ const nf=new Set(f); nf.has(idx)?nf.delete(idx):nf.add(idx); return nf; })}
               className={`rounded-full border text-xs font-bold px-3 py-1.5 ${flags.has(idx)?'bg-amber-50 text-amber-700 border-amber-300':'bg-blue-50 text-blue-700 border-gray-200 hover:bg-blue-100'}`}>
               {flags.has(idx)?'Označené':'Označiť'}
             </button>
           </div>
         </div>
 
-        <div className="mt-3 overflow-x-auto no-scrollbar">
+        <div className="mt-3 overflow-x-auto no-scrollbar relative z-0">
           <div className="flex items-center gap-2 min-w-max">
             {Array.from({length: count}, (_,i)=> i+1).map(n=>{
               const answered = !!answers[n];
-              const current = n===idx;
+              const currentQ = n===idx;
               return (
-                <button key={n} onClick={()=>goto(n)}
-                  className={`qchip rounded-full border border-gray-200 bg-white text-sm font-bold px-3 py-1.5
-                    ${current?'qchip-current':''} ${answered?'qchip-answered':''}`}>
+                <button
+                  key={n}
+                  type="button"
+                  onClick={()=>goto(n)}
+                  className={`qchip rounded-full border border-gray-200 bg-white text-sm font-bold px-3 py-1.5 ${currentQ?'qchip-current':''} ${answered?'qchip-answered':''}`}>
                   {n}
                 </button>
               );
@@ -100,27 +112,45 @@ export default function Test(){
 
       <section className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
         <h2 className="text-base font-bold text-gray-900">{current ? current.text : "Načítavam..."}</h2>
-        <div className="mt-4 grid grid-cols-1 gap-2">
+
+        <div className="mt-4 grid grid-cols-1 gap-2 relative z-10">
           {current?.answers.map(o=>{
             const label = letterFromIndex(o.order_index);
+            const isSelected = selectedLabel === label;
             return (
-              <button key={o.id} onClick={()=>pick(label)}
-                className={`answer-btn rounded-xl border border-gray-200 bg-white text-left px-4 py-3 ${answers[idx]===label?'answer-selected':''}`}>
-                {label}) {o.text}
+              <button
+                key={o.id}
+                type="button"
+                onClick={()=>pick(label)}
+                aria-pressed={isSelected}
+                className={[
+                  "answer-btn rounded-xl border text-left px-4 py-3 transition pointer-events-auto",
+                  "bg-white border-gray-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+                  isSelected ? "ring-2 ring-blue-500 bg-blue-50 border-blue-300" : ""
+                ].join(" ")}
+              >
+                <span className="font-bold mr-2">{label})</span>
+                {o.text}
               </button>
             );
           })}
         </div>
 
         <div className="mt-4 flex items-center justify-between gap-3">
-          <button onClick={prev} disabled={idx===1}
+          <button
+            type="button"
+            onClick={prev}
+            disabled={idx===1}
             className={`rounded-full text-sm font-bold px-5 py-2 ${idx===1?'bg-blue-50 text-blue-700/60 cursor-not-allowed':'bg-blue-50 text-blue-700 hover:bg-blue-100'}`}>
             Predošlá
           </button>
           <div className="flex items-center gap-3">
-            <button onClick={next} className="rounded-full bg-blue-50 text-blue-700 text-sm font-bold px-5 py-2 hover:bg-blue-100">Preskočiť</button>
-            <button onClick={next} className="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600">Ďalej</button>
-            <button onClick={()=> location.assign(`/results?category=${category}&count=${count}`)} disabled={!finishEnabled}
+            <button type="button" onClick={next} className="rounded-full bg-blue-50 text-blue-700 text-sm font-bold px-5 py-2 hover:bg-blue-100">Preskočiť</button>
+            <button type="button" onClick={next} className="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600">Ďalej</button>
+            <button
+              type="button"
+              onClick={()=> location.assign(\`/results?category=\${category}&count=\${count}\`)}
+              disabled={!finishEnabled}
               className={`rounded-full text-white text-sm font-bold px-5 py-2 ${finishEnabled?'bg-blue-500 hover:bg-blue-600':'bg-blue-500/60 cursor-not-allowed'}`}>
               Ukončiť test
             </button>
