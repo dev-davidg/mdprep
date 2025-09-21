@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Shell from "@/layouts/Shell";
 import { getQuestions, type Question, letterFromIndex } from "@/lib/data";
 
@@ -17,7 +17,6 @@ const QKEY = "md_test_qids";
 
 export default function Test(){
   const { count, idx: initialIdx, category } = useQS();
-  const nav = useNavigate();
 
   const [idx,setIdx] = useState(initialIdx);
   const [items,setItems] = useState<Question[]>([]);
@@ -113,7 +112,7 @@ export default function Test(){
       <section className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
         <h2 className="text-base font-bold text-gray-900">{current ? current.text : "Načítavam..."}</h2>
 
-        <div className="mt-4 grid grid-cols-1 gap-2 relative z-10">
+        <div className="mt-4 grid grid-cols-1 gap-2 relative z-50">
           {current?.answers.map(o=>{
             const label = letterFromIndex(o.order_index);
             const isSelected = selectedLabel === label;
@@ -149,7 +148,7 @@ export default function Test(){
             <button type="button" onClick={next} className="rounded-full bg-blue-500 text-white text-sm font-bold px-5 py-2 hover:bg-blue-600">Ďalej</button>
             <button
               type="button"
-              onClick={()=> location.assign(\`/results?category=\${category}&count=\${count}\`)}
+              onClick={()=> location.assign(`/results?category=${category}&count=${count}`)}
               disabled={!finishEnabled}
               className={`rounded-full text-white text-sm font-bold px-5 py-2 ${finishEnabled?'bg-blue-500 hover:bg-blue-600':'bg-blue-500/60 cursor-not-allowed'}`}>
               Ukončiť test
