@@ -132,85 +132,47 @@ export default function Learning() {
         </div>
 
         <div className="mt-4 space-y-3">
-          <details
-            open={!!expanded[idx]}
-            onToggle={(e) =>
-              setExpanded((ex) => ({ ...ex, [idx]: (e.target as HTMLDetailsElement).open }))
-            }
-            className="rounded-xl border border-gray-200 bg-white p-3"
-          >
-            <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
-              Vysvetlenie
-            </summary>
-            <div className="mt-2 text-sm text-gray-700">
-              {showReveal ? (
-                <p>{current?.explanation || "Bez vysvetlenia."}</p>
-                  {long.text && (
-                    <div className="mt-3 border-t border-gray-200 pt-3">
-                      <p className="text-sm font-semibold text-gray-900 mb-1">Podrobnejšie vysvetlenie</p>
-                      <p className="text-sm text-gray-700 whitespace-pre-line">{long.text}</p>
-                    </div>
-                  )}
-                  {long.images.length > 0 && (
-  <MediaGallery
-    items={long.images.map((img) => ({
-      src: resolvePublicUrl(img.url),
-      caption: img.alt
-    }))}
-  />
-)}
-    />
-  )}
-                              alt={img.alt ?? ""}
-                              className="block mx-auto max-h-full max-w-full h-auto w-auto object-contain"
-                            />
-                          </div>
-                          {img.alt && (
-                            <figcaption className="px-3 py-2 text-xs text-gray-600 text-center">
-                              {img.alt}
-                            </figcaption>
-                          )}
-                        </figure>
-                      ))}
-                    </div>
-                  )}
-                ) : (
-                "Zobrazí sa po zodpovedaní otázky."
-              )}
+  <details
+    open={!!expanded[idx]}
+    onToggle={(e) =>
+      setExpanded((ex) => ({
+        ...ex,
+        [idx]: (e.target as HTMLDetailsElement).open,
+      }))
+    }
+    className="rounded-xl border border-gray-200 bg-white p-3"
+  >
+    <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
+      Vysvetlenie
+    </summary>
+    <div className="mt-2 text-sm text-gray-700">
+      {showReveal ? (
+        <div>
+          <p>{current?.explanation || "Bez vysvetlenia."}</p>
+          {long.text && (
+            <div className="mt-3 border-t border-gray-200 pt-3">
+              <p className="text-sm font-semibold text-gray-900 mb-1">
+                Podrobnejšie vysvetlenie
+              </p>
+              <p className="text-sm text-gray-700 whitespace-pre-line">{long.text}</p>
             </div>
-          </details>
-
-          <details className="rounded-xl border border-gray-200 bg-white p-3">
-  <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
-    Vysvetlenie
-  </summary>
-  <div className="mt-2 text-sm text-gray-700">
-    {showReveal ? (
-      <div>
-        <p>{current?.explanation || "Bez vysvetlenia."}</p>
-
-        {long.text && (
-          <div className="mt-3 border-t border-gray-200 pt-3">
-            <p className="text-sm font-semibold text-gray-900 mb-1">Podrobnejšie vysvetlenie</p>
-            <p className="text-sm text-gray-700 whitespace-pre-line">{long.text}</p>
-          </div>
-        )}
-
-        {long.images.length > 0 && (
-          <MediaGallery
-            items={long.images.map((img) => ({
-              src: resolvePublicUrl(img.url),
-              caption: img.alt
-            }))}
-          />
-        )}
-      </div>
-    ) : (
-      "Zobrazí sa po zodpovedaní otázky."
-    )}
-  </div>
-</details>
+          )}
+          {long.images.length > 0 && (
+            <MediaGallery
+              items={long.images.map((img) => ({
+                src: resolvePublicUrl(img.url),
+                caption: img.alt,
+              }))}
+            />
+          )}
         </div>
+      ) : (
+        "Zobrazí sa po zodpovedaní otázky."
+      )}
+    </div>
+  </details>
+</div>
+
 
         <div className="mt-4 flex items-center justify-between gap-3">
           <button
