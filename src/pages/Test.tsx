@@ -14,6 +14,7 @@ function useQS(){
 const AKEY = "md_test_answers";
 const FKEY = "md_test_flags";
 const QKEY = "md_test_qids";
+const TEST_PER_Q_SECONDS = 45;
 
 export default function Test(){
   const { count, idx: initialIdx, category } = useQS();
@@ -38,18 +39,39 @@ export default function Test(){
   useEffect(()=>{ try { localStorage.setItem(AKEY, JSON.stringify(answers)); } catch {} },[answers]);
   useEffect(()=>{ try { localStorage.setItem(FKEY, JSON.stringify(Array.from(flags))); } catch {} },[flags]);
 
-  // per-question 90s timer
-  const [remaining,setRemaining] = useState(90);
+  const totalSeconds = Math.max(1, count) * TEST_PER_Q_SECONDS;
+  const startKey = `md_test_started_${category}_${count}`;
+  const [remaining,setRemaining] = useState<number>(totalSeconds);
   const timerRef = useRef<number|undefined>();
+
   useEffect(()=>{
-    window.clearInterval(timerRef.current);
-    setRemaining(90);
-    timerRef.current = window.setInterval(()=> setRemaining(r=> {
-      if(r<=1){ window.clearInterval(timerRef.current); next(); }
-      return r-1;
-    }), 1000);
-    return ()=> window.clearInterval(timerRef.current);
-  },[idx]);
+    let startMs = 0;
+    try{
+      const raw = localStorage.getItem(startKey);
+      if (raw) startMs = Number(raw) || 0;
+    }catch{}
+    if (!startMs){
+      startMs = Date.now();
+      try{ localStorage.setItem(startKey, String(startMs)); }catch{}
+    }
+
+    const compute = () => {
+      const elapsed = Math.floor((Date.now() - startMs)/1000);
+      const left = Math.max(totalSeconds - elapsed, 0);
+      setRemaining(left);
+      if (left <= 0){
+        finish();
+      }
+    };
+
+    compute();
+    timerRef.current = window.setInterval(compute, 1000);
+    return ()=> { window.clearInterval(timerRef.current); };
+  },[startKey, totalSeconds]);
+
+  const finish = () => {
+    location.assign(`/results?category=${category}&count=${count}`);
+  };
 
   const pick = (label:string) => setAnswers(a=> ({...a, [idx]:label}));
 
@@ -63,7 +85,7 @@ export default function Test(){
   const prev = () => goto(idx-1);
   const next = () => goto(idx+1);
 
-  const finishEnabled = Object.keys(answers).length >= count; // must answer all
+  const finishEnabled = Object.keys(answers).length >= count;
 
   const mm = (n:number)=> String(Math.floor(n/60)).padStart(2,"0");
   const ss = (n:number)=> String(n%60).padStart(2,"0");
@@ -79,7 +101,7 @@ export default function Test(){
             <span className="font-semibold">Otázka</span> {idx}/{count}
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-600 hidden sm:inline">Čas na otázku</span>
+            <span className="text-xs text-gray-600 hidden sm:inline">Čas do konca</span>
             <span className="badge badge-blue" aria-live="polite">{mm(remaining)}:{ss(remaining)}</span>
             <button
               type="button"
@@ -90,7 +112,6 @@ export default function Test(){
           </div>
         </div>
 
-        {/* Question selector chips with states: unanswered, answered, flagged */}
         <div className="mt-3 overflow-x-auto no-scrollbar relative z-0">
           <div className="flex items-center gap-2 min-w-max">
             {Array.from({length: count}, (_,i)=> i+1).map(n=>{
