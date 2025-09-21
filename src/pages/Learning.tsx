@@ -1,3 +1,4 @@
+import MediaGallery from "@/components/MediaGallery";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Shell from "@/layouts/Shell";
@@ -79,8 +80,8 @@ export default function Learning() {
   const long = splitLongExplanation(current?.explanation_long || "");
 
   return (
-    <Shell title="Učiaci režim" rightLink={{ to: "/mode", label: "Späť na výber" }}>
-      <section className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+<Shell title="Učiaci režim" rightLink={{ to: "/mode", label: "Späť na výber" }}>
+  <section className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
         <div className="flex items-center justify-between gap-4">
           <div className="text-sm text-gray-700">
             <span className="font-semibold">Otázka</span> {idx}/{count}
@@ -143,8 +144,7 @@ export default function Learning() {
             </summary>
             <div className="mt-2 text-sm text-gray-700">
               {showReveal ? (
-                <>
-                  <p>{current?.explanation || "Bez vysvetlenia."}</p>
+                <p>{current?.explanation || "Bez vysvetlenia."}</p>
                   {long.text && (
                     <div className="mt-3 border-t border-gray-200 pt-3">
                       <p className="text-sm font-semibold text-gray-900 mb-1">Podrobnejšie vysvetlenie</p>
@@ -152,18 +152,17 @@ export default function Learning() {
                     </div>
                   )}
                   {long.images.length > 0 && (
-                    <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {long.images.map((img, i) => (
-                        <figure
-                          key={img.url + i}
-                          className="rounded-lg border border-gray-200 bg-white overflow-hidden"
-                        >
-                          {/* Fixed-height flex box centers image perfectly */}
-                          <div className="h-60 w-full flex items-center justify-center p-3">
-                            <img
-                              src={resolvePublicUrl(img.url)}
+  <MediaGallery
+    items={long.images.map((img) => ({
+      src: resolvePublicUrl(img.url),
+      caption: img.alt
+    }))}
+  />
+)}
+    />
+  )}
                               alt={img.alt ?? ""}
-                              className="max-h-full max-w-full object-contain"
+                              className="block mx-auto max-h-full max-w-full h-auto w-auto object-contain"
                             />
                           </div>
                           {img.alt && (
@@ -175,19 +174,42 @@ export default function Learning() {
                       ))}
                     </div>
                   )}
-                </>
-              ) : (
+                ) : (
                 "Zobrazí sa po zodpovedaní otázky."
               )}
             </div>
           </details>
 
           <details className="rounded-xl border border-gray-200 bg-white p-3">
-            <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
-              Komentáre (čoskoro)
-            </summary>
-            <div className="mt-2 text-sm text-gray-600">Funkcia bude dostupná neskôr.</div>
-          </details>
+  <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
+    Vysvetlenie
+  </summary>
+  <div className="mt-2 text-sm text-gray-700">
+    {showReveal ? (
+      <div>
+        <p>{current?.explanation || "Bez vysvetlenia."}</p>
+
+        {long.text && (
+          <div className="mt-3 border-t border-gray-200 pt-3">
+            <p className="text-sm font-semibold text-gray-900 mb-1">Podrobnejšie vysvetlenie</p>
+            <p className="text-sm text-gray-700 whitespace-pre-line">{long.text}</p>
+          </div>
+        )}
+
+        {long.images.length > 0 && (
+          <MediaGallery
+            items={long.images.map((img) => ({
+              src: resolvePublicUrl(img.url),
+              caption: img.alt
+            }))}
+          />
+        )}
+      </div>
+    ) : (
+      "Zobrazí sa po zodpovedaní otázky."
+    )}
+  </div>
+</details>
         </div>
 
         <div className="mt-4 flex items-center justify-between gap-3">
@@ -213,3 +235,4 @@ export default function Learning() {
     </Shell>
   );
 }
+
