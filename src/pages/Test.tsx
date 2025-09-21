@@ -90,18 +90,36 @@ export default function Test(){
           </div>
         </div>
 
+        {/* Question selector chips with states: unanswered, answered, flagged */}
         <div className="mt-3 overflow-x-auto no-scrollbar relative z-0">
           <div className="flex items-center gap-2 min-w-max">
             {Array.from({length: count}, (_,i)=> i+1).map(n=>{
               const answered = !!answers[n];
               const currentQ = n===idx;
+              const isFlagged = flags.has(n);
+
+              const base = "relative inline-flex items-center justify-center w-9 h-9 rounded-full text-sm font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500";
+              const palette = answered
+                ? "bg-blue-600 text-white border border-blue-600 hover:bg-blue-600/90"
+                : "bg-white text-gray-900 border border-gray-200 hover:bg-gray-50";
+              const currentRing = currentQ ? "ring-2 ring-blue-400" : "";
+
               return (
                 <button
                   key={n}
                   type="button"
                   onClick={()=>goto(n)}
-                  className={`qchip rounded-full border border-gray-200 bg-white text-sm font-bold px-3 py-1.5 ${currentQ?'qchip-current':''} ${answered?'qchip-answered':''}`}>
+                  aria-current={currentQ ? "true" : undefined}
+                  className={[base, palette, currentRing].join(" ").trim()}
+                  title={answered ? "Zodpovedané" : "Nezodpovedané"}
+                >
                   {n}
+                  {isFlagged && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute -top-px -right-px w-0 h-0 border-t-[10px] border-l-[10px] border-t-rose-500 border-l-transparent rounded-none"
+                    />
+                  )}
                 </button>
               );
             })}
